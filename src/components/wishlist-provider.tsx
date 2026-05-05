@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { useUser } from "./user-provider";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 interface WishlistContextType {
   wishlist: string[];
@@ -18,30 +19,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const userId = user?.id || "guest";
   const WISHLIST_KEY = `xmstore-wishlist-${userId}`;
 
-  const [wishlist, setWishlist] = useState<string[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    const init = () => {
-      try {
-        const saved = localStorage.getItem(WISHLIST_KEY);
-        if (saved) {
-          setWishlist(JSON.parse(saved));
-        }
-      } catch {
-        // Silently ignore localStorage parse errors
-      }
-      setIsHydrated(true);
-    };
-    const timer = setTimeout(init, 0);
-    return () => clearTimeout(timer);
-  }, [WISHLIST_KEY]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
-    }
-  }, [wishlist, isHydrated, WISHLIST_KEY]);
+  const [wishlist, setWishlist] = useLocalStorage<string[]>(WISHLIST_KEY, []);
 
   const toggleWishlist = useCallback((productId: string) => {
     setWishlist((prev) =>
@@ -49,7 +27,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         ? prev.filter((id) => id !== productId)
         : [...prev, productId]
     );
-  }, []);
+  }, [setWishlist]);
 
   const isInWishlist = useCallback(
     (productId: string) => wishlist.includes(productId),
@@ -58,11 +36,11 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   const clearWishlist = useCallback(() => {
     setWishlist([]);
-  }, []);
+  }, [setWishlist]);
 
   const removeFromWishlist = useCallback((productId: string) => {
     setWishlist((prev) => prev.filter((id) => id !== productId));
-  }, []);
+  }, [setWishlist]);
 
   return (
     <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist, clearWishlist, removeFromWishlist }}>
