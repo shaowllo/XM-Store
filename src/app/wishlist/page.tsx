@@ -4,9 +4,9 @@ import { Heart, Trash2, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/components/wishlist-provider";
 import { products } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
+import { EmptyState } from "@/components/empty-state";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 export default function WishlistPage() {
   const { wishlist, clearWishlist } = useWishlist();
@@ -14,16 +14,14 @@ export default function WishlistPage() {
 
   if (wishlistProducts.length === 0) {
     return (
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <Heart className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-        <h1 className="text-2xl font-bold">收藏夹是空的</h1>
-        <p className="mt-2 text-muted-foreground">您还没有收藏任何商品</p>
-        <Link href="/products">
-          <Button className="mt-6 gap-2">
-            <ShoppingBag className="h-4 w-4" />
-            去浏览
-          </Button>
-        </Link>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[{ label: "我的收藏" }]} />
+        <EmptyState
+          icon={Heart}
+          title="收藏夹是空的"
+          description="您还没有收藏任何商品，看到喜欢的就收藏起来吧"
+          action={{ label: "去浏览", href: "/products", icon: <ShoppingBag className="h-4 w-4" /> }}
+        />
       </div>
     );
   }

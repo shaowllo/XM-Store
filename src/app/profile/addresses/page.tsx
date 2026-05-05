@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { MapPin, Plus, Trash2, Star, X, Check } from "lucide-react";
 import { useAddress, type Address } from "@/components/address-provider";
 import { Breadcrumb } from "@/components/breadcrumb";
@@ -10,16 +11,36 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 
+interface AddressFormData {
+  name: string;
+  phone: string;
+  province: string;
+  city: string;
+  district: string;
+  detail: string;
+  isDefault: boolean;
+}
+
+function validateAddress(data: AddressFormData): string | null {
+  if (!data.name || data.name.length < 2) return "收货人姓名至少2位";
+  if (!data.phone) return "请输入手机号码";
+  if (!/^1[3-9]\d{9}$/.test(data.phone)) return "请输入正确的手机号码";
+  if (!data.province) return "请输入省份";
+  if (!data.city) return "请输入城市";
+  if (!data.detail || data.detail.length < 5) return "详细地址至少5位";
+  return null;
+}
+
 function AddressForm({
   onSubmit,
   onCancel,
   initialData,
 }: {
-  onSubmit: (data: Omit<Address, "id">) => void;
+  onSubmit: (data: AddressFormData) => void;
   onCancel: () => void;
   initialData?: Address;
 }) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<AddressFormData>({
     name: initialData?.name || "",
     phone: initialData?.phone || "",
     province: initialData?.province || "",
@@ -28,11 +49,22 @@ function AddressForm({
     detail: initialData?.detail || "",
     isDefault: initialData?.isDefault || false,
   });
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.phone || !form.province || !form.city || !form.detail) return;
+    const validationError = validateAddress(form);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     onSubmit(form);
+    setError(null);
+  };
+
+  const updateField = (field: keyof AddressFormData, value: string | boolean) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (error) setError(null);
   };
 
   return (
@@ -49,48 +81,48 @@ function AddressForm({
           <X className="h-4 w-4" />
         </Button>
       </div>
+      {error && (
+        <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+          {error}
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           placeholder="收货人姓名"
           value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
+          onChange={(e) => updateField("name", e.target.value)}
         />
         <Input
           placeholder="手机号码"
           value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          required
+          onChange={(e) => updateField("phone", e.target.value)}
         />
         <Input
           placeholder="省"
           value={form.province}
-          onChange={(e) => setForm({ ...form, province: e.target.value })}
-          required
+          onChange={(e) => updateField("province", e.target.value)}
         />
         <Input
           placeholder="市"
           value={form.city}
-          onChange={(e) => setForm({ ...form, city: e.target.value })}
-          required
+          onChange={(e) => updateField("city", e.target.value)}
         />
         <Input
           placeholder="区/县"
           value={form.district}
-          onChange={(e) => setForm({ ...form, district: e.target.value })}
+          onChange={(e) => updateField("district", e.target.value)}
         />
         <Input
           placeholder="详细地址"
           value={form.detail}
-          onChange={(e) => setForm({ ...form, detail: e.target.value })}
-          required
+          onChange={(e) => updateField("detail", e.target.value)}
         />
       </div>
       <label className="flex items-center gap-2 text-sm cursor-pointer">
         <input
           type="checkbox"
           checked={form.isDefault}
-          onChange={(e) => setForm({ ...form, isDefault: e.target.checked })}
+          onChange={(e) => updateField("isDefault", e.target.checked)}
           className="rounded border-gray-300"
         />
         设为默认地址
@@ -112,6 +144,22 @@ export default function AddressesPage() {
   const { addresses, addAddress, removeAddress, setDefaultAddress } = useAddress();
   const [showForm, setShowForm] = useState(false);
 
+  const handleAddAddress = (data: AddressFormData) => {
+    addAddress(data);
+    setShowForm(false);
+    toast.success("地址添加成功");
+  };
+
+  const handleRemoveAddress = (id: string) => {
+    removeAddress(id);
+    toast.info("地址已删除");
+  };
+
+  const handleSetDefault = (id: string) => {
+    setDefaultAddress(id);
+    toast.success("已设为默认地址");
+  };
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <Breadcrumb items={[{ label: "个人中心", href: "/profile" }, { label: "收货地址" }]} />
@@ -129,13 +177,7 @@ export default function AddressesPage() {
       <AnimatePresence>
         {showForm && (
           <div className="mt-6">
-            <AddressForm
-              onSubmit={(data) => {
-                addAddress(data);
-                setShowForm(false);
-              }}
-              onCancel={() => setShowForm(false)}
-            />
+            <AddressForm onSubmit={handleAddAddress} onCancel={() => setShowForm(false)} />
           </div>
         )}
       </AnimatePresence>
@@ -179,18 +221,14 @@ export default function AddressesPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     {!address.isDefault && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDefaultAddress(address.id)}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => handleSetDefault(address.id)}>
                         设为默认
                       </Button>
                     )}
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => removeAddress(address.id)}
+                      onClick={() => handleRemoveAddress(address.id)}
                       className="text-red-500 hover:text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="h-4 w-4" />

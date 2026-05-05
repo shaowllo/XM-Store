@@ -45,7 +45,7 @@ export default function OrderDetailPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Breadcrumb items={[{ label: "我的订单", href: "/orders" }, { label: "订单详情" }]} />
+      <Breadcrumb items={[{ label: "我的订单", href: "/orders" }, { label: `订单 ${order.id.slice(-6)}` }]} />
 
       <h1 className="text-3xl font-bold">订单详情</h1>
       <p className="mt-1 text-muted-foreground">订单号: {order.id}</p>

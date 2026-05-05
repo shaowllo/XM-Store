@@ -6,7 +6,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Menu, X, Search, Heart, Package, User, LogOut, Store, Settings } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
-import { useOrders } from "@/components/order-provider";
 import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -16,12 +15,10 @@ import { ThemeToggle } from "./theme-toggle";
 import { SearchDialog } from "./search-dialog";
 
 export function Navbar() {
-  const { totalItems, totalPrice, items, removeFromCart, updateQuantity, clearCart, isCartOpen, setIsCartOpen } = useCart();
-  const { addOrder } = useOrders();
+  const { totalItems, totalPrice, items, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen } = useCart();
   const { user, logout } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const navLinks = [
     { href: "/", label: "首页" },
@@ -224,29 +221,6 @@ export function Navbar() {
                   </>
                 )}
               </div>
-              {checkoutOpen && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-6">
-                  <div className="w-full max-w-sm rounded-2xl bg-background p-6 text-center shadow-2xl">
-                    <h3 className="text-lg font-semibold">确认结算</h3>
-                    <p className="mt-2 text-muted-foreground">
-                      共 {totalItems} 件商品，合计 ¥{totalPrice.toLocaleString()}
-                    </p>
-                    <div className="mt-4 flex gap-3">
-                      <Button variant="outline" className="flex-1" onClick={() => setCheckoutOpen(false)}>
-                        取消
-                      </Button>
-                      <Button className="flex-1" onClick={() => {
-                        addOrder(items, totalPrice, totalItems);
-                        clearCart();
-                        setCheckoutOpen(false);
-                        setIsCartOpen(false);
-                      }}>
-                        确认支付
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
             </SheetContent>
           </Sheet>
 

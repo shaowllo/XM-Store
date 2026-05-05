@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Package, Clock, Trash2, ShoppingBag, CircleCheck, Truck, XCircle, ChevronRight } from "lucide-react";
 import { useOrders, type OrderStatus } from "@/components/order-provider";
+import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -22,16 +23,14 @@ export default function OrdersPage() {
 
   if (orders.length === 0) {
     return (
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <Package className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-        <h1 className="text-2xl font-bold">暂无订单</h1>
-        <p className="mt-2 text-muted-foreground">您还没有完成任何订单</p>
-        <Link href="/products">
-          <Button className="mt-6 gap-2">
-            <ShoppingBag className="h-4 w-4" />
-            去购物
-          </Button>
-        </Link>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumb items={[{ label: "我的订单" }]} />
+        <EmptyState
+          icon={Package}
+          title="暂无订单"
+          description="您还没有完成任何订单，快去选购心仪的商品吧"
+          action={{ label: "去购物", href: "/products", icon: <ShoppingBag className="h-4 w-4" /> }}
+        />
       </div>
     );
   }

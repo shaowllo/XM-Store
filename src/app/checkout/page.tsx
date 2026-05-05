@@ -8,6 +8,7 @@ import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
 import { useAddress } from "@/components/address-provider";
 import { useCoupon as useCouponContext } from "@/components/coupon-provider";
+import { EmptyState } from "@/components/empty-state";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -31,16 +32,14 @@ export default function CheckoutPage() {
 
   if (items.length === 0 && step !== "success") {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-20 text-center">
-        <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-        <h1 className="text-2xl font-bold">购物车是空的</h1>
-        <p className="mt-2 text-muted-foreground">请先添加商品到购物车</p>
-        <Link href="/products">
-          <Button className="mt-6 gap-2">
-            <ShoppingBag className="h-4 w-4" />
-            去购物
-          </Button>
-        </Link>
+      <div className="mx-auto max-w-7xl px-4">
+        <Breadcrumb items={[{ label: "购物车", href: "/cart" }, { label: "结算" }]} />
+        <EmptyState
+          icon={ShoppingBag}
+          title="购物车是空的"
+          description="请先添加商品到购物车后再来结算"
+          action={{ label: "去购物", href: "/products", icon: <ShoppingBag className="h-4 w-4" /> }}
+        />
       </div>
     );
   }
