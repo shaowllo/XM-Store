@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -20,11 +20,11 @@ import { products } from "@/lib/data";
 import { useCart } from "@/components/cart-provider";
 import { ProductCard } from "@/components/product-card";
 
-function ProductDetailContent() {
-  const searchParams = useSearchParams();
-  const productId = searchParams.get("id");
+export default function ProductDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
   const { addToCart } = useCart();
-  const product = products.find((p) => p.id === productId);
+  const product = products.find((p) => p.id === id);
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState(1);
@@ -58,12 +58,9 @@ function ProductDetailContent() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const productImages = [
-    product.image,
-    product.image,
-    product.image,
-    product.image,
-  ];
+  const productImages = product.images && product.images.length > 0
+    ? product.images
+    : [product.image];
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -286,13 +283,5 @@ function ProductDetailContent() {
         </section>
       )}
     </div>
-  );
-}
-
-export default function ProductDetailPage() {
-  return (
-    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-20 text-center">加载中...</div>}>
-      <ProductDetailContent />
-    </Suspense>
   );
 }

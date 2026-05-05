@@ -1,26 +1,7 @@
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  category: string;
-  tags: string[];
-  rating: number;
-  reviews: number;
-  badge?: string;
-  colors?: string[];
-}
+import { Product, HeroSlide } from "./types";
 
-export const categories = [
-  { id: "all", name: "全部" },
-  { id: "phone", name: "手机" },
-  { id: "audio", name: "音频" },
-  { id: "wearable", name: "穿戴" },
-  { id: "computer", name: "电脑" },
-  { id: "smart-home", name: "智能家居" },
-];
+export * from "./types";
+export * from "./constants";
 
 export const products: Product[] = [
   {
@@ -30,6 +11,12 @@ export const products: Product[] = [
     price: 6999,
     originalPrice: 7999,
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?w=800&h=800&fit=crop",
+    ],
     category: "phone",
     tags: ["旗舰", "5G", "拍照"],
     rating: 4.9,
@@ -44,6 +31,12 @@ export const products: Product[] = [
     price: 1299,
     originalPrice: 1599,
     image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1598331668826-20cecc596b86?w=800&h=800&fit=crop",
+    ],
     category: "audio",
     tags: ["降噪", "无线", "Hi-Res"],
     rating: 4.8,
@@ -57,6 +50,12 @@ export const products: Product[] = [
     description: "专业运动智能手表，钛合金表身，100米防水",
     price: 3999,
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&h=800&fit=crop",
+    ],
     category: "wearable",
     tags: ["运动", "健康", "防水"],
     rating: 4.7,
@@ -70,6 +69,12 @@ export const products: Product[] = [
     price: 8999,
     originalPrice: 9999,
     image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=800&fit=crop",
+    ],
     category: "computer",
     tags: ["轻薄", "OLED", "办公"],
     rating: 4.8,
@@ -84,6 +89,12 @@ export const products: Product[] = [
     price: 799,
     originalPrice: 999,
     image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1589003077984-894e133dabab?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=800&fit=crop",
+    ],
     category: "smart-home",
     tags: ["智能", "音箱", "语音"],
     rating: 4.6,
@@ -97,6 +108,12 @@ export const products: Product[] = [
     price: 4999,
     originalPrice: 5499,
     image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1527698267914-d3c5d2b65d3d?w=800&h=800&fit=crop",
+    ],
     category: "computer",
     tags: ["平板", "创作", "M2"],
     rating: 4.7,
@@ -109,6 +126,12 @@ export const products: Product[] = [
     description: "全景智能摄像头，4K画质，AI人形检测",
     price: 599,
     image: "https://images.unsplash.com/photo-1557324232-b8917d3c3dcb?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1557324232-b8917d3c3dcb?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1589935447067-c543e8a40039?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1551817958-c5b51e7b4d28?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&h=800&fit=crop",
+    ],
     category: "smart-home",
     tags: ["安防", "4K", "AI"],
     rating: 4.5,
@@ -122,6 +145,12 @@ export const products: Product[] = [
     price: 399,
     originalPrice: 499,
     image: "https://images.unsplash.com/photo-1572569028738-411a197b83cd?w=600&h=600&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1572569028738-411a197b83cd?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=800&h=800&fit=crop",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&h=800&fit=crop",
+    ],
     category: "audio",
     tags: ["运动", "防水", "长续航"],
     rating: 4.4,
@@ -131,7 +160,7 @@ export const products: Product[] = [
   },
 ];
 
-export const heroSlides = [
+export const heroSlides: HeroSlide[] = [
   {
     id: 1,
     title: "XM Pro Max",
@@ -155,28 +184,5 @@ export const heroSlides = [
     description: "专业运动监测，钛合金坚固表身",
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=600&fit=crop",
     color: "from-orange-600 to-red-600",
-  },
-];
-
-export const features = [
-  {
-    icon: "Truck",
-    title: "极速配送",
-    description: "全国包邮，次日送达",
-  },
-  {
-    icon: "Shield",
-    title: "品质保障",
-    description: "官方正品，假一赔十",
-  },
-  {
-    icon: "RotateCcw",
-    title: "无忧退换",
-    description: "7天无理由退换货",
-  },
-  {
-    icon: "Headphones",
-    title: "专属客服",
-    description: "24小时在线支持",
   },
 ];

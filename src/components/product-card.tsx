@@ -36,7 +36,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       className="group relative flex flex-col rounded-2xl border bg-card overflow-hidden transition-shadow hover:shadow-xl"
     >
       {/* Image */}
-      <Link href={`/products/detail?id=${product.id}`} className="relative aspect-square overflow-hidden bg-muted">
+      <Link href={`/products/${product.id}`} className="relative aspect-square overflow-hidden bg-muted">
         <motion.img
           src={product.image}
           alt={product.name}
@@ -103,7 +103,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           </span>
         </div>
 
-        <Link href={`/products/detail?id=${product.id}`}>
+        <Link href={`/products/${product.id}`}>
           <h3 className="font-semibold text-base leading-tight group-hover:text-primary transition-colors">
             {product.name}
           </h3>

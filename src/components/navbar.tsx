@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { SearchDialog } from "./search-dialog";
 
 export function Navbar() {
   const { totalItems, totalPrice, items, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const navLinks = [
     { href: "/", label: "首页" },
@@ -54,9 +56,11 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hidden sm:flex">
+          <Button variant="ghost" size="icon" className="hidden sm:flex" onClick={() => setSearchOpen(true)}>
             <Search className="h-5 w-5" />
           </Button>
+
+          <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
 
           {/* Cart Sheet */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -89,7 +93,7 @@ export function Navbar() {
                     <div className="space-y-4 py-4">
                       {items.map((item) => (
                         <motion.div
-                          key={item.product.id}
+                          key={item.cartItemId}
                           layout
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
@@ -105,6 +109,15 @@ export function Navbar() {
                           </div>
                           <div className="flex-1">
                             <h4 className="font-medium">{item.product.name}</h4>
+                            {item.selectedColor && item.selectedColor !== "default" && (
+                              <div className="flex items-center gap-1.5 mt-1">
+                                <span
+                                  className="inline-block h-3 w-3 rounded-full border"
+                                  style={{ backgroundColor: item.selectedColor }}
+                                />
+                                <span className="text-xs text-muted-foreground">已选颜色</span>
+                              </div>
+                            )}
                             <p className="text-sm text-muted-foreground">
                               ¥{item.product.price.toLocaleString()}
                             </p>
@@ -114,7 +127,7 @@ export function Navbar() {
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={() =>
-                                  updateQuantity(item.product.id, item.quantity - 1)
+                                  updateQuantity(item.cartItemId, item.quantity - 1)
                                 }
                               >
                                 -
@@ -127,7 +140,7 @@ export function Navbar() {
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={() =>
-                                  updateQuantity(item.product.id, item.quantity + 1)
+                                  updateQuantity(item.cartItemId, item.quantity + 1)
                                 }
                               >
                                 +
@@ -137,7 +150,7 @@ export function Navbar() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => removeFromCart(item.product.id)}
+                            onClick={() => removeFromCart(item.cartItemId)}
                           >
                             <X className="h-4 w-4" />
                           </Button>
