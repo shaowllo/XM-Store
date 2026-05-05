@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { SlidersHorizontal, Grid3X3, LayoutList } from "lucide-react";
@@ -10,7 +10,7 @@ import { products, categories } from "@/lib/data";
 
 type ViewMode = "grid" | "list";
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
 
@@ -121,5 +121,13 @@ export default function ProductsPage() {
         </motion.div>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-20 text-center">加载中...</div>}>
+      <ProductsContent />
+    </Suspense>
   );
 }
