@@ -19,8 +19,9 @@ export function BackToTop() {
         ticking = true;
       }
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const options: AddEventListenerOptions = { passive: true };
+    window.addEventListener("scroll", handleScroll, options);
+    return () => window.removeEventListener("scroll", handleScroll, options);
   }, []);
 
   const scrollToTop = () => {
