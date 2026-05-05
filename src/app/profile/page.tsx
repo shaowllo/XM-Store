@@ -6,6 +6,7 @@ import { useUser } from "@/components/user-provider";
 import { useOrders } from "@/components/order-provider";
 import { useAddress } from "@/components/address-provider";
 import { useWishlist } from "@/components/wishlist-provider";
+import { EmptyState } from "@/components/empty-state";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,16 +20,14 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-md px-4 py-20 text-center">
-        <User className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-        <h1 className="text-2xl font-bold">请先登录</h1>
-        <p className="mt-2 text-muted-foreground">登录后查看您的个人信息</p>
-        <Link href="/login">
-          <Button className="mt-6 gap-2">
-            <LogOut className="h-4 w-4" />
-            去登录
-          </Button>
-        </Link>
+      <div className="mx-auto max-w-3xl px-4 py-8">
+        <Breadcrumb items={[{ label: "个人中心" }]} />
+        <EmptyState
+          icon={User}
+          title="请先登录"
+          description="登录后查看您的个人信息、订单和收藏"
+          action={{ label: "去登录", href: "/login", icon: <LogOut className="h-4 w-4" /> }}
+        />
       </div>
     );
   }

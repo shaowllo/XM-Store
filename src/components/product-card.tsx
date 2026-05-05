@@ -18,11 +18,15 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart, items } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const liked = isInWishlist(product.id);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
   const [isHovered, setIsHovered] = useState(false);
+
+  const cartItemId = `${product.id}--${selectedColor || "default"}`;
+  const cartItem = items.find((item) => item.cartItemId === cartItemId);
+  const inCartQuantity = cartItem?.quantity || 0;
 
   const discount = product.originalPrice
     ? Math.round(
@@ -82,9 +86,16 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             }}
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
-            加入购物车
+            {inCartQuantity > 0 ? `购物车中 (${inCartQuantity})` : "加入购物车"}
           </Button>
         </motion.div>
+
+        {/* Cart Quantity Badge */}
+        {inCartQuantity > 0 && (
+          <div className="absolute left-3 top-12 flex h-6 min-w-[1.5rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-primary-foreground">
+            {inCartQuantity}
+          </div>
+        )}
 
         {/* Like Button */}
         <motion.button

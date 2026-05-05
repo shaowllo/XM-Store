@@ -2,8 +2,9 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, SlidersHorizontal, Filter, Star } from "lucide-react";
+import { Search, X, SlidersHorizontal, Filter, Star, SearchX } from "lucide-react";
 import { products, categories } from "@/lib/data";
+import { EmptyState } from "@/components/empty-state";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -164,9 +165,17 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 
             <div className="max-h-[400px] overflow-y-auto">
               {results.length === 0 ? (
-                <div className="px-4 py-8 text-center text-muted-foreground text-sm">
-                  {query.trim() ? "未找到相关产品" : "输入关键词开始搜索"}
-                </div>
+                query.trim() ? (
+                  <EmptyState
+                    icon={SearchX}
+                    title="未找到相关产品"
+                    description={`没有找到与 "${query}" 相关的产品，请尝试其他关键词`}
+                  />
+                ) : (
+                  <div className="px-4 py-8 text-center text-muted-foreground text-sm">
+                    输入关键词开始搜索
+                  </div>
+                )
               ) : (
                 <div className="py-2">
                   <div className="px-4 py-2 text-xs text-muted-foreground">

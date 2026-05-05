@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Package, Clock, Trash2, ShoppingBag, CircleCheck, Truck, XCircle, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Package, Clock, Trash2, ShoppingBag, CircleCheck, Truck, XCircle, ChevronRight, AlertTriangle } from "lucide-react";
 import { useOrders, type OrderStatus } from "@/components/order-provider";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ const statusMap: Record<OrderStatus, { label: string; color: string; icon: React
 
 export default function OrdersPage() {
   const { orders, clearOrders } = useOrders();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   if (orders.length === 0) {
     return (
@@ -40,11 +42,55 @@ export default function OrdersPage() {
       <Breadcrumb items={[{ label: "我的订单" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">我的订单</h1>
-        <Button variant="outline" size="sm" onClick={clearOrders} className="gap-2">
+        <Button variant="outline" size="sm" onClick={() => setShowConfirm(true)} className="gap-2">
           <Trash2 className="h-4 w-4" />
           清空历史
         </Button>
       </div>
+
+      {/* Confirm Dialog */}
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => setShowConfirm(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-sm rounded-2xl bg-background p-6 shadow-2xl text-center"
+            >
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600 mb-4">
+                <AlertTriangle className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold">确认清空订单历史？</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                此操作不可撤销，所有订单记录将被永久删除。
+              </p>
+              <div className="mt-6 flex gap-3">
+                <Button variant="outline" className="flex-1" onClick={() => setShowConfirm(false)}>
+                  取消
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="flex-1"
+                  onClick={() => {
+                    clearOrders();
+                    setShowConfirm(false);
+                  }}
+                >
+                  确认清空
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="mt-8 space-y-6">
         {orders.map((order) => (

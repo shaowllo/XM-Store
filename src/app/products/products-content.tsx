@@ -1,22 +1,55 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useMemo, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { SlidersHorizontal, Grid3X3, LayoutList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product-card";
+import { EmptyState } from "@/components/empty-state";
 import { products, categories } from "@/lib/data";
 
 type ViewMode = "grid" | "list";
 
 export function ProductsContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
+  const initialSort = searchParams.get("sort") || "default";
 
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
-  const [sortBy, setSortBy] = useState("default");
+  const [sortBy, setSortBy] = useState(initialSort);
+
+  const updateQueryParam = useCallback(
+    (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value === "default" || value === "all") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+      const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`;
+      router.replace(newUrl, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  const handleCategoryChange = useCallback(
+    (category: string) => {
+      setActiveCategory(category);
+      updateQueryParam("category", category);
+    },
+    [updateQueryParam]
+  );
+
+  const handleSortChange = useCallback(
+    (sort: string) => {
+      setSortBy(sort);
+      updateQueryParam("sort", sort);
+    },
+    [updateQueryParam]
+  );
 
   const filteredProducts = useMemo(() => {
     let result =
@@ -58,7 +91,7 @@ export function ProductsContent() {
               key={cat.id}
               variant={activeCategory === cat.id ? "default" : "outline"}
               size="sm"
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => handleCategoryChange(cat.id)}
               className="rounded-full"
             >
               {cat.name}
@@ -70,7 +103,7 @@ export function ProductsContent() {
         <div className="flex items-center gap-3">
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e) => handleSortChange(e.target.value)}
             aria-label="排序方式"
             className="rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
           >
@@ -107,10 +140,12 @@ export function ProductsContent() {
 
       {/* Products */}
       {filteredProducts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-          <SlidersHorizontal className="h-12 w-12 mb-4 opacity-50" />
-          <p>该分类下暂无产品</p>
-        </div>
+        <EmptyState
+          icon={SlidersHorizontal}
+          title="该分类下暂无产品"
+          description="请尝试选择其他分类或查看全部产品"
+          action={{ label: "查看全部", href: "/products" }}
+        />
       ) : (
         <motion.div
           layout
