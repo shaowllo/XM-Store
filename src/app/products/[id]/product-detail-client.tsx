@@ -12,6 +12,7 @@ import {
   Shield,
   RotateCcw,
   Check,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,21 +51,27 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumb items={[{ label: "全部产品", href: "/products" }, { label: product.name }]} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-6">
+        {/* Images */}
         <div className="space-y-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative aspect-square overflow-hidden rounded-2xl bg-muted"
+            className="relative aspect-square overflow-hidden rounded-3xl bg-muted group"
           >
             <Image
               src={productImages[activeImage]}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority
             />
+            {discount && (
+              <Badge variant="destructive" className="absolute left-4 top-4 shadow-lg">
+                -{discount}%
+              </Badge>
+            )}
           </motion.div>
           <div className="grid grid-cols-4 gap-3">
             {productImages.map((img, idx) => (
@@ -73,7 +80,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 onClick={() => setActiveImage(idx)}
                 className={`relative aspect-square overflow-hidden rounded-xl bg-muted border-2 transition-all ${
                   activeImage === idx
-                    ? "border-primary"
+                    ? "border-primary ring-2 ring-primary/20"
                     : "border-transparent hover:border-primary/50"
                 }`}
               >
@@ -89,23 +96,23 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
           </div>
         </div>
 
+        {/* Info */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
           className="flex flex-col"
         >
+          {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
             {product.badge && (
-              <Badge className="bg-primary text-primary-foreground">
+              <Badge className="bg-gradient-to-r from-primary to-accent text-white border-0">
+                <Sparkles className="h-3 w-3 mr-1" />
                 {product.badge}
               </Badge>
             )}
-            {discount && (
-              <Badge variant="destructive">-{discount}%</Badge>
-            )}
             {product.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
+              <Badge key={tag} variant="secondary" className="rounded-lg">
                 {tag}
               </Badge>
             ))}
@@ -115,6 +122,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             {product.name}
           </h1>
 
+          {/* Rating */}
           <div className="flex items-center gap-3 mt-4">
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, starIdx) => (
@@ -134,8 +142,9 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </span>
           </div>
 
+          {/* Price */}
           <div className="mt-6 flex items-baseline gap-3">
-            <span className="text-4xl font-bold">
+            <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               ¥{product.price.toLocaleString()}
             </span>
             {product.originalPrice && (
@@ -144,7 +153,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               </span>
             )}
             {discount && (
-              <Badge variant="destructive" className="text-sm">
+              <Badge variant="destructive" className="text-sm rounded-lg">
                 省 ¥{(product.originalPrice! - product.price).toLocaleString()}
               </Badge>
             )}
@@ -156,13 +165,14 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             {product.description}
           </p>
 
+          {/* Colors */}
           {product.colors && product.colors.length > 0 && (
             <div className="mt-6">
               <h3 className="font-medium mb-3">
                 颜色
                 {selectedColor && (
                   <span
-                    className="ml-2 inline-block h-4 w-4 rounded-full align-middle"
+                    className="ml-2 inline-block h-4 w-4 rounded-full align-middle border"
                     style={{ backgroundColor: selectedColor }}
                   />
                 )}
@@ -176,7 +186,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                     aria-pressed={selectedColor === color}
                     className={`relative h-10 w-10 rounded-full border-2 transition-all ${
                       selectedColor === color
-                        ? "border-primary scale-110"
+                        ? "border-primary scale-110 shadow-lg shadow-primary/25"
                         : "border-muted hover:border-primary/50"
                     }`}
                     style={{ backgroundColor: color }}
@@ -190,21 +200,24 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </div>
           )}
 
+          {/* Quantity */}
           <div className="mt-6">
             <h3 className="font-medium mb-3">数量</h3>
             <div className="flex items-center gap-3">
               <Button
                 variant="outline"
                 size="icon"
+                className="rounded-xl h-10 w-10"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 aria-label="减少数量"
               >
                 -
               </Button>
-              <span className="w-12 text-center font-medium" aria-label="数量">{quantity}</span>
+              <span className="w-12 text-center font-medium text-lg" aria-label="数量">{quantity}</span>
               <Button
                 variant="outline"
                 size="icon"
+                className="rounded-xl h-10 w-10"
                 onClick={() => setQuantity(quantity + 1)}
                 aria-label="增加数量"
               >
@@ -213,10 +226,11 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </div>
           </div>
 
+          {/* Actions */}
           <div className="mt-8 flex gap-3">
             <Button
               size="lg"
-              className="flex-1 gap-2"
+              className="flex-1 gap-2 rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
               onClick={() => {
                 addToCart(product, selectedColor, quantity);
               }}
@@ -227,6 +241,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             <Button
               size="lg"
               variant="outline"
+              className="rounded-xl"
               onClick={() => toggleWishlist(product.id)}
               aria-label={liked ? "取消收藏" : "收藏"}
             >
@@ -236,31 +251,47 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 }`}
               />
             </Button>
-            <Button size="lg" variant="outline" aria-label="分享">
+            <Button size="lg" variant="outline" className="rounded-xl" aria-label="分享">
               <Share2 className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="mt-8 grid grid-cols-3 gap-4 rounded-xl bg-muted p-4">
+          {/* Features */}
+          <div className="mt-8 grid grid-cols-3 gap-4 rounded-2xl bg-secondary/50 p-5">
             <div className="flex flex-col items-center gap-2 text-center">
-              <Truck className="h-5 w-5 text-primary" />
-              <span className="text-xs">极速配送</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                <Truck className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-xs font-medium">极速配送</span>
             </div>
             <div className="flex flex-col items-center gap-2 text-center">
-              <Shield className="h-5 w-5 text-primary" />
-              <span className="text-xs">正品保障</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                <Shield className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-xs font-medium">正品保障</span>
             </div>
             <div className="flex flex-col items-center gap-2 text-center">
-              <RotateCcw className="h-5 w-5 text-primary" />
-              <span className="text-xs">7天退换</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                <RotateCcw className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-xs font-medium">7天退换</span>
             </div>
           </div>
         </motion.div>
       </div>
 
+      {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <section className="mt-20">
-          <h2 className="text-2xl font-bold tracking-tight mb-8">相关产品</h2>
+        <section className="mt-24">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent mb-4">
+                <Sparkles className="h-4 w-4" />
+                猜你喜欢
+              </span>
+              <h2 className="text-2xl font-bold">相关产品</h2>
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((p, index) => (
               <ProductCard key={p.id} product={p} index={index} />
