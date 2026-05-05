@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Menu, X, Search, Heart, Package } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, Heart, Package, User } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
+import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -16,6 +17,7 @@ import { SearchDialog } from "./search-dialog";
 export function Navbar() {
   const { totalItems, totalPrice, items, removeFromCart, updateQuantity, clearCart, isCartOpen, setIsCartOpen } = useCart();
   const { addOrder } = useOrders();
+  const { user, logout } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -78,6 +80,21 @@ export function Navbar() {
               </Button>
             </Link>
           ))}
+
+          {user ? (
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">{user.name}</span>
+              <Button variant="ghost" size="sm" onClick={logout}>
+                退出
+              </Button>
+            </div>
+          ) : (
+            <Link href="/login" className="hidden sm:flex">
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
+          )}
 
           {/* Cart Sheet */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -186,9 +203,11 @@ export function Navbar() {
                         <span>合计</span>
                         <span>¥{totalPrice.toLocaleString()}</span>
                       </div>
-                      <Button className="w-full" size="lg" onClick={() => setCheckoutOpen(true)}>
-                        结算
-                      </Button>
+                      <Link href="/checkout" className="w-full">
+                        <Button className="w-full" size="lg" onClick={() => setIsCartOpen(false)}>
+                          结算
+                        </Button>
+                      </Link>
                     </div>
                   </>
                 )}
@@ -263,6 +282,32 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <Separator className="my-2" />
+              {user ? (
+                <>
+                  <div className="px-4 py-3 text-sm font-medium text-muted-foreground">
+                    {user.name}
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors text-left"
+                  >
+                    退出登录
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" />
+                  登录 / 注册
+                </Link>
+              )}
             </nav>
           </motion.div>
         )}

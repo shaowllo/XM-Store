@@ -14,6 +14,7 @@ export interface Order {
 interface OrderContextType {
   orders: Order[];
   addOrder: (items: CartItem[], totalPrice: number, totalItems: number) => void;
+  clearOrders: () => void;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -53,8 +54,12 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     setOrders((prev) => [order, ...prev]);
   }, []);
 
+  const clearOrders = useCallback(() => {
+    setOrders([]);
+  }, []);
+
   return (
-    <OrderContext.Provider value={{ orders, addOrder }}>
+    <OrderContext.Provider value={{ orders, addOrder, clearOrders }}>
       {children}
     </OrderContext.Provider>
   );

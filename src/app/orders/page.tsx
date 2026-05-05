@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Package, Clock } from "lucide-react";
+import { Package, Clock, Trash2 } from "lucide-react";
 import { useOrders } from "@/components/order-provider";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function OrdersPage() {
-  const { orders } = useOrders();
+  const { orders, clearOrders } = useOrders();
 
   if (orders.length === 0) {
     return (
@@ -26,8 +26,18 @@ export default function OrdersPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold tracking-tight">订单历史</h1>
-      <p className="mt-2 text-muted-foreground">共 {orders.length} 笔订单</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">订单历史</h1>
+          <p className="mt-2 text-muted-foreground">共 {orders.length} 笔订单</p>
+        </div>
+        {orders.length > 0 && (
+          <Button variant="outline" size="sm" onClick={clearOrders} className="gap-2">
+            <Trash2 className="h-4 w-4" />
+            清空历史
+          </Button>
+        )}
+      </div>
 
       <div className="mt-8 space-y-6">
         {orders.map((order, index) => (

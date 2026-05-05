@@ -5,10 +5,13 @@ import { Footer } from "@/components/footer";
 import { CartProvider } from "@/components/cart-provider";
 import { WishlistProvider } from "@/components/wishlist-provider";
 import { OrderProvider } from "@/components/order-provider";
+import { UserProvider } from "@/components/user-provider";
+import { WebVitals } from "@/components/web-vitals";
 
 export const metadata: Metadata = {
   title: "XM Store - 科技数码精选",
   description: "探索最新科技数码产品，品质生活从这里开始",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -19,15 +22,18 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background font-sans">
-        <CartProvider>
-          <WishlistProvider>
-            <OrderProvider>
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </OrderProvider>
-          </WishlistProvider>
-        </CartProvider>
+        <UserProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <OrderProvider>
+                <WebVitals />
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </OrderProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </UserProvider>
       </body>
     </html>
   );

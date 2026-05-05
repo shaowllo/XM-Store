@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
 import { useWishlist } from "@/components/wishlist-provider";
 import { products } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function WishlistPage() {
-  const { wishlist } = useWishlist();
+  const { wishlist, clearWishlist } = useWishlist();
   const wishlistProducts = products.filter((p) => wishlist.includes(p.id));
 
   if (wishlistProducts.length === 0) {
@@ -26,10 +26,18 @@ export default function WishlistPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold tracking-tight">我的收藏</h1>
-      <p className="mt-2 text-muted-foreground">
-        共 {wishlistProducts.length} 件收藏
-      </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">我的收藏</h1>
+          <p className="mt-2 text-muted-foreground">
+            共 {wishlistProducts.length} 件收藏
+          </p>
+        </div>
+        <Button variant="outline" size="sm" onClick={clearWishlist} className="gap-2">
+          <Trash2 className="h-4 w-4" />
+          清空收藏
+        </Button>
+      </div>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {wishlistProducts.map((product, index) => (
