@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { MapPin, Plus, Trash2, Star, X, Check } from "lucide-react";
+import { MapPin, Plus, Trash2, Star, X, Check, Sparkles } from "lucide-react";
 import { useAddress, type Address } from "@/components/address-provider";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -73,68 +73,77 @@ function AddressForm({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       onSubmit={handleSubmit}
-      className="rounded-xl border bg-card p-6 space-y-4"
+      className="relative overflow-hidden rounded-2xl border bg-card p-6 space-y-4"
     >
-      <div className="flex items-center justify-between">
-        <h3 className="font-semibold">{initialData ? "编辑地址" : "新增地址"}</h3>
-        <Button type="button" variant="ghost" size="icon" onClick={onCancel}>
-          <X className="h-4 w-4" />
-        </Button>
-      </div>
-      {error && (
-        <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-          {error}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+      <div className="relative">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold">{initialData ? "编辑地址" : "新增地址"}</h3>
+          <Button type="button" variant="ghost" size="icon" onClick={onCancel} className="rounded-lg">
+            <X className="h-4 w-4" />
+          </Button>
         </div>
-      )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
-          placeholder="收货人姓名"
-          value={form.name}
-          onChange={(e) => updateField("name", e.target.value)}
-        />
-        <Input
-          placeholder="手机号码"
-          value={form.phone}
-          onChange={(e) => updateField("phone", e.target.value)}
-        />
-        <Input
-          placeholder="省"
-          value={form.province}
-          onChange={(e) => updateField("province", e.target.value)}
-        />
-        <Input
-          placeholder="市"
-          value={form.city}
-          onChange={(e) => updateField("city", e.target.value)}
-        />
-        <Input
-          placeholder="区/县"
-          value={form.district}
-          onChange={(e) => updateField("district", e.target.value)}
-        />
-        <Input
-          placeholder="详细地址"
-          value={form.detail}
-          onChange={(e) => updateField("detail", e.target.value)}
-        />
-      </div>
-      <label className="flex items-center gap-2 text-sm cursor-pointer">
-        <input
-          type="checkbox"
-          checked={form.isDefault}
-          onChange={(e) => updateField("isDefault", e.target.checked)}
-          className="rounded border-gray-300"
-        />
-        设为默认地址
-      </label>
-      <div className="flex gap-3">
-        <Button type="submit" className="gap-1">
-          <Check className="h-4 w-4" />
-          保存
-        </Button>
-        <Button type="button" variant="outline" onClick={onCancel}>
-          取消
-        </Button>
+        {error && (
+          <div className="rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            placeholder="收货人姓名"
+            value={form.name}
+            onChange={(e) => updateField("name", e.target.value)}
+            className="rounded-xl"
+          />
+          <Input
+            placeholder="手机号码"
+            value={form.phone}
+            onChange={(e) => updateField("phone", e.target.value)}
+            className="rounded-xl"
+          />
+          <Input
+            placeholder="省"
+            value={form.province}
+            onChange={(e) => updateField("province", e.target.value)}
+            className="rounded-xl"
+          />
+          <Input
+            placeholder="市"
+            value={form.city}
+            onChange={(e) => updateField("city", e.target.value)}
+            className="rounded-xl"
+          />
+          <Input
+            placeholder="区/县"
+            value={form.district}
+            onChange={(e) => updateField("district", e.target.value)}
+            className="rounded-xl"
+          />
+          <Input
+            placeholder="详细地址"
+            value={form.detail}
+            onChange={(e) => updateField("detail", e.target.value)}
+            className="rounded-xl"
+          />
+        </div>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={form.isDefault}
+            onChange={(e) => updateField("isDefault", e.target.checked)}
+            className="rounded border-gray-300"
+          />
+          设为默认地址
+        </label>
+        <div className="flex gap-3">
+          <Button type="submit" className="gap-1 rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity">
+            <Check className="h-4 w-4" />
+            保存
+          </Button>
+          <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl">
+            取消
+          </Button>
+        </div>
       </div>
     </motion.form>
   );
@@ -163,16 +172,28 @@ export default function AddressesPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <Breadcrumb items={[{ label: "个人中心", href: "/profile" }, { label: "收货地址" }]} />
-      <div className="flex items-center justify-between">
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between"
+      >
         <div>
-          <h1 className="text-3xl font-bold">收货地址</h1>
-          <p className="mt-1 text-muted-foreground">管理您的收货地址</p>
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
+            <MapPin className="h-4 w-4" />
+            地址管理
+          </span>
+          <h1 className="text-3xl font-bold tracking-tight">收货地址</h1>
+          <p className="mt-2 text-muted-foreground">管理您的收货地址</p>
         </div>
-        <Button onClick={() => setShowForm(true)} className="gap-1">
+        <Button
+          onClick={() => setShowForm(true)}
+          className="gap-1 rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
+        >
           <Plus className="h-4 w-4" />
           新增地址
         </Button>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {showForm && (
@@ -184,10 +205,16 @@ export default function AddressesPage() {
 
       <div className="mt-6 space-y-4">
         {addresses.length === 0 && !showForm && (
-          <div className="text-center py-16">
-            <MapPin className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
+          <div className="text-center py-16 rounded-2xl border bg-card">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 mx-auto mb-4">
+              <MapPin className="h-8 w-8 text-primary" />
+            </div>
             <p className="text-muted-foreground">暂无收货地址</p>
-            <Button variant="outline" className="mt-4 gap-1" onClick={() => setShowForm(true)}>
+            <Button
+              variant="outline"
+              className="mt-4 gap-1 rounded-xl"
+              onClick={() => setShowForm(true)}
+            >
               <Plus className="h-4 w-4" />
               添加地址
             </Button>
@@ -202,15 +229,15 @@ export default function AddressesPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
-              <Card className="p-5">
+              <Card className="p-5 hover:shadow-lg hover:shadow-primary/5 transition-all">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{address.name}</span>
                       <span className="text-sm text-muted-foreground">{address.phone}</span>
                       {address.isDefault && (
-                        <span className="inline-flex items-center gap-0.5 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                          <Star className="h-3 w-3 fill-primary" />
+                        <span className="inline-flex items-center gap-0.5 text-xs bg-gradient-to-r from-primary to-accent text-white px-2.5 py-1 rounded-full">
+                          <Star className="h-3 w-3 fill-white" />
                           默认
                         </span>
                       )}
@@ -221,7 +248,12 @@ export default function AddressesPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     {!address.isDefault && (
-                      <Button variant="ghost" size="sm" onClick={() => handleSetDefault(address.id)}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleSetDefault(address.id)}
+                        className="rounded-lg"
+                      >
                         设为默认
                       </Button>
                     )}
@@ -229,7 +261,7 @@ export default function AddressesPage() {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleRemoveAddress(address.id)}
-                      className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                      className="rounded-lg text-red-500 hover:text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -243,7 +275,7 @@ export default function AddressesPage() {
 
       <div className="mt-8">
         <Link href="/profile">
-          <Button variant="outline">返回个人中心</Button>
+          <Button variant="outline" className="rounded-xl">返回个人中心</Button>
         </Link>
       </div>
     </div>

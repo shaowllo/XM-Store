@@ -1,6 +1,7 @@
 "use client";
 
-import { Heart, Trash2, ShoppingBag } from "lucide-react";
+import { motion } from "framer-motion";
+import { Heart, Trash2, ShoppingBag, Sparkles } from "lucide-react";
 import { useWishlist } from "@/components/wishlist-provider";
 import { products } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
@@ -14,7 +15,7 @@ export default function WishlistPage() {
 
   if (wishlistProducts.length === 0) {
     return (
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={[{ label: "我的收藏" }]} />
         <EmptyState
           icon={Heart}
@@ -29,18 +30,32 @@ export default function WishlistPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumb items={[{ label: "我的收藏" }]} />
-      <div className="flex items-center justify-between">
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-end justify-between"
+      >
         <div>
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
+            <Sparkles className="h-4 w-4" />
+            我的收藏
+          </span>
           <h1 className="text-3xl font-bold tracking-tight">我的收藏</h1>
           <p className="mt-2 text-muted-foreground">
-            共 {wishlistProducts.length} 件收藏
+            共 {wishlistProducts.length} 件收藏商品
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={clearWishlist} className="gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={clearWishlist}
+          className="gap-2 rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+        >
           <Trash2 className="h-4 w-4" />
           清空收藏
         </Button>
-      </div>
+      </motion.div>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {wishlistProducts.map((product, index) => (

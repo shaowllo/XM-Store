@@ -38,18 +38,18 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: index * 0.08, duration: 0.45, ease: "easeOut" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative flex flex-col rounded-2xl border bg-card overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/20 hover:-translate-y-1"
+      className="group relative flex flex-col rounded-2xl border bg-card overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/20 hover:-translate-y-1 will-change-transform"
     >
       {/* Image */}
       <Link href={`/products/${product.id}`} className="relative aspect-square overflow-hidden bg-muted">
         <motion.div
-          className="relative h-full w-full"
+          className="relative h-full w-full will-change-transform"
           animate={{ scale: isHovered ? 1.08 : 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <Image
             src={product.image}
@@ -81,8 +81,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-          transition={{ duration: 0.3 }}
-          className="absolute bottom-4 left-4 right-4 flex gap-2"
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="absolute bottom-4 left-4 right-4 flex gap-2 will-change-transform"
         >
           <Button
             size="sm"
