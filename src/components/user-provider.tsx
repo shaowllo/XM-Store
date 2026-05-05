@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { toast } from "sonner";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export interface User {
   id: string;
@@ -26,22 +27,7 @@ const USER_KEY = "xmstore-user";
 const USERS_KEY = "xmstore-users";
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const init = () => {
-      try {
-        const saved = localStorage.getItem(USER_KEY);
-        if (saved) {
-          setUser(JSON.parse(saved));
-        }
-      } catch {
-        // Silently ignore localStorage parse errors
-      }
-    };
-    const timer = setTimeout(init, 0);
-    return () => clearTimeout(timer);
-  }, []);
+  const [user, setUser] = useLocalStorage<User | null>(USER_KEY, null);
 
   const login = useCallback((email: string, password: string) => {
     try {

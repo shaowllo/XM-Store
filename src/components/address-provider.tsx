@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { useUser } from "./user-provider";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export interface Address {
   id: string;
@@ -28,30 +29,8 @@ const AddressContext = createContext<AddressContextType | undefined>(undefined);
 export function AddressProvider({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
   const userId = user?.id || "guest";
-  const [addresses, setAddresses] = useState<Address[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    const init = () => {
-      try {
-        const saved = localStorage.getItem(`xmstore-addresses-${userId}`);
-        if (saved) {
-          setAddresses(JSON.parse(saved));
-        }
-      } catch {
-        // Silently ignore localStorage parse errors
-      }
-      setIsHydrated(true);
-    };
-    const timer = setTimeout(init, 0);
-    return () => clearTimeout(timer);
-  }, [userId]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(`xmstore-addresses-${userId}`, JSON.stringify(addresses));
-    }
-  }, [addresses, isHydrated, userId]);
+  const ADDRESSES_KEY = `xmstore-addresses-${userId}`;
+  const [addresses, setAddresses] = useLocalStorage<Address[]>(ADDRESSES_KEY, []);
 
   const addAddress = useCallback((address: Omit<Address, "id">) => {
     const newAddress: Address = { id: `addr-${Date.now()}`, ...address };

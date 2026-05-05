@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { useUser } from "./user-provider";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import type { CartItem } from "./cart-provider";
 
 export type OrderStatus = "pending" | "shipped" | "delivered" | "cancelled";
@@ -31,30 +32,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const userId = user?.id || "guest";
   const ORDERS_KEY = `xmstore-orders-${userId}`;
 
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    const init = () => {
-      try {
-        const saved = localStorage.getItem(ORDERS_KEY);
-        if (saved) {
-          setOrders(JSON.parse(saved));
-        }
-      } catch {
-        // Silently ignore localStorage parse errors
-      }
-      setIsHydrated(true);
-    };
-    const timer = setTimeout(init, 0);
-    return () => clearTimeout(timer);
-  }, [ORDERS_KEY]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-    }
-  }, [orders, isHydrated, ORDERS_KEY]);
+  const [orders, setOrders] = useLocalStorage<Order[]>(ORDERS_KEY, []);
 
   const addOrder = useCallback((items: CartItem[], totalPrice: number, totalItems: number) => {
     const order: Order = {

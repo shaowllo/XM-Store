@@ -4,11 +4,28 @@ import { useState, useEffect, useCallback } from "react";
 import { getStorageItem, setStorageItem } from "@/lib/storage";
 
 export function useLocalStorage<T>(key: string, defaultValue: T) {
-  const [value, setValue] = useState<T>(() => getStorageItem(key, defaultValue));
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [value, setValue] = useState<T>(defaultValue);
 
   useEffect(() => {
-    setStorageItem(key, value);
-  }, [key, value]);
+    const init = () => {
+      try {
+        const saved = getStorageItem<T>(key, defaultValue);
+        setValue(saved);
+      } catch {
+        setValue(defaultValue);
+      }
+      setIsHydrated(true);
+    };
+    const timer = setTimeout(init, 0);
+    return () => clearTimeout(timer);
+  }, [key, defaultValue]);
+
+  useEffect(() => {
+    if (isHydrated) {
+      setStorageItem(key, value);
+    }
+  }, [key, value, isHydrated]);
 
   const reset = useCallback(() => {
     setValue(defaultValue);
@@ -26,5 +43,5 @@ export function useLocalStorage<T>(key: string, defaultValue: T) {
     []
   );
 
-  return [value, setValueWrapper, reset] as const;
+  return [value, setValueWrapper, reset, isHydrated] as const;
 }

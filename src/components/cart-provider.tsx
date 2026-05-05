@@ -1,8 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useUser } from "./user-provider";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import type { Product } from "@/lib/data";
 
 export interface CartItem {
@@ -31,31 +32,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const userId = user?.id || "guest";
   const CART_STORAGE_KEY = `xmstore-cart-${userId}`;
 
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useLocalStorage<CartItem[]>(CART_STORAGE_KEY, []);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    const init = () => {
-      try {
-        const saved = localStorage.getItem(CART_STORAGE_KEY);
-        if (saved) {
-          setItems(JSON.parse(saved));
-        }
-      } catch {
-        // Silently ignore localStorage parse errors
-      }
-      setIsHydrated(true);
-    };
-    const timer = setTimeout(init, 0);
-    return () => clearTimeout(timer);
-  }, [CART_STORAGE_KEY]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-    }
-  }, [items, isHydrated, CART_STORAGE_KEY]);
 
   const addToCart = useCallback((product: Product, selectedColor?: string, quantity: number = 1) => {
     const cartItemId = `${product.id}--${selectedColor || "default"}`;

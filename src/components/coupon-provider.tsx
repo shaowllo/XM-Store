@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { useUser } from "./user-provider";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export interface Coupon {
   id: string;
@@ -28,32 +29,8 @@ const CouponContext = createContext<CouponContextType | undefined>(undefined);
 export function CouponProvider({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
   const userId = user?.id || "guest";
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    const init = () => {
-      try {
-        const saved = localStorage.getItem(`xmstore-coupons-${userId}`);
-        if (saved) {
-          setCoupons(JSON.parse(saved));
-        } else {
-          setCoupons(DEFAULT_COUPONS);
-        }
-      } catch {
-        // Silently ignore localStorage parse errors
-      }
-      setIsHydrated(true);
-    };
-    const timer = setTimeout(init, 0);
-    return () => clearTimeout(timer);
-  }, [userId]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(`xmstore-coupons-${userId}`, JSON.stringify(coupons));
-    }
-  }, [coupons, isHydrated, userId]);
+  const COUPONS_KEY = `xmstore-coupons-${userId}`;
+  const [coupons, setCoupons] = useLocalStorage<Coupon[]>(COUPONS_KEY, DEFAULT_COUPONS);
 
   const validateCoupon = useCallback((code: string, orderAmount: number) => {
     const coupon = coupons.find(
