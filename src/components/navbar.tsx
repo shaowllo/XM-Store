@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Menu, X, Search, Heart, Package, User } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, Heart, Package, User, LogOut, Store } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
 import { useUser } from "@/components/user-provider";
@@ -46,8 +46,9 @@ export function Navbar() {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="text-2xl font-bold tracking-tight"
+            className="flex items-center gap-2 text-2xl font-bold tracking-tight"
           >
+            <Store className="h-6 w-6 text-primary" />
             XM<span className="text-primary">Store</span>
           </motion.div>
         </Link>
@@ -84,7 +85,8 @@ export function Navbar() {
           {user ? (
             <div className="hidden sm:flex items-center gap-2">
               <span className="text-sm text-muted-foreground">{user.name}</span>
-              <Button variant="ghost" size="sm" onClick={logout}>
+              <Button variant="ghost" size="sm" onClick={logout} className="gap-1">
+                <LogOut className="h-4 w-4" />
                 退出
               </Button>
             </div>
@@ -293,8 +295,9 @@ export function Navbar() {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors text-left"
+                    className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors text-left flex items-center gap-2"
                   >
+                    <LogOut className="h-4 w-4" />
                     退出登录
                   </button>
                 </>

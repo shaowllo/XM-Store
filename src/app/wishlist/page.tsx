@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Trash2 } from "lucide-react";
+import { Heart, Trash2, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/components/wishlist-provider";
 import { products } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
@@ -18,7 +18,10 @@ export default function WishlistPage() {
         <h1 className="text-2xl font-bold">收藏夹是空的</h1>
         <p className="mt-2 text-muted-foreground">您还没有收藏任何商品</p>
         <Link href="/products">
-          <Button className="mt-6">去浏览</Button>
+          <Button className="mt-6 gap-2">
+            <ShoppingBag className="h-4 w-4" />
+            去浏览
+          </Button>
         </Link>
       </div>
     );

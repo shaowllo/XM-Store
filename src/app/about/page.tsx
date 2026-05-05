@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Target, Heart, Globe } from "lucide-react";
+import { Zap, Target, Heart, Globe, Users, Award, TrendingUp, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const values = [
@@ -79,14 +79,23 @@ export default function AboutPage() {
             </p>
             <div className="mt-8 grid grid-cols-3 gap-6">
               <div className="text-center">
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mb-2">
+                  <Users className="h-5 w-5" />
+                </div>
                 <div className="text-3xl font-bold text-primary">100万+</div>
                 <div className="text-sm text-muted-foreground mt-1">全球用户</div>
               </div>
               <div className="text-center">
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mb-2">
+                  <Award className="h-5 w-5" />
+                </div>
                 <div className="text-3xl font-bold text-primary">50+</div>
                 <div className="text-sm text-muted-foreground mt-1">产品品类</div>
               </div>
               <div className="text-center">
+                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mb-2">
+                  <TrendingUp className="h-5 w-5" />
+                </div>
                 <div className="text-3xl font-bold text-primary">20+</div>
                 <div className="text-sm text-muted-foreground mt-1">覆盖国家</div>
               </div>
@@ -186,10 +195,12 @@ export default function AboutPage() {
             与我们一起，用科技改变世界，创造更美好的未来
           </p>
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-            <Button className="bg-white text-primary hover:bg-white/90">
+            <Button className="bg-white text-primary hover:bg-white/90 gap-2">
+              <Users className="h-4 w-4" />
               了解职位
             </Button>
-            <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+            <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 gap-2">
+              <Phone className="h-4 w-4" />
               联系我们
             </Button>
           </div>

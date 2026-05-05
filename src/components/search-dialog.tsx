@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, SlidersHorizontal } from "lucide-react";
+import { Search, X, SlidersHorizontal, Filter, Star } from "lucide-react";
 import { products, categories } from "@/lib/data";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,15 +18,19 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const [sortBy, setSortBy] = useState<string>("relevance");
   const [showFilters, setShowFilters] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const prevOpen = useRef(open);
 
   useEffect(() => {
-    if (open) {
+    if (open && !prevOpen.current) {
       setQuery("");
       setSelectedCategory("all");
       setSortBy("relevance");
       setShowFilters(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
+      requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
     }
+    prevOpen.current = open;
   }, [open]);
 
   const results = useMemo(() => {
@@ -107,7 +111,10 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             {showFilters && (
               <div className="border-b px-4 py-3 space-y-3">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">分类筛选</p>
+                  <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    分类筛选
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setSelectedCategory("all")}
@@ -135,7 +142,10 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">排序</p>
+                  <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                    <SlidersHorizontal className="h-3 w-3" />
+                    排序
+                  </p>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
@@ -182,8 +192,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                           ¥{product.price.toLocaleString()}
                         </div>
                       </div>
-                      <div className="text-xs text-muted-foreground shrink-0">
-                        {product.rating} ★
+                      <div className="text-xs text-muted-foreground shrink-0 flex items-center gap-0.5">
+                        <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                        {product.rating}
                       </div>
                     </Link>
                   ))}

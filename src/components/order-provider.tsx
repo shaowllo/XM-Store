@@ -26,15 +26,19 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(ORDERS_KEY);
-      if (saved) {
-        setOrders(JSON.parse(saved));
+    const init = () => {
+      try {
+        const saved = localStorage.getItem(ORDERS_KEY);
+        if (saved) {
+          setOrders(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error("Failed to load orders from localStorage", e);
       }
-    } catch (e) {
-      console.error("Failed to load orders from localStorage", e);
-    }
-    setIsHydrated(true);
+      setIsHydrated(true);
+    };
+    const timer = setTimeout(init, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

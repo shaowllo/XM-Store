@@ -32,15 +32,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(CART_STORAGE_KEY);
-      if (saved) {
-        setItems(JSON.parse(saved));
+    const init = () => {
+      try {
+        const saved = localStorage.getItem(CART_STORAGE_KEY);
+        if (saved) {
+          setItems(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error("Failed to load cart from localStorage", e);
       }
-    } catch (e) {
-      console.error("Failed to load cart from localStorage", e);
-    }
-    setIsHydrated(true);
+      setIsHydrated(true);
+    };
+    const timer = setTimeout(init, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

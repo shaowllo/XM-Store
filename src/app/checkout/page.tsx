@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CreditCard, Truck, Shield, Clock } from "lucide-react";
+import { CreditCard, Truck, Shield, Clock, CheckCircle, ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
 import { Button } from "@/components/ui/button";
@@ -21,10 +21,14 @@ export default function CheckoutPage() {
   if (items.length === 0 && step !== "success") {
     return (
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
+        <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
         <h1 className="text-2xl font-bold">购物车是空的</h1>
         <p className="mt-2 text-muted-foreground">请先添加商品到购物车</p>
         <Link href="/products">
-          <Button className="mt-6">去购物</Button>
+          <Button className="mt-6 gap-2">
+            <ShoppingBag className="h-4 w-4" />
+            去购物
+          </Button>
         </Link>
       </div>
     );
@@ -49,7 +53,7 @@ export default function CheckoutPage() {
           animate={{ scale: 1 }}
           className="mx-auto h-20 w-20 rounded-full bg-green-100 flex items-center justify-center mb-6"
         >
-          <Shield className="h-10 w-10 text-green-600" />
+          <CheckCircle className="h-10 w-10 text-green-600" />
         </motion.div>
         <h1 className="text-2xl font-bold">支付成功</h1>
         <p className="mt-2 text-muted-foreground">您的订单已确认，我们将尽快为您发货</p>

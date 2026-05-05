@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -29,15 +29,9 @@ interface ProductDetailClientProps {
 export function ProductDetailClient({ product, relatedProducts }: ProductDetailClientProps) {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(product?.colors?.[0]);
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
-
-  useEffect(() => {
-    if (product?.colors) {
-      setSelectedColor(product.colors[0]);
-    }
-  }, [product]);
 
   const discount = product.originalPrice
     ? Math.round(

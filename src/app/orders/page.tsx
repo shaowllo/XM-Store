@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Package, Clock, Trash2 } from "lucide-react";
+import { Package, Clock, Trash2, ShoppingBag, CircleCheck } from "lucide-react";
 import { useOrders } from "@/components/order-provider";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -18,7 +18,10 @@ export default function OrdersPage() {
         <h1 className="text-2xl font-bold">暂无订单</h1>
         <p className="mt-2 text-muted-foreground">您还没有完成任何订单</p>
         <Link href="/products">
-          <Button className="mt-6">去购物</Button>
+          <Button className="mt-6 gap-2">
+            <ShoppingBag className="h-4 w-4" />
+            去购物
+          </Button>
         </Link>
       </div>
     );
@@ -54,9 +57,13 @@ export default function OrdersPage() {
                 <p className="font-medium">{order.id}</p>
               </div>
               <div className="text-right">
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <div className="flex items-center justify-end gap-1 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
                   {new Date(order.createdAt).toLocaleString("zh-CN")}
+                </div>
+                <div className="flex items-center justify-end gap-1 text-green-600 text-sm mt-1">
+                  <CircleCheck className="h-4 w-4" />
+                  已完成
                 </div>
                 <p className="text-lg font-bold mt-1">
                   ¥{order.totalPrice.toLocaleString()}

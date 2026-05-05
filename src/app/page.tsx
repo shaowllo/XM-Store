@@ -7,10 +7,10 @@ import { ProductCard } from "@/components/product-card";
 import { products } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Zap, Headphones, Watch, Laptop } from "lucide-react";
+import { ArrowRight, Smartphone, Headphones, Watch, Laptop, Mail, CheckCircle } from "lucide-react";
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  phone: <Zap className="h-6 w-6" />,
+  phone: <Smartphone className="h-6 w-6" />,
   audio: <Headphones className="h-6 w-6" />,
   wearable: <Watch className="h-6 w-6" />,
   computer: <Laptop className="h-6 w-6" />,
@@ -154,25 +154,41 @@ export default function Home() {
       {/* Newsletter */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="rounded-2xl border bg-card p-8 md:p-12 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-4">
+            <Mail className="h-7 w-7" />
+          </div>
           <h2 className="text-2xl md:text-3xl font-bold">订阅获取最新资讯</h2>
           <p className="mt-3 text-muted-foreground max-w-md mx-auto">
             第一时间获取新品发布、独家优惠和科技资讯
           </p>
           <form onSubmit={handleSubscribe} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="输入您的邮箱"
-              required
-              className="flex-1 rounded-lg border bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
-            />
-            <Button type="submit" size="lg" disabled={subscribed}>
-              {subscribed ? "已订阅" : "订阅"}
+            <div className="relative flex-1">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="输入您的邮箱"
+                required
+                className="w-full rounded-lg border bg-background pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            <Button type="submit" size="lg" disabled={subscribed} className="gap-2">
+              {subscribed ? (
+                <>
+                  <CheckCircle className="h-4 w-4" />
+                  已订阅
+                </>
+              ) : (
+                "订阅"
+              )}
             </Button>
           </form>
           {subscribed && (
-            <p className="mt-3 text-sm text-green-600">感谢订阅！我们会将最新资讯发送到您的邮箱。</p>
+            <p className="mt-3 text-sm text-green-600 flex items-center justify-center gap-1">
+              <CheckCircle className="h-4 w-4" />
+              感谢订阅！我们会将最新资讯发送到您的邮箱。
+            </p>
           )}
         </div>
       </section>

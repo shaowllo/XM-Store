@@ -28,14 +28,18 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(USER_KEY);
-      if (saved) {
-        setUser(JSON.parse(saved));
+    const init = () => {
+      try {
+        const saved = localStorage.getItem(USER_KEY);
+        if (saved) {
+          setUser(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error("Failed to load user", e);
       }
-    } catch (e) {
-      console.error("Failed to load user", e);
-    }
+    };
+    const timer = setTimeout(init, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const login = useCallback((email: string, password: string) => {
