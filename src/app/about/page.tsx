@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Zap, Target, Heart, Globe, Users, Award, TrendingUp, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -102,11 +103,13 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="relative">
-            <div className="aspect-video rounded-2xl overflow-hidden bg-muted">
-              <img
+            <div className="aspect-video rounded-2xl overflow-hidden bg-muted relative">
+              <Image
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=450&fit=crop"
                 alt="Office"
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
           </div>

@@ -47,7 +47,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       const users: StoredUser[] = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
       const found = users.find((u) => u.email === email && u.password === password);
       if (found) {
-        const { password: _, ...userWithoutPassword } = found;
+        const userWithoutPassword: User = {
+          id: found.id,
+          name: found.name,
+          email: found.email,
+        };
         setUser(userWithoutPassword);
         localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
         return true;
@@ -72,7 +76,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       };
       users.push(newUser);
       localStorage.setItem(USERS_KEY, JSON.stringify(users));
-      const { password: _, ...userWithoutPassword } = newUser;
+      const userWithoutPassword: User = {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      };
       setUser(userWithoutPassword);
       localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
       return true;

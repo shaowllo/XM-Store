@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { CreditCard, Truck, Shield, Clock, CheckCircle, ShoppingBag } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
@@ -14,7 +13,6 @@ import Link from "next/link";
 export default function CheckoutPage() {
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const { addOrder } = useOrders();
-  const router = useRouter();
   const [processing, setProcessing] = useState(false);
   const [step, setStep] = useState<"review" | "processing" | "success">("review");
 
