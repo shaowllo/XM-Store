@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { useUser } from "./user-provider";
 
 interface WishlistContextType {
   wishlist: string[];
@@ -12,9 +13,11 @@ interface WishlistContextType {
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
-const WISHLIST_KEY = "xmstore-wishlist";
-
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
+  const { user } = useUser();
+  const userId = user?.id || "guest";
+  const WISHLIST_KEY = `xmstore-wishlist-${userId}`;
+
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -32,13 +35,13 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     };
     const timer = setTimeout(init, 0);
     return () => clearTimeout(timer);
-  }, []);
+  }, [WISHLIST_KEY]);
 
   useEffect(() => {
     if (isHydrated) {
       localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
     }
-  }, [wishlist, isHydrated]);
+  }, [wishlist, isHydrated, WISHLIST_KEY]);
 
   const toggleWishlist = useCallback((productId: string) => {
     setWishlist((prev) =>

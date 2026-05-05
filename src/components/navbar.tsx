@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Menu, X, Search, Heart, Package, User, LogOut, Store } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, Heart, Package, User, LogOut, Store, Settings } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
 import { useUser } from "@/components/user-provider";
@@ -83,11 +83,15 @@ export function Navbar() {
           ))}
 
           {user ? (
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">{user.name}</span>
-              <Button variant="ghost" size="sm" onClick={logout} className="gap-1">
+            <div className="hidden sm:flex items-center gap-1">
+              <Link href="/profile">
+                <Button variant="ghost" size="sm" className="gap-1">
+                  <Settings className="h-4 w-4" />
+                  {user.name}
+                </Button>
+              </Link>
+              <Button variant="ghost" size="icon" onClick={logout}>
                 <LogOut className="h-4 w-4" />
-                退出
               </Button>
             </div>
           ) : (
@@ -273,23 +277,26 @@ export function Navbar() {
                 </Link>
               ))}
               <Separator className="my-2" />
-              {actionLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors flex items-center gap-2"
-                >
-                  <link.icon className="h-4 w-4" />
-                  {link.label}
-                </Link>
-              ))}
-              <Separator className="my-2" />
               {user ? (
                 <>
-                  <div className="px-4 py-3 text-sm font-medium text-muted-foreground">
-                    {user.name}
-                  </div>
+                  <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>
+                    <button className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors w-full text-left">
+                      <Settings className="h-4 w-4" />
+                      个人中心
+                    </button>
+                  </Link>
+                  {actionLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors flex items-center gap-2"
+                    >
+                      <link.icon className="h-4 w-4" />
+                      {link.label}
+                    </Link>
+                  ))}
+                  <Separator className="my-2" />
                   <button
                     onClick={() => {
                       logout();

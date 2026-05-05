@@ -6,6 +6,8 @@ import { CartProvider } from "@/components/cart-provider";
 import { WishlistProvider } from "@/components/wishlist-provider";
 import { OrderProvider } from "@/components/order-provider";
 import { UserProvider } from "@/components/user-provider";
+import { AddressProvider } from "@/components/address-provider";
+import { CouponProvider } from "@/components/coupon-provider";
 import { WebVitals } from "@/components/web-vitals";
 
 export const metadata: Metadata = {
@@ -23,16 +25,20 @@ export default function RootLayout({
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background font-sans">
         <UserProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <OrderProvider>
-                <WebVitals />
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </OrderProvider>
-            </WishlistProvider>
-          </CartProvider>
+          <AddressProvider>
+            <CouponProvider>
+              <CartProvider>
+                <WishlistProvider>
+                  <OrderProvider>
+                    <WebVitals />
+                    <Navbar />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                  </OrderProvider>
+                </WishlistProvider>
+              </CartProvider>
+            </CouponProvider>
+          </AddressProvider>
         </UserProvider>
       </body>
     </html>

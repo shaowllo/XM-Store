@@ -1,21 +1,17 @@
 {
-  "name": "XM Store - 科技数码精选",
-  "short_name": "XMStore",
-  "description": "探索最新科技数码产品，品质生活从这里开始",
+  "name": "XM Store - 科技数码商城",
+  "short_name": "XM Store",
+  "description": "发现最新科技产品，享受极致购物体验",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#0a0a0a",
   "icons": [
     {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

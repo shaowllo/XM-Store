@@ -1,12 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Package, Clock, Trash2, ShoppingBag, CircleCheck } from "lucide-react";
-import { useOrders } from "@/components/order-provider";
+import { Package, Clock, Trash2, ShoppingBag, CircleCheck, Truck, XCircle, ChevronRight } from "lucide-react";
+import { useOrders, type OrderStatus } from "@/components/order-provider";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
+
+const statusMap: Record<OrderStatus, { label: string; color: string; icon: React.ReactNode }> = {
+  pending: { label: "待发货", color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400", icon: <Clock className="h-4 w-4" /> },
+  shipped: { label: "已发货", color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400", icon: <Truck className="h-4 w-4" /> },
+  delivered: { label: "已完成", color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400", icon: <CircleCheck className="h-4 w-4" /> },
+  cancelled: { label: "已取消", color: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400", icon: <XCircle className="h-4 w-4" /> },
+};
 
 export default function OrdersPage() {
   const { orders, clearOrders } = useOrders();
@@ -61,10 +69,10 @@ export default function OrdersPage() {
                   <Clock className="h-4 w-4" />
                   {new Date(order.createdAt).toLocaleString("zh-CN")}
                 </div>
-                <div className="flex items-center justify-end gap-1 text-green-600 text-sm mt-1">
-                  <CircleCheck className="h-4 w-4" />
-                  已完成
-                </div>
+                <Badge className={`mt-1 gap-1 ${statusMap[order.status].color}`}>
+                  {statusMap[order.status].icon}
+                  {statusMap[order.status].label}
+                </Badge>
                 <p className="text-lg font-bold mt-1">
                   ¥{order.totalPrice.toLocaleString()}
                 </p>
@@ -110,6 +118,17 @@ export default function OrdersPage() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <Separator className="my-4" />
+
+            <div className="flex items-center justify-end">
+              <Link href={`/orders/${order.id}`}>
+                <Button variant="ghost" size="sm" className="gap-1">
+                  查看详情
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </motion.div>
         ))}

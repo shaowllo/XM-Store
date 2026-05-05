@@ -2,19 +2,30 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CreditCard, Truck, Shield, Clock, CheckCircle, ShoppingBag } from "lucide-react";
+import { CreditCard, Truck, Shield, Clock, CheckCircle, ShoppingBag, MapPin, Tag, ChevronDown, ChevronUp, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
+import { useAddress } from "@/components/address-provider";
+import { useCoupon as useCouponContext } from "@/components/coupon-provider";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function CheckoutPage() {
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const { addOrder } = useOrders();
+  const { addresses, defaultAddress } = useAddress();
+  const { coupons, validateCoupon, useCoupon: markCouponUsed } = useCouponContext();
   const [processing, setProcessing] = useState(false);
   const [step, setStep] = useState<"review" | "processing" | "success">("review");
+  const [selectedAddressId, setSelectedAddressId] = useState<string | undefined>(defaultAddress?.id);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [showAddressList, setShowAddressList] = useState(false);
+  const [showCouponList, setShowCouponList] = useState(false);
 
   if (items.length === 0 && step !== "success") {
     return (
@@ -32,11 +43,35 @@ export default function CheckoutPage() {
     );
   }
 
+  const selectedAddress = addresses.find((a) => a.id === selectedAddressId) || defaultAddress;
+  const discount = appliedCoupon?.discount || 0;
+  const finalPrice = Math.max(0, totalPrice - discount);
+
+  const handleApplyCoupon = () => {
+    setCouponError("");
+    if (!couponCode.trim()) return;
+    const coupon = validateCoupon(couponCode.trim().toUpperCase(), totalPrice);
+    if (coupon) {
+      setAppliedCoupon({ code: coupon.code, discount: coupon.discount });
+      setCouponCode("");
+    } else {
+      setCouponError("优惠券无效、已使用、已过期或未达到最低消费金额");
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponError("");
+  };
+
   const handlePay = () => {
     setProcessing(true);
     setStep("processing");
     setTimeout(() => {
-      addOrder(items, totalPrice, totalItems);
+      if (appliedCoupon) {
+        markCouponUsed(appliedCoupon.code);
+      }
+      addOrder(items, finalPrice, totalItems);
       clearCart();
       setProcessing(false);
       setStep("success");
@@ -120,6 +155,110 @@ export default function CheckoutPage() {
 
           <Separator className="my-6" />
 
+          {/* 收货地址 */}
+          <div className="rounded-xl border p-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                收货地址
+              </h3>
+              {addresses.length > 0 && (
+                <Button variant="ghost" size="sm" onClick={() => setShowAddressList(!showAddressList)}>
+                  {showAddressList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                </Button>
+              )}
+            </div>
+            {selectedAddress ? (
+              <div className="mt-2 text-sm">
+                <p className="font-medium">{selectedAddress.name} {selectedAddress.phone}</p>
+                <p className="text-muted-foreground">{selectedAddress.province} {selectedAddress.city} {selectedAddress.district} {selectedAddress.detail}</p>
+              </div>
+            ) : (
+              <div className="mt-2 text-sm text-muted-foreground">
+                <p>暂无收货地址</p>
+                <Link href="/profile/addresses">
+                  <Button variant="link" size="sm" className="px-0">去添加地址</Button>
+                </Link>
+              </div>
+            )}
+            {showAddressList && addresses.length > 0 && (
+              <div className="mt-3 space-y-2">
+                {addresses.map((addr) => (
+                  <button
+                    key={addr.id}
+                    onClick={() => { setSelectedAddressId(addr.id); setShowAddressList(false); }}
+                    className={`w-full text-left rounded-lg border p-3 text-sm transition-colors ${
+                      selectedAddressId === addr.id ? "border-primary bg-primary/5" : "hover:bg-muted"
+                    }`}
+                  >
+                    <p className="font-medium">{addr.name} {addr.phone}</p>
+                    <p className="text-muted-foreground">{addr.province} {addr.city} {addr.district} {addr.detail}</p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 优惠券 */}
+          <div className="rounded-xl border p-4 mt-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold flex items-center gap-2">
+                <Tag className="h-4 w-4" />
+                优惠券
+              </h3>
+              <Button variant="ghost" size="sm" onClick={() => setShowCouponList(!showCouponList)}>
+                {showCouponList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </Button>
+            </div>
+            {appliedCoupon ? (
+              <div className="mt-2 flex items-center justify-between">
+                <Badge variant="outline" className="gap-1 text-green-600 border-green-200">
+                  <Tag className="h-3 w-3" />
+                  {appliedCoupon.code} -¥{appliedCoupon.discount}
+                </Badge>
+                <Button variant="ghost" size="sm" onClick={handleRemoveCoupon}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  placeholder="输入优惠码"
+                  className="flex-1 rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
+                  onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                />
+                <Button size="sm" onClick={handleApplyCoupon}>应用</Button>
+              </div>
+            )}
+            {couponError && <p className="mt-2 text-xs text-red-500">{couponError}</p>}
+            {showCouponList && (
+              <div className="mt-3 space-y-2">
+                <p className="text-xs text-muted-foreground">可用优惠券：</p>
+                {coupons.filter((c) => !c.used && new Date(c.expiryDate) > new Date() && totalPrice >= c.minOrderAmount).map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => { setCouponCode(c.code); setShowCouponList(false); }}
+                    className="w-full text-left rounded-lg border p-3 text-sm hover:bg-muted transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{c.code}</span>
+                      <span className="text-green-600">-¥{c.discount}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">满¥{c.minOrderAmount}可用，有效期至 {c.expiryDate}</p>
+                  </button>
+                ))}
+                {coupons.filter((c) => !c.used && new Date(c.expiryDate) > new Date() && totalPrice >= c.minOrderAmount).length === 0 && (
+                  <p className="text-xs text-muted-foreground">暂无可用的优惠券</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          <Separator className="my-6" />
+
           <div className="rounded-xl bg-muted p-4 space-y-3">
             <div className="flex items-center gap-3">
               <Truck className="h-5 w-5 text-primary" />
@@ -135,16 +274,33 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-between text-lg font-bold">
-            <span>合计</span>
-            <span>¥{totalPrice.toLocaleString()}</span>
+          <div className="mt-6 space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">商品总额</span>
+              <span>¥{totalPrice.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">运费</span>
+              <span className="text-green-600">免运费</span>
+            </div>
+            {appliedCoupon && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">优惠券 ({appliedCoupon.code})</span>
+                <span className="text-green-600">-¥{appliedCoupon.discount}</span>
+              </div>
+            )}
+            <Separator />
+            <div className="flex items-center justify-between text-lg font-bold">
+              <span>合计</span>
+              <span>¥{finalPrice.toLocaleString()}</span>
+            </div>
           </div>
 
           <Button
             className="w-full mt-8 gap-2"
             size="lg"
             onClick={handlePay}
-            disabled={processing}
+            disabled={processing || items.length === 0}
           >
             <CreditCard className="h-5 w-5" />
             确认支付

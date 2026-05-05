@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { useUser } from "./user-provider";
 import type { Product } from "@/lib/data";
 
 export interface CartItem {
@@ -24,9 +25,11 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = "xmstore-cart";
-
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  const { user } = useUser();
+  const userId = user?.id || "guest";
+  const CART_STORAGE_KEY = `xmstore-cart-${userId}`;
+
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -45,13 +48,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
     const timer = setTimeout(init, 0);
     return () => clearTimeout(timer);
-  }, []);
+  }, [CART_STORAGE_KEY]);
 
   useEffect(() => {
     if (isHydrated) {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
     }
-  }, [items, isHydrated]);
+  }, [items, isHydrated, CART_STORAGE_KEY]);
 
   const addToCart = useCallback((product: Product, selectedColor?: string, quantity: number = 1) => {
     const cartItemId = `${product.id}--${selectedColor || "default"}`;
