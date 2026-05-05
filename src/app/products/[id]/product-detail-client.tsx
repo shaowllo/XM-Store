@@ -67,19 +67,19 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             />
           </motion.div>
           <div className="grid grid-cols-4 gap-3">
-            {productImages.map((img, index) => (
+            {productImages.map((img, idx) => (
               <button
-                key={index}
-                onClick={() => setActiveImage(index)}
+                key={`${product.id}-img-${idx}`}
+                onClick={() => setActiveImage(idx)}
                 className={`relative aspect-square overflow-hidden rounded-xl bg-muted border-2 transition-all ${
-                  activeImage === index
+                  activeImage === idx
                     ? "border-primary"
                     : "border-transparent hover:border-primary/50"
                 }`}
               >
                 <Image
                   src={img}
-                  alt={`${product.name} ${index + 1}`}
+                  alt={`${product.name} ${idx + 1}`}
                   fill
                   className="object-cover"
                   sizes="100px"
@@ -117,11 +117,11 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
           <div className="flex items-center gap-3 mt-4">
             <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
+              {[...Array(5)].map((_, starIdx) => (
                 <Star
-                  key={i}
+                  key={`star-${starIdx}`}
                   className={`h-5 w-5 ${
-                    i < Math.floor(product.rating)
+                    starIdx < Math.floor(product.rating)
                       ? "fill-amber-400 text-amber-400"
                       : "text-muted-foreground"
                   }`}

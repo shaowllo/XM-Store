@@ -40,8 +40,8 @@ export function CouponProvider({ children }: { children: React.ReactNode }) {
         } else {
           setCoupons(DEFAULT_COUPONS);
         }
-      } catch (e) {
-        console.error("Failed to load coupons from localStorage", e);
+      } catch {
+        // Silently ignore localStorage parse errors
       }
       setIsHydrated(true);
     };

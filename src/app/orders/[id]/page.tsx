@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { Package, Clock, Truck, CircleCheck, XCircle, ArrowLeft, MapPin } from "lucide-react";
+import { Package, Clock, Truck, CircleCheck, XCircle, MapPin, ArrowLeft } from "lucide-react";
 import { useOrders, type OrderStatus } from "@/components/order-provider";
 import { useAddress } from "@/components/address-provider";
 import { Breadcrumb } from "@/components/breadcrumb";

@@ -41,8 +41,8 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
           setOrders(JSON.parse(saved));
         }
-      } catch (e) {
-        console.error("Failed to load orders from localStorage", e);
+      } catch {
+        // Silently ignore localStorage parse errors
       }
       setIsHydrated(true);
     };

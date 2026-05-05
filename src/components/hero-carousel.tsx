@@ -139,15 +139,15 @@ export function HeroCarousel() {
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div className="flex gap-2">
-          {heroSlides.map((_, index) => (
+          {heroSlides.map((slide, idx) => (
             <button
-              key={index}
+              key={slide.id}
               onClick={() => {
-                setDirection(index > current ? 1 : -1);
-                setCurrent(index);
+                setDirection(idx > current ? 1 : -1);
+                setCurrent(idx);
               }}
               className={`h-2 rounded-full transition-all duration-300 ${
-                index === current
+                idx === current
                   ? "w-8 bg-white"
                   : "w-2 bg-white/40 hover:bg-white/60"
               }`}

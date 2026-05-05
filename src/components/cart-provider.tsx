@@ -42,8 +42,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
           setItems(JSON.parse(saved));
         }
-      } catch (e) {
-        console.error("Failed to load cart from localStorage", e);
+      } catch {
+        // Silently ignore localStorage parse errors
       }
       setIsHydrated(true);
     };

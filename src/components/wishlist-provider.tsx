@@ -28,8 +28,8 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
           setWishlist(JSON.parse(saved));
         }
-      } catch (e) {
-        console.error("Failed to load wishlist from localStorage", e);
+      } catch {
+        // Silently ignore localStorage parse errors
       }
       setIsHydrated(true);
     };

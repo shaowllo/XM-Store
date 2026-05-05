@@ -35,8 +35,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
           setUser(JSON.parse(saved));
         }
-      } catch (e) {
-        console.error("Failed to load user", e);
+      } catch {
+        // Silently ignore localStorage parse errors
       }
     };
     const timer = setTimeout(init, 0);
@@ -60,8 +60,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         return true;
       }
       toast.error("邮箱或密码错误");
-    } catch (e) {
-      console.error("Login failed", e);
+    } catch {
       toast.error("登录失败，请稍后重试");
     }
     return false;
@@ -92,8 +91,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400`;
       toast.success("注册成功！");
       return true;
-    } catch (e) {
-      console.error("Register failed", e);
+    } catch {
       toast.error("注册失败，请稍后重试");
     }
     return false;

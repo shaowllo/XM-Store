@@ -19,8 +19,8 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
         <Home className="h-3.5 w-3.5" />
         首页
       </Link>
-      {items.map((item, index) => (
-        <div key={index} className="flex items-center gap-1.5">
+      {items.map((item) => (
+        <div key={item.label} className="flex items-center gap-1.5">
           <ChevronRight className="h-3.5 w-3.5" />
           {item.href ? (
             <Link href={item.href} className="hover:text-foreground transition-colors">

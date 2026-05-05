@@ -38,8 +38,8 @@ export function AddressProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
           setAddresses(JSON.parse(saved));
         }
-      } catch (e) {
-        console.error("Failed to load addresses from localStorage", e);
+      } catch {
+        // Silently ignore localStorage parse errors
       }
       setIsHydrated(true);
     };
