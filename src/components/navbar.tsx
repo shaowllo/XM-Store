@@ -71,7 +71,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
 
-          <Button variant="ghost" size="icon" className="hidden sm:flex" onClick={() => setSearchOpen(true)}>
+          <Button variant="ghost" size="icon" className="hidden sm:flex" onClick={() => setSearchOpen(true)} aria-label="搜索">
             <Search className="h-5 w-5" />
           </Button>
 
@@ -79,7 +79,7 @@ export function Navbar() {
 
           {actionLinks.map((link) => (
             <Link key={link.href} href={link.href} className="hidden sm:flex">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label={link.label}>
                 <link.icon className="h-5 w-5" />
               </Button>
             </Link>
@@ -93,13 +93,13 @@ export function Navbar() {
                   {user.name}
                 </Button>
               </Link>
-              <Button variant="ghost" size="icon" onClick={logout}>
+              <Button variant="ghost" size="icon" onClick={logout} aria-label="退出登录">
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <Link href="/login" className="hidden sm:flex">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="登录">
                 <User className="h-5 w-5" />
               </Button>
             </Link>
@@ -107,7 +107,7 @@ export function Navbar() {
 
           {/* Cart Sheet */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-            <SheetTrigger>
+            <SheetTrigger aria-label="购物车">
               <div className="relative inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 cursor-pointer">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
@@ -174,10 +174,11 @@ export function Navbar() {
                                 onClick={() =>
                                   updateQuantity(item.cartItemId, item.quantity - 1)
                                 }
+                                aria-label="减少数量"
                               >
                                 -
                               </Button>
-                              <span className="w-8 text-center text-sm">
+                              <span className="w-8 text-center text-sm" aria-label="数量">
                                 {item.quantity}
                               </span>
                               <Button
@@ -187,6 +188,7 @@ export function Navbar() {
                                 onClick={() =>
                                   updateQuantity(item.cartItemId, item.quantity + 1)
                                 }
+                                aria-label="增加数量"
                               >
                                 +
                               </Button>
@@ -196,6 +198,7 @@ export function Navbar() {
                             variant="ghost"
                             size="icon"
                             onClick={() => removeFromCart(item.cartItemId)}
+                            aria-label="移除商品"
                           >
                             <X className="h-4 w-4" />
                           </Button>
@@ -253,6 +256,8 @@ export function Navbar() {
             size="icon"
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "关闭菜单" : "打开菜单"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>

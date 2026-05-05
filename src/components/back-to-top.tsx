@@ -33,6 +33,7 @@ export function BackToTop() {
             size="icon"
             className="h-10 w-10 rounded-full shadow-lg"
             onClick={scrollToTop}
+            aria-label="回到顶部"
           >
             <ArrowUp className="h-4 w-4" />
           </Button>

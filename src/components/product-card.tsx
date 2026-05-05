@@ -98,6 +98,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               toast.info(`已取消收藏 ${product.name}`);
             }
           }}
+          aria-label={liked ? "取消收藏" : "收藏"}
           className="absolute right-3 top-12 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors hover:bg-white"
         >
           <Heart
@@ -134,6 +135,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
+                aria-label={`选择颜色 ${color}`}
+                aria-pressed={selectedColor === color}
                 className={`h-5 w-5 rounded-full border-2 transition-all ${
                   selectedColor === color
                     ? "border-primary scale-110"

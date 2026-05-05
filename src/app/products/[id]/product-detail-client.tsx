@@ -172,6 +172,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
+                    aria-label={`选择颜色 ${color}`}
+                    aria-pressed={selectedColor === color}
                     className={`relative h-10 w-10 rounded-full border-2 transition-all ${
                       selectedColor === color
                         ? "border-primary scale-110"
@@ -195,14 +197,16 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 variant="outline"
                 size="icon"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                aria-label="减少数量"
               >
                 -
               </Button>
-              <span className="w-12 text-center font-medium">{quantity}</span>
+              <span className="w-12 text-center font-medium" aria-label="数量">{quantity}</span>
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => setQuantity(quantity + 1)}
+                aria-label="增加数量"
               >
                 +
               </Button>
@@ -224,6 +228,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               size="lg"
               variant="outline"
               onClick={() => toggleWishlist(product.id)}
+              aria-label={liked ? "取消收藏" : "收藏"}
             >
               <Heart
                 className={`h-5 w-5 ${
@@ -231,7 +236,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 }`}
               />
             </Button>
-            <Button size="lg" variant="outline">
+            <Button size="lg" variant="outline" aria-label="分享">
               <Share2 className="h-5 w-5" />
             </Button>
           </div>

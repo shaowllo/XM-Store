@@ -95,6 +95,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
               />
               <button
                 onClick={() => setShowFilters(!showFilters)}
+                aria-label="筛选"
+                aria-pressed={showFilters}
                 className={`p-1 rounded transition-colors ${
                   showFilters ? "bg-primary/10 text-primary" : "text-muted-foreground"
                 }`}
@@ -102,7 +104,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 <SlidersHorizontal className="h-4 w-4" />
               </button>
               {query && (
-                <button onClick={() => setQuery("")}>
+                <button onClick={() => setQuery("")} aria-label="清除搜索">
                   <X className="h-4 w-4 text-muted-foreground" />
                 </button>
               )}

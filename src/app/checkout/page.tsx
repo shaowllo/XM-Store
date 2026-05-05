@@ -173,7 +173,7 @@ export default function CheckoutPage() {
                 收货地址
               </h3>
               {addresses.length > 0 && (
-                <Button variant="ghost" size="sm" onClick={() => setShowAddressList(!showAddressList)}>
+                <Button variant="ghost" size="sm" onClick={() => setShowAddressList(!showAddressList)} aria-label={showAddressList ? "收起地址列表" : "展开地址列表"} aria-expanded={showAddressList}>
                   {showAddressList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
               )}
@@ -216,7 +216,7 @@ export default function CheckoutPage() {
                 <Tag className="h-4 w-4" />
                 优惠券
               </h3>
-              <Button variant="ghost" size="sm" onClick={() => setShowCouponList(!showCouponList)}>
+              <Button variant="ghost" size="sm" onClick={() => setShowCouponList(!showCouponList)} aria-label={showCouponList ? "收起优惠券列表" : "展开优惠券列表"} aria-expanded={showCouponList}>
                 {showCouponList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
             </div>
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
                   <Tag className="h-3 w-3" />
                   {appliedCoupon.code} -¥{appliedCoupon.discount}
                 </Badge>
-                <Button variant="ghost" size="sm" onClick={handleRemoveCoupon}>
+                <Button variant="ghost" size="sm" onClick={handleRemoveCoupon} aria-label="移除优惠券">
                   <X className="h-4 w-4" />
                 </Button>
               </div>
@@ -237,6 +237,7 @@ export default function CheckoutPage() {
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   placeholder="输入优惠码"
+                  aria-label="优惠码"
                   className="flex-1 rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
                   onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
                 />
