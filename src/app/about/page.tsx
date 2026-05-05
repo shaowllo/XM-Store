@@ -1,9 +1,16 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Zap, Target, Heart, Globe, Users, Award, TrendingUp, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "关于我们 | XM Store",
+  description: "了解 XM Store 的品牌故事、核心价值观和发展历程。我们致力于为全球消费者提供最前沿的科技产品。",
+  openGraph: {
+    title: "关于 XM Store",
+    description: "了解 XM Store 的品牌故事、核心价值观和发展历程",
+  },
+};
 
 const values = [
   {
@@ -46,22 +53,13 @@ export default function AboutPage() {
           <div className="absolute -left-40 -bottom-40 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight"
-          >
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             关于 XM Store
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-6 text-lg text-white/70 max-w-2xl mx-auto"
-          >
+          </h1>
+          <p className="mt-6 text-lg text-white/70 max-w-2xl mx-auto">
             我们致力于为全球消费者提供最前沿的科技产品，
             让每个人都能享受科技带来的美好生活
-          </motion.p>
+          </p>
         </div>
       </section>
 
@@ -127,12 +125,8 @@ export default function AboutPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => (
-              <motion.div
+              <div
                 key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
                 className="rounded-2xl border bg-card p-6 text-center"
               >
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -142,7 +136,7 @@ export default function AboutPage() {
                 <p className="mt-2 text-sm text-muted-foreground">
                   {value.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -160,11 +154,8 @@ export default function AboutPage() {
           <div className="absolute left-1/2 h-full w-px -translate-x-1/2 bg-border hidden md:block" />
           <div className="space-y-8">
             {milestones.map((milestone, index) => (
-              <motion.div
+              <div
                 key={milestone.year}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
                 className={`flex flex-col md:flex-row items-center gap-4 ${
                   index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
@@ -184,7 +175,7 @@ export default function AboutPage() {
                   {index + 1}
                 </div>
                 <div className="flex-1 hidden md:block" />
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

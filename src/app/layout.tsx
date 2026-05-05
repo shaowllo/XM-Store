@@ -10,11 +10,19 @@ import { UserProvider } from "@/components/user-provider";
 import { AddressProvider } from "@/components/address-provider";
 import { CouponProvider } from "@/components/coupon-provider";
 import { WebVitals } from "@/components/web-vitals";
+import { BackToTop } from "@/components/back-to-top";
 
 export const metadata: Metadata = {
   title: "XM Store - 科技数码精选",
   description: "探索最新科技数码产品，品质生活从这里开始",
   manifest: "/manifest.json",
+  keywords: ["科技", "数码", "手机", "耳机", "智能手表", "电脑", "电商"],
+  authors: [{ name: "XM Store" }],
+  openGraph: {
+    title: "XM Store - 科技数码精选",
+    description: "探索最新科技数码产品，品质生活从这里开始",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -36,6 +44,7 @@ export default function RootLayout({
                     <main className="flex-1">{children}</main>
                     <Footer />
                     <Toaster position="top-center" richColors closeButton />
+                    <BackToTop />
                   </OrderProvider>
                 </WishlistProvider>
               </CartProvider>

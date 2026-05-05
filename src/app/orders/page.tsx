@@ -38,31 +38,25 @@ export default function OrdersPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">订单历史</h1>
-          <p className="mt-2 text-muted-foreground">共 {orders.length} 笔订单</p>
-        </div>
-        {orders.length > 0 && (
-          <Button variant="outline" size="sm" onClick={clearOrders} className="gap-2">
-            <Trash2 className="h-4 w-4" />
-            清空历史
-          </Button>
-        )}
+        <h1 className="text-3xl font-bold">我的订单</h1>
+        <Button variant="outline" size="sm" onClick={clearOrders} className="gap-2">
+          <Trash2 className="h-4 w-4" />
+          清空历史
+        </Button>
       </div>
 
       <div className="mt-8 space-y-6">
-        {orders.map((order, index) => (
+        {orders.map((order) => (
           <motion.div
             key={order.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
             className="rounded-2xl border bg-card p-6"
           >
-            <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">订单号</p>
-                <p className="font-medium">{order.id}</p>
+                <p className="font-mono font-medium">{order.id}</p>
               </div>
               <div className="text-right">
                 <div className="flex items-center justify-end gap-1 text-sm text-muted-foreground">
