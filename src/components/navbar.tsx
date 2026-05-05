@@ -60,7 +60,7 @@ export function Navbar() {
 
           {/* Cart Sheet */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-            <SheetTrigger>
+            <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
