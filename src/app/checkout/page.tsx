@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { CreditCard, Truck, Shield, Clock, CheckCircle, ShoppingBag, MapPin, Tag, ChevronDown, ChevronUp, X } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
@@ -54,8 +55,10 @@ export default function CheckoutPage() {
     if (coupon) {
       setAppliedCoupon({ code: coupon.code, discount: coupon.discount });
       setCouponCode("");
+      toast.success(`优惠券 ${coupon.code} 已应用，节省 ¥${coupon.discount}`);
     } else {
       setCouponError("优惠券无效、已使用、已过期或未达到最低消费金额");
+      toast.error("优惠券应用失败");
     }
   };
 
@@ -65,6 +68,10 @@ export default function CheckoutPage() {
   };
 
   const handlePay = () => {
+    if (!selectedAddress) {
+      toast.error("请选择收货地址");
+      return;
+    }
     setProcessing(true);
     setStep("processing");
     setTimeout(() => {
@@ -75,6 +82,7 @@ export default function CheckoutPage() {
       clearCart();
       setProcessing(false);
       setStep("success");
+      toast.success("订单支付成功！");
     }, 2000);
   };
 

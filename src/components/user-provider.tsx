@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { toast } from "sonner";
 
 export interface User {
   id: string;
@@ -54,10 +55,14 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         };
         setUser(userWithoutPassword);
         localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
+        document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400`;
+        toast.success(`欢迎回来，${found.name}！`);
         return true;
       }
+      toast.error("邮箱或密码错误");
     } catch (e) {
       console.error("Login failed", e);
+      toast.error("登录失败，请稍后重试");
     }
     return false;
   }, []);
@@ -66,6 +71,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     try {
       const users: StoredUser[] = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
       if (users.find((u) => u.email === email)) {
+        toast.error("该邮箱已被注册");
         return false;
       }
       const newUser: StoredUser = {
@@ -83,9 +89,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       };
       setUser(userWithoutPassword);
       localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
+      document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400`;
+      toast.success("注册成功！");
       return true;
     } catch (e) {
       console.error("Register failed", e);
+      toast.error("注册失败，请稍后重试");
     }
     return false;
   }, []);
@@ -93,6 +102,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem(USER_KEY);
+    document.cookie = "xmstore-user=; path=/; max-age=0";
+    toast.info("已退出登录");
   }, []);
 
   return (

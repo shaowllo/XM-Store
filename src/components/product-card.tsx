@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -91,6 +92,11 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           onClick={(e) => {
             e.preventDefault();
             toggleWishlist(product.id);
+            if (!liked) {
+              toast.success(`已收藏 ${product.name}`);
+            } else {
+              toast.info(`已取消收藏 ${product.name}`);
+            }
           }}
           className="absolute right-3 top-12 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors hover:bg-white"
         >

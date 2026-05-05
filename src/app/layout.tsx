@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { CartProvider } from "@/components/cart-provider";
@@ -34,6 +35,7 @@ export default function RootLayout({
                     <Navbar />
                     <main className="flex-1">{children}</main>
                     <Footer />
+                    <Toaster position="top-center" richColors closeButton />
                   </OrderProvider>
                 </WishlistProvider>
               </CartProvider>

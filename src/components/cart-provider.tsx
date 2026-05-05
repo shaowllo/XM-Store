@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { toast } from "sonner";
 import { useUser } from "./user-provider";
 import type { Product } from "@/lib/data";
 
@@ -70,10 +71,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prev, { cartItemId, product, quantity, selectedColor }];
     });
     setIsCartOpen(true);
+    toast.success(`已添加 ${product.name} 到购物车`);
   }, []);
 
   const removeFromCart = useCallback((cartItemId: string) => {
-    setItems((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
+    setItems((prev) => {
+      const item = prev.find((i) => i.cartItemId === cartItemId);
+      if (item) {
+        toast.info(`已移除 ${item.product.name}`);
+      }
+      return prev.filter((item) => item.cartItemId !== cartItemId);
+    });
   }, []);
 
   const updateQuantity = useCallback((cartItemId: string, quantity: number) => {
