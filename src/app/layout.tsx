@@ -3,6 +3,8 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { CartProvider } from "@/components/cart-provider";
+import { WishlistProvider } from "@/components/wishlist-provider";
+import { OrderProvider } from "@/components/order-provider";
 
 export const metadata: Metadata = {
   title: "XM Store - 科技数码精选",
@@ -18,9 +20,13 @@ export default function RootLayout({
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background font-sans">
         <CartProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <WishlistProvider>
+            <OrderProvider>
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </OrderProvider>
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

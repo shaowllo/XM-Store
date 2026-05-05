@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/components/cart-provider";
+import { useWishlist } from "@/components/wishlist-provider";
 import type { Product } from "@/lib/data";
 
 interface ProductCardProps {
@@ -16,7 +18,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addToCart } = useCart();
-  const [isLiked, setIsLiked] = useState(false);
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const liked = isInWishlist(product.id);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -37,13 +40,19 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
     >
       {/* Image */}
       <Link href={`/products/${product.id}`} className="relative aspect-square overflow-hidden bg-muted">
-        <motion.img
-          src={product.image}
-          alt={product.name}
-          className="h-full w-full object-cover"
+        <motion.div
+          className="relative h-full w-full"
           animate={{ scale: isHovered ? 1.08 : 1 }}
           transition={{ duration: 0.4 }}
-        />
+        >
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+        </motion.div>
 
         {/* Badge */}
         {product.badge && (
@@ -81,13 +90,13 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           whileTap={{ scale: 0.8 }}
           onClick={(e) => {
             e.preventDefault();
-            setIsLiked(!isLiked);
+            toggleWishlist(product.id);
           }}
           className="absolute right-3 top-12 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors hover:bg-white"
         >
           <Heart
             className={`h-4 w-4 transition-colors ${
-              isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"
+              liked ? "fill-red-500 text-red-500" : "text-muted-foreground"
             }`}
           />
         </motion.button>

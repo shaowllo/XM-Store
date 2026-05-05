@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { ProductCard } from "@/components/product-card";
 import { products } from "@/lib/data";
@@ -12,7 +16,20 @@ const categoryIcons: Record<string, React.ReactNode> = {
   computer: <Laptop className="h-6 w-6" />,
 };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !EMAIL_REGEX.test(email)) return;
+    setSubscribed(true);
+    setEmail("");
+    setTimeout(() => setSubscribed(false), 3000);
+  };
+
   const featuredProducts = products.slice(0, 4);
   const newArrivals = products.slice(4, 8);
 
@@ -90,15 +107,19 @@ export default function Home() {
               <p className="mt-4 text-white/70">
                 购买XM Buds Pro即享首发优惠，体验沉浸式降噪音质
               </p>
-              <Button className="mt-6 bg-white text-black hover:bg-white/90" size="lg">
-                立即抢购
-              </Button>
+              <Link href="/products/2">
+                <Button className="mt-6 bg-white text-black hover:bg-white/90" size="lg">
+                  立即抢购
+                </Button>
+              </Link>
             </div>
-            <div className="relative">
-              <img
+            <div className="relative h-64 w-64">
+              <Image
                 src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=400&fit=crop"
                 alt="Promo"
-                className="h-64 w-64 rounded-2xl object-cover shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
+                fill
+                className="rounded-2xl object-cover shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
+                sizes="256px"
               />
             </div>
           </div>
@@ -137,14 +158,22 @@ export default function Home() {
           <p className="mt-3 text-muted-foreground max-w-md mx-auto">
             第一时间获取新品发布、独家优惠和科技资讯
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form onSubmit={handleSubscribe} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="输入您的邮箱"
+              required
               className="flex-1 rounded-lg border bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
             />
-            <Button size="lg">订阅</Button>
-          </div>
+            <Button type="submit" size="lg" disabled={subscribed}>
+              {subscribed ? "已订阅" : "订阅"}
+            </Button>
+          </form>
+          {subscribed && (
+            <p className="mt-3 text-sm text-green-600">感谢订阅！我们会将最新资讯发送到您的邮箱。</p>
+          )}
         </div>
       </section>
     </div>

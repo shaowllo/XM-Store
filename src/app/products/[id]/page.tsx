@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -18,17 +19,18 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/data";
 import { useCart } from "@/components/cart-provider";
+import { useWishlist } from "@/components/wishlist-provider";
 import { ProductCard } from "@/components/product-card";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const id = params.id as string;
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const product = products.find((p) => p.id === id);
 
   const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState(1);
-  const [isLiked, setIsLiked] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
@@ -62,6 +64,8 @@ export default function ProductDetailPage() {
     ? product.images
     : [product.image];
 
+  const liked = isInWishlist(product.id);
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
@@ -77,12 +81,15 @@ export default function ProductDetailPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="aspect-square overflow-hidden rounded-2xl bg-muted"
+            className="relative aspect-square overflow-hidden rounded-2xl bg-muted"
           >
-            <img
+            <Image
               src={productImages[activeImage]}
               alt={product.name}
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
             />
           </motion.div>
           <div className="grid grid-cols-4 gap-3">
@@ -90,16 +97,18 @@ export default function ProductDetailPage() {
               <button
                 key={index}
                 onClick={() => setActiveImage(index)}
-                className={`aspect-square overflow-hidden rounded-xl bg-muted border-2 transition-all ${
+                className={`relative aspect-square overflow-hidden rounded-xl bg-muted border-2 transition-all ${
                   activeImage === index
                     ? "border-primary"
                     : "border-transparent hover:border-primary/50"
                 }`}
               >
-                <img
+                <Image
                   src={img}
                   alt={`${product.name} ${index + 1}`}
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="100px"
                 />
               </button>
             ))}
@@ -231,9 +240,7 @@ export default function ProductDetailPage() {
               size="lg"
               className="flex-1 gap-2"
               onClick={() => {
-                for (let i = 0; i < quantity; i++) {
-                  addToCart(product, selectedColor);
-                }
+                addToCart(product, selectedColor, quantity);
               }}
             >
               <ShoppingCart className="h-5 w-5" />
@@ -242,11 +249,11 @@ export default function ProductDetailPage() {
             <Button
               size="lg"
               variant="outline"
-              onClick={() => setIsLiked(!isLiked)}
+              onClick={() => toggleWishlist(product.id)}
             >
               <Heart
                 className={`h-5 w-5 ${
-                  isLiked ? "fill-red-500 text-red-500" : ""
+                  liked ? "fill-red-500 text-red-500" : ""
                 }`}
               />
             </Button>

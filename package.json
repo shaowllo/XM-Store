@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "if exist dist rmdir /s /q dist",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

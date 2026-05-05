@@ -168,6 +168,7 @@ export const heroSlides: HeroSlide[] = [
     description: "全新影像系统，捕捉每个精彩瞬间",
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&h=600&fit=crop",
     color: "from-violet-600 to-indigo-600",
+    productId: "1",
   },
   {
     id: 2,
@@ -176,6 +177,7 @@ export const heroSlides: HeroSlide[] = [
     description: "智能主动降噪，沉浸式听觉体验",
     image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=1200&h=600&fit=crop",
     color: "from-emerald-600 to-teal-600",
+    productId: "2",
   },
   {
     id: 3,
@@ -184,5 +186,6 @@ export const heroSlides: HeroSlide[] = [
     description: "专业运动监测，钛合金坚固表身",
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=600&fit=crop",
     color: "from-orange-600 to-red-600",
+    productId: "3",
   },
 ];

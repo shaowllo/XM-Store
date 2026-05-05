@@ -26,6 +26,7 @@ export interface HeroSlide {
   description: string;
   image: string;
   color: string;
+  productId: string;
 }
 
 export interface Feature {

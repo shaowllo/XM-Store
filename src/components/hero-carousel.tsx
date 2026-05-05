@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { heroSlides } from "@/lib/data";
+import Link from "next/link";
 
 export function HeroCarousel() {
   const [current, setCurrent] = useState(0);
@@ -29,7 +31,7 @@ export function HeroCarousel() {
 
   const variants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? "100%" : "-100%",
       opacity: 0,
     }),
     center: {
@@ -39,7 +41,7 @@ export function HeroCarousel() {
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? "100%" : "-100%",
       opacity: 0,
     }),
   };
@@ -62,10 +64,13 @@ export function HeroCarousel() {
         >
           {/* Background Image */}
           <div className="absolute inset-0">
-            <img
+            <Image
               src={slide.image}
               alt={slide.title}
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority={current === 0}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
           </div>
@@ -103,16 +108,20 @@ export function HeroCarousel() {
                 transition={{ delay: 0.5 }}
                 className="mt-8 flex gap-4"
               >
-                <Button size="lg" className="bg-white text-black hover:bg-white/90">
-                  立即购买
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10"
-                >
-                  了解更多
-                </Button>
+                <Link href={`/products/${slide.productId}`}>
+                  <Button size="lg" className="bg-white text-black hover:bg-white/90">
+                    立即购买
+                  </Button>
+                </Link>
+                <Link href={`/products/${slide.productId}`}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10"
+                  >
+                    了解更多
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </div>

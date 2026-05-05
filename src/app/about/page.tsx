@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Zap, Target, Heart, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const values = [
   {
@@ -185,12 +186,12 @@ export default function AboutPage() {
             与我们一起，用科技改变世界，创造更美好的未来
           </p>
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-            <button className="rounded-lg bg-white text-primary px-6 py-3 font-medium hover:bg-white/90 transition-colors">
+            <Button className="bg-white text-primary hover:bg-white/90">
               了解职位
-            </button>
-            <button className="rounded-lg border border-white/30 px-6 py-3 font-medium hover:bg-white/10 transition-colors">
+            </Button>
+            <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
               联系我们
-            </button>
+            </Button>
           </div>
         </div>
       </section>
