@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Menu, X, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, Search, Heart, Package } from "lucide-react";
 import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,11 @@ export function Navbar() {
     { href: "/", label: "首页" },
     { href: "/products", label: "产品" },
     { href: "/about", label: "关于" },
+  ];
+
+  const actionLinks = [
+    { href: "/wishlist", label: "收藏", icon: Heart },
+    { href: "/orders", label: "订单", icon: Package },
   ];
 
   return (
@@ -65,6 +70,14 @@ export function Navbar() {
           </Button>
 
           <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+
+          {actionLinks.map((link) => (
+            <Link key={link.href} href={link.href} className="hidden sm:flex">
+              <Button variant="ghost" size="icon">
+                <link.icon className="h-5 w-5" />
+              </Button>
+            </Link>
+          ))}
 
           {/* Cart Sheet */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -235,6 +248,18 @@ export function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors"
                 >
+                  {link.label}
+                </Link>
+              ))}
+              <Separator className="my-2" />
+              {actionLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors flex items-center gap-2"
+                >
+                  <link.icon className="h-4 w-4" />
                   {link.label}
                 </Link>
               ))}

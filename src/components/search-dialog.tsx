@@ -2,9 +2,10 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X } from "lucide-react";
-import { products } from "@/lib/data";
+import { Search, X, SlidersHorizontal } from "lucide-react";
+import { products, categories } from "@/lib/data";
 import Link from "next/link";
+import Image from "next/image";
 
 interface SearchDialogProps {
   open: boolean;
@@ -13,11 +14,17 @@ interface SearchDialogProps {
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const [query, setQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("relevance");
+  const [showFilters, setShowFilters] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (open) {
       setQuery("");
+      setSelectedCategory("all");
+      setSortBy("relevance");
+      setShowFilters(false);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [open]);
@@ -25,13 +32,31 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    return products.filter(
+    let filtered = products.filter(
       (p) =>
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
         p.tags.some((t) => t.toLowerCase().includes(q))
     );
-  }, [query]);
+
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((p) => p.category === selectedCategory);
+    }
+
+    switch (sortBy) {
+      case "price-asc":
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        break;
+      case "rating":
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+        break;
+    }
+
+    return filtered;
+  }, [query, selectedCategory, sortBy]);
 
   if (!open) return null;
 
@@ -64,12 +89,67 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   if (e.key === "Escape") onOpenChange(false);
                 }}
               />
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`p-1 rounded transition-colors ${
+                  showFilters ? "bg-primary/10 text-primary" : "text-muted-foreground"
+                }`}
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+              </button>
               {query && (
                 <button onClick={() => setQuery("")}>
                   <X className="h-4 w-4 text-muted-foreground" />
                 </button>
               )}
             </div>
+
+            {showFilters && (
+              <div className="border-b px-4 py-3 space-y-3">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">分类筛选</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setSelectedCategory("all")}
+                      className={`px-3 py-1 rounded-full text-xs transition-colors ${
+                        selectedCategory === "all"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted hover:bg-muted/80"
+                      }`}
+                    >
+                      全部
+                    </button>
+                    {categories.map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.id)}
+                        className={`px-3 py-1 rounded-full text-xs transition-colors ${
+                          selectedCategory === cat.id
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted hover:bg-muted/80"
+                        }`}
+                      >
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">排序</p>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="rounded-lg border bg-background px-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="relevance">相关度</option>
+                    <option value="price-asc">价格从低到高</option>
+                    <option value="price-desc">价格从高到低</option>
+                    <option value="rating">评分最高</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
             <div className="max-h-[400px] overflow-y-auto">
               {results.length === 0 ? (
                 <div className="px-4 py-8 text-center text-muted-foreground text-sm">
@@ -77,6 +157,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 </div>
               ) : (
                 <div className="py-2">
+                  <div className="px-4 py-2 text-xs text-muted-foreground">
+                    找到 {results.length} 个结果
+                  </div>
                   {results.map((product) => (
                     <Link
                       key={product.id}
@@ -84,16 +167,23 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                       onClick={() => onOpenChange(false)}
                       className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
                     >
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="h-12 w-12 rounded-lg object-cover"
-                      />
-                      <div className="flex-1">
-                        <div className="font-medium">{product.name}</div>
+                      <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-muted shrink-0">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          sizes="48px"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium truncate">{product.name}</div>
                         <div className="text-sm text-muted-foreground">
                           ¥{product.price.toLocaleString()}
                         </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground shrink-0">
+                        {product.rating} ★
                       </div>
                     </Link>
                   ))}
