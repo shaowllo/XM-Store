@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Package, Clock, Truck, CircleCheck, XCircle, ArrowLeft, MapPin } from "lucide-react";
 import { useOrders, type OrderStatus } from "@/components/order-provider";
 import { useAddress } from "@/components/address-provider";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -44,10 +45,7 @@ export default function OrderDetailPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Link href="/orders" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
-        <ArrowLeft className="h-4 w-4" />
-        返回订单列表
-      </Link>
+      <Breadcrumb items={[{ label: "我的订单", href: "/orders" }, { label: "订单详情" }]} />
 
       <h1 className="text-3xl font-bold">订单详情</h1>
       <p className="mt-1 text-muted-foreground">订单号: {order.id}</p>

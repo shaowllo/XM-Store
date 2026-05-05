@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "./theme-toggle";
 import { SearchDialog } from "./search-dialog";
 
 export function Navbar() {
@@ -68,6 +69,8 @@ export function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-3">
+          <ThemeToggle />
+
           <Button variant="ghost" size="icon" className="hidden sm:flex" onClick={() => setSearchOpen(true)}>
             <Search className="h-5 w-5" />
           </Button>

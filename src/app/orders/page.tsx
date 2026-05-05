@@ -6,6 +6,7 @@ import { useOrders, type OrderStatus } from "@/components/order-provider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Breadcrumb } from "@/components/breadcrumb";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -37,6 +38,7 @@ export default function OrdersPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <Breadcrumb items={[{ label: "我的订单" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">我的订单</h1>
         <Button variant="outline" size="sm" onClick={clearOrders} className="gap-2">

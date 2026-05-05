@@ -8,6 +8,7 @@ import { useCart } from "@/components/cart-provider";
 import { useOrders } from "@/components/order-provider";
 import { useAddress } from "@/components/address-provider";
 import { useCoupon as useCouponContext } from "@/components/coupon-provider";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -112,6 +113,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
+      <Breadcrumb items={[{ label: "购物车", href: "/cart" }, { label: "结算" }]} />
       <h1 className="text-3xl font-bold tracking-tight">
         {step === "processing" ? "处理中..." : "结算"}
       </h1>

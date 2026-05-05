@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Plus, Trash2, Star, X, Check } from "lucide-react";
 import { useAddress, type Address } from "@/components/address-provider";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -113,6 +114,7 @@ export default function AddressesPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <Breadcrumb items={[{ label: "个人中心", href: "/profile" }, { label: "收货地址" }]} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">收货地址</h1>

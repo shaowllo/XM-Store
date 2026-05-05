@@ -4,6 +4,7 @@ import { Heart, Trash2, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/components/wishlist-provider";
 import { products } from "@/lib/data";
 import { ProductCard } from "@/components/product-card";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -29,6 +30,7 @@ export default function WishlistPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <Breadcrumb items={[{ label: "我的收藏" }]} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">我的收藏</h1>

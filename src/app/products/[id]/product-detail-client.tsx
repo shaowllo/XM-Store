@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/components/cart-provider";
 import { useWishlist } from "@/components/wishlist-provider";
+import { Breadcrumb } from "@/components/breadcrumb";
 import { ProductCard } from "@/components/product-card";
 import type { Product } from "@/lib/data";
 
@@ -47,13 +48,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-        <span>首页</span>
-        <span>/</span>
-        <span>产品</span>
-        <span>/</span>
-        <span className="text-foreground">{product.name}</span>
-      </nav>
+      <Breadcrumb items={[{ label: "全部产品", href: "/products" }, { label: product.name }]} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="space-y-4">

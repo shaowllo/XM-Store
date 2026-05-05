@@ -9,6 +9,7 @@ import { OrderProvider } from "@/components/order-provider";
 import { UserProvider } from "@/components/user-provider";
 import { AddressProvider } from "@/components/address-provider";
 import { CouponProvider } from "@/components/coupon-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { WebVitals } from "@/components/web-vitals";
 import { BackToTop } from "@/components/back-to-top";
 
@@ -31,26 +32,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="h-full antialiased">
+    <html lang="zh-CN" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-background font-sans">
-        <UserProvider>
-          <AddressProvider>
-            <CouponProvider>
-              <CartProvider>
-                <WishlistProvider>
-                  <OrderProvider>
-                    <WebVitals />
-                    <Navbar />
-                    <main className="flex-1">{children}</main>
-                    <Footer />
-                    <Toaster position="top-center" richColors closeButton />
-                    <BackToTop />
-                  </OrderProvider>
-                </WishlistProvider>
-              </CartProvider>
-            </CouponProvider>
-          </AddressProvider>
-        </UserProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <UserProvider>
+            <AddressProvider>
+              <CouponProvider>
+                <CartProvider>
+                  <WishlistProvider>
+                    <OrderProvider>
+                      <WebVitals />
+                      <Navbar />
+                      <main className="flex-1">{children}</main>
+                      <Footer />
+                      <Toaster position="top-center" richColors closeButton />
+                      <BackToTop />
+                    </OrderProvider>
+                  </WishlistProvider>
+                </CartProvider>
+              </CouponProvider>
+            </AddressProvider>
+          </UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
