@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Star, ShoppingCart, Heart, ArrowUpRight } from "lucide-react";
@@ -18,6 +19,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
+  const router = useRouter();
   const { addToCart, items } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const liked = isInWishlist(product.id);
@@ -101,7 +103,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border-0"
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = `/products/${product.id}`;
+              router.push(`/products/${product.id}`);
             }}
           >
             <ArrowUpRight className="h-4 w-4" />

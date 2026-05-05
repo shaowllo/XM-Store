@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -31,21 +30,19 @@ export function BackToTop() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          className="fixed bottom-6 right-6 z-50"
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          onClick={scrollToTop}
+          aria-label="回到顶部"
+          className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-shadow"
         >
-          <Button
-            size="icon"
-            className="h-10 w-10 rounded-full shadow-lg"
-            onClick={scrollToTop}
-            aria-label="回到顶部"
-          >
-            <ArrowUp className="h-4 w-4" />
-          </Button>
-        </motion.div>
+          <ArrowUp className="h-5 w-5" />
+        </motion.button>
       )}
     </AnimatePresence>
   );
