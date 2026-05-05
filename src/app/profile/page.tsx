@@ -56,7 +56,7 @@ export default function ProfilePage() {
       icon: <Settings className="h-5 w-5" />,
       label: "账号设置",
       description: "修改个人信息",
-      href: "#",
+      href: "/profile",
     },
   ];
 

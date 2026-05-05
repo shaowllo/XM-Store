@@ -71,6 +71,7 @@ export function ProductsContent() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
+            aria-label="排序方式"
             className="rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="default">默认排序</option>
@@ -85,6 +86,8 @@ export function ProductsContent() {
               size="icon"
               className="rounded-none h-9 w-9"
               onClick={() => setViewMode("grid")}
+              aria-label="网格视图"
+              aria-pressed={viewMode === "grid"}
             >
               <Grid3X3 className="h-4 w-4" />
             </Button>
@@ -93,6 +96,8 @@ export function ProductsContent() {
               size="icon"
               className="rounded-none h-9 w-9"
               onClick={() => setViewMode("list")}
+              aria-label="列表视图"
+              aria-pressed={viewMode === "list"}
             >
               <LayoutList className="h-4 w-4" />
             </Button>

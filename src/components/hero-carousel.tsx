@@ -134,6 +134,7 @@ export function HeroCarousel() {
           variant="ghost"
           size="icon"
           onClick={() => paginate(-1)}
+          aria-label="上一张"
           className="h-10 w-10 rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -146,6 +147,8 @@ export function HeroCarousel() {
                 setDirection(idx > current ? 1 : -1);
                 setCurrent(idx);
               }}
+              aria-label={`跳转到第 ${idx + 1} 张幻灯片`}
+              aria-current={idx === current ? "true" : undefined}
               className={`h-2 rounded-full transition-all duration-300 ${
                 idx === current
                   ? "w-8 bg-white"
@@ -158,6 +161,7 @@ export function HeroCarousel() {
           variant="ghost"
           size="icon"
           onClick={() => paginate(1)}
+          aria-label="下一张"
           className="h-10 w-10 rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
         >
           <ChevronRight className="h-5 w-5" />

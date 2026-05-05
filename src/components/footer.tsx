@@ -52,19 +52,19 @@ export function Footer() {
             <div>
               <h4 className="font-medium text-sm mb-3">服务支持</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="#" className="hover:text-foreground transition-colors">售后服务</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">配送说明</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">退换政策</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">常见问题</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">售后服务</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">配送说明</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">退换政策</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">常见问题</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-medium text-sm mb-3">关于我们</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><Link href="/about" className="hover:text-foreground transition-colors">品牌故事</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">联系我们</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">加入我们</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition-colors">隐私政策</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">联系我们</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">加入我们</Link></li>
+                <li><Link href="/about" className="hover:text-foreground transition-colors">隐私政策</Link></li>
               </ul>
             </div>
           </div>

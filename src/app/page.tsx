@@ -116,7 +116,7 @@ export default function Home() {
             <div className="relative h-64 w-64">
               <Image
                 src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=400&fit=crop"
-                alt="Promo"
+                alt="XM Buds Pro 新品首发"
                 fill
                 className="rounded-2xl object-cover shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
                 sizes="256px"
@@ -169,6 +169,7 @@ export default function Home() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="输入您的邮箱"
+                aria-label="邮箱地址"
                 required
                 className="w-full rounded-lg border bg-background pl-10 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
               />
