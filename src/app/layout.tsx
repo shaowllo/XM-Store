@@ -9,6 +9,8 @@ import { WebVitals } from "@/components/web-vitals";
 import { BackToTop } from "@/components/back-to-top";
 import { CartFlyProvider } from "@/components/cart-fly-context";
 import { PetalFall } from "@/components/petal-fall";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "XM Store - 科技数码精选",
@@ -23,27 +25,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const messages = await getMessages();
+
   return (
-    <html lang="zh-CN" className="h-full antialiased" suppressHydrationWarning>
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-background font-sans">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AppProviders>
-            <CartFlyProvider>
-              <WebVitals />
-              <PetalFall />
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <Toaster position="top-center" richColors closeButton />
-              <BackToTop />
-            </CartFlyProvider>
-          </AppProviders>
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <AppProviders>
+              <CartFlyProvider>
+                <WebVitals />
+                <PetalFall />
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <Toaster position="top-center" richColors closeButton />
+                <BackToTop />
+              </CartFlyProvider>
+            </AppProviders>
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
