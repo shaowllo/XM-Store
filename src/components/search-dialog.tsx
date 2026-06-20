@@ -2,10 +2,11 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, SlidersHorizontal, Filter, Star, SearchX, Sparkles } from "lucide-react";
+import { Search, X, SlidersHorizontal, Filter, Star, SearchX, Sparkles, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { products, categories } from "@/lib/data";
 import { EmptyState } from "@/components/empty-state";
+import { getRecentSearches, addRecentSearch, clearRecentSearches } from "@/lib/recent-searches";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -36,6 +37,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("relevance");
   const [showFilters, setShowFilters] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const prevOpen = useRef(open);
 
@@ -45,6 +47,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
       setSelectedCategory("all");
       setSortBy("relevance");
       setShowFilters(false);
+      setRecentSearches(getRecentSearches());
       requestAnimationFrame(() => {
         inputRef.current?.focus();
       });
@@ -124,6 +127,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   className="flex-1 bg-transparent outline-none text-base placeholder:text-muted-foreground/60"
                   onKeyDown={(e) => {
                     if (e.key === "Escape") onOpenChange(false);
+                    if (e.key === "Enter" && query.trim()) {
+                      addRecentSearch(query);
+                    }
                   }}
                 />
                 <button
@@ -232,12 +238,60 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                       description={`No products found matching "${query}". Try different keywords.`}
                     />
                   ) : (
-                    <div className="px-5 py-12 text-center">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 mx-auto mb-4">
-                        <Sparkles className="h-7 w-7 text-primary" />
+                    <div className="px-5 py-6">
+                      {/* Recent searches */}
+                      {recentSearches.length > 0 && (
+                        <div className="mb-5">
+                          <div className="flex items-center justify-between mb-3">
+                            <p className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                              <Clock className="h-3 w-3" />
+                              Recent Searches
+                            </p>
+                            <button
+                              onClick={clearRecentSearches}
+                              className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              Clear
+                            </button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {recentSearches.map((term) => (
+                              <button
+                                key={term}
+                                onClick={() => {
+                                  setQuery(term);
+                                  addRecentSearch(term);
+                                }}
+                                className="px-3 py-1.5 rounded-full bg-muted text-xs text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-all"
+                              >
+                                {term}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Trending suggestions */}
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-3">
+                          <Sparkles className="h-3 w-3 text-primary" />
+                          Trending Searches
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {["phones", "wireless", "sport", "pro", "camera"].map((term) => (
+                            <button
+                              key={term}
+                              onClick={() => {
+                                setQuery(term);
+                                addRecentSearch(term);
+                              }}
+                              className="px-3 py-1.5 rounded-full bg-primary/5 text-xs text-primary hover:bg-primary/10 transition-all"
+                            >
+                              {term}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">Enter keywords to start searching</p>
-                      <p className="text-xs text-muted-foreground/60 mt-1">Try searching &quot;Phones&quot;, &quot;Earphones&quot;, or &quot;Watches&quot;</p>
                     </div>
                   )
                 ) : (

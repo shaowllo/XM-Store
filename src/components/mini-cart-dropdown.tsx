@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart-provider";
+import { CartRecommendations } from "@/components/cart-recommendations";
 
 export function MiniCartDropdown() {
   const t = useTranslations("cart");
@@ -133,6 +134,11 @@ export function MiniCartDropdown() {
                   </Button>
                 </Link>
               </div>
+
+              {/* Cart recommendations */}
+              {items.length > 0 && (
+                <CartRecommendations cartIds={items.map((i) => i.product.id)} maxItems={2} />
+              )}
             </div>
           </motion.div>
         )}

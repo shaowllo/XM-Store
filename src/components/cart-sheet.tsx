@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/components/cart-provider";
+import { CartRecommendations } from "@/components/cart-recommendations";
 
 export function CartSheet() {
   const t = useTranslations("cart");
@@ -141,6 +142,9 @@ export function CartSheet() {
                   </Button>
                 </Link>
               </div>
+
+              {/* Cart recommendations */}
+              <CartRecommendations cartIds={items.map((i) => i.product.id)} maxItems={2} />
             </>
           )}
         </div>

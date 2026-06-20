@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -13,17 +13,24 @@ import {
   Check,
   Minus,
   Plus,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart-provider";
 import { useWishlist } from "@/components/wishlist-provider";
 import { useCartFly } from "@/components/cart-fly-context";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductViewer3D } from "@/components/product-viewer-3d";
+import { ReviewSection } from "@/components/review-section";
+import { PriceChart } from "@/components/price-chart";
+import { StockNotify } from "@/components/stock-notify";
 import type { Product } from "@/lib/data";
+import { getRecommendations } from "@/lib/recommendations";
+import { addRecentlyViewed } from "@/lib/recently-viewed";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -50,6 +57,17 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
     : [product.image];
 
   const liked = isInWishlist(product.id);
+
+  // AI-powered recommendations
+  const recommendations = useMemo(
+    () => getRecommendations(product.id, 4),
+    [product.id]
+  );
+
+  // Track recently viewed
+  useEffect(() => {
+    addRecentlyViewed(product.id);
+  }, [product.id]);
 
   return (
     <div className="flex flex-col">
@@ -241,6 +259,19 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 size="lg"
                 variant="outline"
                 className="rounded-full h-12 w-12 p-0"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: product.name,
+                      text: `Check out ${product.name} at XM Store`,
+                      url: window.location.href,
+                    }).catch(() => {});
+                  } else {
+                    navigator.clipboard.writeText(window.location.href)
+                      .then(() => toast.success("Link copied to clipboard"))
+                      .catch(() => {});
+                  }
+                }}
                 aria-label="Share"
               >
                 <Share2 className="h-5 w-5" />
@@ -262,25 +293,46 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <span className="text-xs text-muted-foreground">7-Day Returns</span>
               </div>
             </div>
+
+            <StockNotify productName={product.name} />
+
+            {/* Price History Chart */}
+            <div className="mt-8">
+              <PriceChart
+                productId={product.id}
+                currentPrice={product.price}
+                productName={product.name}
+              />
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
+      {/* Customer Reviews */}
+      <ReviewSection productId={product.id} />
+
+      {/* AI Recommendations */}
+      {recommendations.length > 0 && (
         <section className="border-t">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <span className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                  You May Also Like
+                <span className="text-xs font-medium tracking-widest text-muted-foreground uppercase flex items-center gap-2">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  AI Recommended
                 </span>
-                <h2 className="mt-2 text-2xl font-bold">{t("relatedProducts")}</h2>
+                <h2 className="mt-2 text-2xl font-bold">You Might Also Like</h2>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
-              {relatedProducts.map((p, index) => (
-                <ProductCard key={p.id} product={p} index={index} />
+              {recommendations.map((rec, index) => (
+                <div key={rec.product.id} className="relative">
+                  <ProductCard key={rec.product.id} product={rec.product} index={index} />
+                  {/* Score badge — subtle */}
+                  <div className="absolute top-2 left-2 z-10 rounded-full bg-primary/10 backdrop-blur-sm px-2 py-0.5 text-[10px] text-primary font-medium">
+                    {Math.round(rec.score * 100)}% match
+                  </div>
+                </div>
               ))}
             </div>
           </div>

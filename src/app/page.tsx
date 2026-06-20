@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ArrowDown, Diamond } from "lucide-react";
 import { products } from "@/lib/data";
+import { ProductCard } from "@/components/product-card";
+import { getRecentlyViewed } from "@/lib/recently-viewed";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,6 +20,48 @@ const fadeUp = {
 const stagger = {
   animate: { transition: { staggerChildren: 0.15 } },
 };
+
+/** Recently viewed products section */
+function RecentlyViewed() {
+  const [ids, setIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setIds(getRecentlyViewed().slice(0, 4));
+  }, []);
+
+  const viewedProducts = ids
+    .map((id) => products.find((p) => p.id === id))
+    .filter(Boolean) as typeof products;
+
+  if (viewedProducts.length === 0) return null;
+
+  return (
+    <section className="bg-background">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 py-20 md:py-28">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-8 bg-amber-500/40" />
+            <p className="text-xs tracking-[0.2em] uppercase text-amber-500/70 font-medium">Recently Viewed</p>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold text-foreground leading-[1.15]">
+            Continue Browsing
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 mt-12">
+          {viewedProducts.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -336,6 +380,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* RECENTLY VIEWED */}
+      <RecentlyViewed />
 
       {/* NEWSLETTER */}
       <section className="bg-background">
