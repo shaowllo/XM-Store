@@ -3,26 +3,14 @@
 import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import type { CartItem } from "./cart-provider";
-
-export type OrderStatus = "pending" | "shipped" | "delivered" | "cancelled";
-
-export interface Order {
-  id: string;
-  items: CartItem[];
-  totalPrice: number;
-  totalItems: number;
-  status: OrderStatus;
-  createdAt: string;
-  shippedAt?: string;
-  deliveredAt?: string;
-}
+import type { Order, OrderStatus, CartItem, ShippingAddress } from "@/lib/types";
 
 interface OrderContextType {
   orders: Order[];
-  addOrder: (items: CartItem[], totalPrice: number, totalItems: number) => void;
+  addOrder: (items: CartItem[], totalPrice: number, totalItems: number, paymentMethod?: 'cod', shippingAddress?: ShippingAddress) => void;
   clearOrders: () => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
+  updateTrackingNumber: (orderId: string, trackingNumber: string) => void;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -34,16 +22,25 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
 
   const [orders, setOrders] = useLocalStorage<Order[]>(ORDERS_KEY, []);
 
-  const addOrder = useCallback((items: CartItem[], totalPrice: number, totalItems: number) => {
-    const order: Order = {
+  const addOrder = useCallback((
+    items: CartItem[],
+    totalPrice: number,
+    totalItems: number,
+    paymentMethod?: 'cod',
+    shippingAddress?: ShippingAddress
+  ) => {
+    const newOrder: Order = {
       id: `order-${Date.now()}`,
       items,
       totalPrice,
       totalItems,
-      status: "pending",
+      status: paymentMethod === 'cod' ? 'cod_confirmed' as OrderStatus : 'pending' as OrderStatus,
       createdAt: new Date().toISOString(),
+      paymentMethod,
+      shippingAddress,
     };
-    setOrders((prev) => [order, ...prev]);
+    setOrders((prev) => [newOrder, ...prev]);
+    return newOrder;
   }, [setOrders]);
 
   const clearOrders = useCallback(() => {
@@ -62,9 +59,19 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     );
   }, [setOrders]);
 
+  const updateTrackingNumber = useCallback((orderId: string, trackingNumber: string) => {
+    setOrders((prev) =>
+      prev.map((order) =>
+        order.id === orderId
+          ? { ...order, trackingNumber, status: 'out_for_delivery' as OrderStatus }
+          : order
+      )
+    );
+  }, [setOrders]);
+
   const contextValue = useMemo(
-    () => ({ orders, addOrder, clearOrders, updateOrderStatus }),
-    [orders, addOrder, clearOrders, updateOrderStatus]
+    () => ({ orders, addOrder, clearOrders, updateOrderStatus, updateTrackingNumber }),
+    [orders, addOrder, clearOrders, updateOrderStatus, updateTrackingNumber]
   );
 
   return (
