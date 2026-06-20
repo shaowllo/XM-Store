@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, Heart, Package, User, LogOut, Sparkles } from "lucide-react";
+import { Menu, X, Search, Heart, Package, User, LogOut, Sparkles, Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
@@ -71,6 +71,12 @@ export function Navbar() {
           <Link href="/wishlist" className="hidden sm:flex">
             <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/50" aria-label={t("wishlist")}>
               <Heart className="h-4 w-4" />
+            </Button>
+          </Link>
+
+          <Link href="/theme" className="hidden sm:flex">
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/50" aria-label="Theme Studio">
+              <Palette className="h-4 w-4" />
             </Button>
           </Link>
 

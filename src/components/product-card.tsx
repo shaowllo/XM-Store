@@ -5,11 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Heart, Plus } from "lucide-react";
+import { Heart, Plus, BarChart3 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCart } from "@/components/cart-provider";
 import { useWishlist } from "@/components/wishlist-provider";
 import { useCartFly } from "@/components/cart-fly-context";
+import { toggleCompare, isInCompare } from "@/lib/compare-store";
 import type { Product } from "@/lib/data";
 
 interface ProductCardProps {
@@ -23,6 +24,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { triggerFly } = useCartFly();
   const liked = isInWishlist(product.id);
+  const compared = isInCompare(product.id);
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]);
 
   const discount = product.originalPrice
@@ -55,27 +57,52 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             </span>
           )}
 
-          {/* Wishlist button */}
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            onClick={(e) => {
-              e.preventDefault();
-              toggleWishlist(product.id);
-              if (!liked) {
-                toast.success(`${product.name} added to wishlist`);
-              } else {
-                toast.info(`${product.name} removed from wishlist`);
-              }
-            }}
-            aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
-            className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg bg-background/70 backdrop-blur-md border border-border/50 transition-all hover:bg-background hover:border-amber-500/30 opacity-0 group-hover:opacity-100"
-          >
-            <Heart
-              className={`h-3.5 w-3.5 transition-colors ${
-                liked ? "fill-red-500 text-red-500" : "text-foreground/70"
+          {/* Top-right actions */}
+          <div className="absolute right-3 top-3 z-20 flex flex-col gap-1.5">
+            {/* Compare checkbox */}
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              onClick={(e) => {
+                e.preventDefault();
+                const { added } = toggleCompare(product.id);
+                if (added) {
+                  toast.success(`${product.name} added to compare`);
+                } else {
+                  toast.info(`${product.name} removed from compare`);
+                }
+              }}
+              aria-label={compared ? "Remove from compare" : "Add to compare"}
+              className={`flex h-8 w-8 items-center justify-center rounded-lg backdrop-blur-md border transition-all ${
+                compared
+                  ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30"
+                  : "bg-background/70 border-border/50 opacity-0 group-hover:opacity-100 hover:bg-background hover:border-amber-500/30"
               }`}
-            />
-          </motion.button>
+            >
+              <BarChart3 className="h-3.5 w-3.5" />
+            </motion.button>
+
+            {/* Wishlist button */}
+            <motion.button
+              whileTap={{ scale: 0.85 }}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleWishlist(product.id);
+                if (!liked) {
+                  toast.success(`${product.name} added to wishlist`);
+                } else {
+                  toast.info(`${product.name} removed from wishlist`);
+                }
+              }}
+              aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-background/70 backdrop-blur-md border border-border/50 transition-all hover:bg-background hover:border-amber-500/30 opacity-0 group-hover:opacity-100"
+            >
+              <Heart
+                className={`h-3.5 w-3.5 transition-colors ${
+                  liked ? "fill-red-500 text-red-500" : "text-foreground/70"
+                }`}
+              />
+            </motion.button>
+          </div>
 
           {/* Quick add overlay on hover */}
           <div className="absolute inset-x-0 bottom-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">

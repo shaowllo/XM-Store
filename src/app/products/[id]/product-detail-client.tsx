@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Star,
@@ -14,7 +13,6 @@ import {
   Check,
   Minus,
   Plus,
-  Expand,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart-provider";
@@ -23,7 +21,8 @@ import { useCartFly } from "@/components/cart-fly-context";
 import { useTranslations } from "next-intl";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { ProductCard } from "@/components/product-card";
-import { ImageLightbox } from "@/components/image-lightbox";
+import { ProductGallery } from "@/components/product-gallery";
+import { ProductViewer3D } from "@/components/product-viewer-3d";
 import type { Product } from "@/lib/data";
 
 interface ProductDetailClientProps {
@@ -38,8 +37,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
   const { triggerFly } = useCartFly();
   const [selectedColor, setSelectedColor] = useState<string | undefined>(product?.colors?.[0]);
   const [quantity, setQuantity] = useState(1);
-  const [activeImage, setActiveImage] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [view3D, setView3D] = useState(false);
 
   const discount = product.originalPrice
     ? Math.round(
@@ -64,55 +62,44 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
       <section className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           {/* Images - 7 cols */}
-          <div className="lg:col-span-7 space-y-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative aspect-[4/3] lg:aspect-square overflow-hidden rounded-2xl bg-muted group cursor-zoom-in"
-              onClick={() => setLightboxOpen(true)}
-            >
-              <Image
-                src={productImages[activeImage]}
-                alt={product.name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                sizes="(max-width: 1024px) 100vw, 58vw"
-                priority
-              />
-              {discount && (
-                <span className="absolute left-4 top-4 inline-flex items-center rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">
-                  -{discount}%
-                </span>
-              )}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors duration-300">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-white/95 backdrop-blur-sm rounded-full px-5 py-2.5 text-sm font-medium shadow-lg">
-                  <Expand className="h-4 w-4" />
-                  View larger image
-                </div>
-              </div>
-            </motion.div>
-            <div className="grid grid-cols-5 gap-2">
-              {productImages.map((img, idx) => (
-                <button
-                  key={`${product.id}-img-${idx}`}
-                  onClick={() => setActiveImage(idx)}
-                  className={`relative aspect-square overflow-hidden rounded-xl bg-muted transition-all ${
-                    activeImage === idx
-                      ? "ring-2 ring-foreground"
-                      : "opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`${product.name} ${idx + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="100px"
-                  />
-                </button>
-              ))}
+          <div className="lg:col-span-7">
+            {/* 3D toggle */}
+            <div className="flex items-center gap-2 mb-3">
+              <button
+                onClick={() => setView3D(false)}
+                className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+                  !view3D
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground bg-muted"
+                }`}
+              >
+                Gallery
+              </button>
+              <button
+                onClick={() => setView3D(true)}
+                className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+                  view3D
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground bg-muted"
+                }`}
+              >
+                3D View
+              </button>
             </div>
+
+            {view3D ? (
+              <ProductViewer3D
+                images={productImages}
+                productName={product.name}
+                defaultColor={selectedColor}
+              />
+            ) : (
+              <ProductGallery
+                images={productImages}
+                productName={product.name}
+                discount={discount}
+              />
+            )}
           </div>
 
           {/* Info - 5 cols */}
@@ -299,15 +286,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
           </div>
         </section>
       )}
-
-      {/* Lightbox */}
-      <ImageLightbox
-        images={productImages}
-        initialIndex={activeImage}
-        isOpen={lightboxOpen}
-        onClose={() => setLightboxOpen(false)}
-        productName={product.name}
-      />
     </div>
   );
 }

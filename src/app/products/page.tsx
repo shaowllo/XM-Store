@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { ProductsContent } from "./products-content";
+import { CompareBar } from "@/components/compare-bar";
 
 export const metadata: Metadata = {
   title: "全部产品 | XM Store",
@@ -15,6 +16,7 @@ export default function ProductsPage() {
       <Suspense fallback={<div className="py-20 text-center">加载中...</div>}>
         <ProductsContent />
       </Suspense>
+      <CompareBar />
     </div>
   );
 }

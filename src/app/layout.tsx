@@ -11,6 +11,7 @@ import { BackToTop } from "@/components/back-to-top";
 import { CartFlyProvider } from "@/components/cart-fly-context";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { themeScript } from "@/lib/theme-store";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -58,6 +59,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background font-sans bg-mesh">
+        <script dangerouslySetInnerHTML={{ __html: themeScript() }} />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             <AppProviders>
