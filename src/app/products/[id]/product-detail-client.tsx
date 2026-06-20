@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart-provider";
 import { useWishlist } from "@/components/wishlist-provider";
 import { useCartFly } from "@/components/cart-fly-context";
+import { useTranslations } from "next-intl";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { ProductCard } from "@/components/product-card";
 import { ImageLightbox } from "@/components/image-lightbox";
@@ -31,6 +32,7 @@ interface ProductDetailClientProps {
 }
 
 export function ProductDetailClient({ product, relatedProducts }: ProductDetailClientProps) {
+  const t = useTranslations("product");
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { triggerFly } = useCartFly();
@@ -55,7 +57,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
     <div className="flex flex-col">
       {/* Breadcrumb */}
       <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-6">
-        <Breadcrumb items={[{ label: "全部产品", href: "/products" }, { label: product.name }]} />
+        <Breadcrumb items={[{ label: t("categories.all"), href: "/products" }, { label: product.name }]} />
       </div>
 
       {/* Main Product Section */}
@@ -86,7 +88,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors duration-300">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-white/95 backdrop-blur-sm rounded-full px-5 py-2.5 text-sm font-medium shadow-lg">
                   <Expand className="h-4 w-4" />
-                  查看大图
+                  View larger image
                 </div>
               </div>
             </motion.div>
@@ -145,7 +147,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               </div>
               <span className="text-sm font-medium">{product.rating}</span>
               <span className="text-sm text-muted-foreground">
-                ({product.reviews} 评价)
+                ({product.reviews} {t("reviews").toLowerCase()})
               </span>
             </div>
 
@@ -176,7 +178,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                     <button
                       key={color}
                       onClick={() => setSelectedColor(color)}
-                      aria-label={`选择颜色 ${color}`}
+                      aria-label={`Select color ${color}`}
                       aria-pressed={selectedColor === color}
                       className={`relative h-8 w-8 rounded-full transition-all ${
                         selectedColor === color
@@ -203,15 +205,15 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <button
                   className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-muted"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  aria-label="减少数量"
+                  aria-label="Decrease quantity"
                 >
                   <Minus className="h-4 w-4" />
                 </button>
-                <span className="w-12 text-center font-medium" aria-label="数量">{quantity}</span>
+                <span className="w-12 text-center font-medium" aria-label={t("quantity")}>{quantity}</span>
                 <button
                   className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-muted"
                   onClick={() => setQuantity(quantity + 1)}
-                  aria-label="增加数量"
+                  aria-label="Increase quantity"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -233,14 +235,14 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 }}
               >
                 <ShoppingCart className="h-5 w-5" />
-                加入购物车
+                {t("addToCart")}
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="rounded-full h-12 w-12 p-0"
                 onClick={() => toggleWishlist(product.id)}
-                aria-label={liked ? "取消收藏" : "收藏"}
+                aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
                   className={`h-5 w-5 ${
@@ -252,7 +254,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 size="lg"
                 variant="outline"
                 className="rounded-full h-12 w-12 p-0"
-                aria-label="分享"
+                aria-label="Share"
               >
                 <Share2 className="h-5 w-5" />
               </Button>
@@ -262,15 +264,15 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             <div className="mt-8 flex gap-6 pt-8 border-t">
               <div className="flex items-center gap-2.5">
                 <Truck className="h-4 w-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground">极速配送</span>
+                <span className="text-xs text-muted-foreground">Fast Delivery</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Shield className="h-4 w-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground">正品保障</span>
+                <span className="text-xs text-muted-foreground">Genuine Guarantee</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <RotateCcw className="h-4 w-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground">7天退换</span>
+                <span className="text-xs text-muted-foreground">7-Day Returns</span>
               </div>
             </div>
           </motion.div>
@@ -286,7 +288,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <span className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
                   You May Also Like
                 </span>
-                <h2 className="mt-2 text-2xl font-bold">相关产品</h2>
+                <h2 className="mt-2 text-2xl font-bold">{t("relatedProducts")}</h2>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Heart } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCart } from "@/components/cart-provider";
 import { useWishlist } from "@/components/wishlist-provider";
 import { useCartFly } from "@/components/cart-fly-context";
@@ -17,6 +18,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
+  const t = useTranslations("product");
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { triggerFly } = useCartFly();
@@ -58,12 +60,12 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               e.preventDefault();
               toggleWishlist(product.id);
               if (!liked) {
-                toast.success(`已收藏 ${product.name}`);
+                toast.success(`${product.name} added to wishlist`);
               } else {
-                toast.info(`已取消收藏 ${product.name}`);
+                toast.info(`${product.name} removed from wishlist`);
               }
             }}
-            aria-label={liked ? "取消收藏" : "收藏"}
+            aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
             className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-all hover:bg-white opacity-0 group-hover:opacity-100"
           >
             <Heart
@@ -89,7 +91,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
-                aria-label={`选择颜色 ${color}`}
+                aria-label={`Select color ${color}`}
                 aria-pressed={selectedColor === color}
                 className={`h-3 w-3 rounded-full transition-all ${
                   selectedColor === color ? "ring-1 ring-offset-1 ring-foreground" : ""
@@ -122,7 +124,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           }}
           className="mt-3 w-full rounded-full bg-foreground py-2.5 text-xs font-medium text-background transition-all hover:bg-foreground/90 active:scale-[0.98]"
         >
-          加入购物车
+          {t("addToCart")}
         </button>
       </div>
     </motion.div>

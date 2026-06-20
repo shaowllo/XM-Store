@@ -4,16 +4,10 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, Grid3X3, LayoutList, ArrowUpDown, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ProductCard } from "@/components/product-card";
 import { EmptyState } from "@/components/empty-state";
 import { products, categories } from "@/lib/data";
-
-const sortOptions = [
-  { value: "default", label: "默认排序" },
-  { value: "price-asc", label: "价格从低到高" },
-  { value: "price-desc", label: "价格从高到低" },
-  { value: "rating", label: "评分最高" },
-];
 
 type ViewMode = "grid" | "list";
 
@@ -21,6 +15,8 @@ export function ProductsContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations("product");
+  const commonT = useTranslations("common");
   const initialCategory = searchParams.get("category") || "all";
   const initialSort = searchParams.get("sort") || "default";
 
@@ -29,6 +25,13 @@ export function ProductsContent() {
   const [sortBy, setSortBy] = useState(initialSort);
   const [showSortMenu, setShowSortMenu] = useState(false);
   const sortMenuRef = useRef<HTMLDivElement>(null);
+
+  const sortOptions = useMemo(() => [
+    { value: "default", label: t("sortDefault") },
+    { value: "price-asc", label: t("sortPriceLow") },
+    { value: "price-desc", label: t("sortPriceHigh") },
+    { value: "rating", label: t("sortRating") },
+  ], [t]);
 
   useEffect(() => {
     if (!showSortMenu) return;
@@ -93,7 +96,7 @@ export function ProductsContent() {
     return result;
   }, [activeCategory, sortBy]);
 
-  const currentSortLabel = sortOptions.find((s) => s.value === sortBy)?.label || "默认排序";
+  const currentSortLabel = sortOptions.find((s) => s.value === sortBy)?.label || t("sortDefault");
 
   return (
     <div className="py-8">
@@ -107,9 +110,9 @@ export function ProductsContent() {
           Products
         </span>
         <div className="flex items-end justify-between mt-2">
-          <h1 className="text-2xl font-bold tracking-tight">全部产品</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t("categories.all")}</h1>
           <span className="text-sm text-muted-foreground mb-1">
-            {filteredProducts.length} 款
+            {filteredProducts.length} items
           </span>
         </div>
       </motion.div>
@@ -126,7 +129,7 @@ export function ProductsContent() {
                 : "bg-muted text-muted-foreground hover:text-foreground"
             }`}
           >
-            全部
+            {t("categories.all")}
           </button>
           {categories.map((cat) => (
             <button
@@ -190,7 +193,7 @@ export function ProductsContent() {
                 viewMode === "grid" ? "bg-foreground text-background" : "hover:bg-muted"
               }`}
               onClick={() => setViewMode("grid")}
-              aria-label="网格视图"
+              aria-label={t("gridView")}
               aria-pressed={viewMode === "grid"}
             >
               <Grid3X3 className="h-4 w-4" />
@@ -200,7 +203,7 @@ export function ProductsContent() {
                 viewMode === "list" ? "bg-foreground text-background" : "hover:bg-muted"
               }`}
               onClick={() => setViewMode("list")}
-              aria-label="列表视图"
+              aria-label={t("listView")}
               aria-pressed={viewMode === "list"}
             >
               <LayoutList className="h-4 w-4" />
@@ -220,9 +223,9 @@ export function ProductsContent() {
           >
             <EmptyState
               icon={SlidersHorizontal}
-              title="该分类下暂无产品"
-              description="请尝试选择其他分类或查看全部产品"
-              action={{ label: "查看全部", href: "/products" }}
+              title="No products in this category"
+              description="Try another category or view all products"
+              action={{ label: commonT("viewAll"), href: "/products" }}
             />
           </motion.div>
         ) : (
