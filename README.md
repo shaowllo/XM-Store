@@ -3,7 +3,13 @@
   <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=1200&h=300&fit=crop&auto=format" alt="XM Store Hero" width="100%" style="border-radius: 16px;"/>
   <br/><br/>
 
-  <h1>XM Store — Premium Tech, Delivered</h1>
+  <p align="right">
+  <a href="README.zh-CN.md">中文</a> · <b>English</b>
+</p>
+
+<br/>
+
+<h1>XM Store — Premium Tech, Delivered</h1>
 
   <p>A full-featured e-commerce demo built with Next.js 14, showcasing modern frontend architecture with a dark-luxury aesthetic.</p>
 
