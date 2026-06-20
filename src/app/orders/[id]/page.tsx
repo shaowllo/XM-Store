@@ -1,14 +1,17 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { Clock, Truck, CheckCircle, XCircle, Package, ArrowLeft } from "lucide-react";
+import { Clock, Truck, CheckCircle, XCircle, Package, ArrowLeft, MapPin, Loader2 } from "lucide-react";
 import { useOrders } from "@/components/order-provider";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { TrackingInfo } from "@/lib/shipping/adapter";
 
 const statusConfig: Record<string, { label: string; icon: React.ComponentType<{ className?: string }>; color: string; step: number }> = {
   pending: { label: "Pending", icon: Clock, color: "text-amber-500", step: 1 },
@@ -30,6 +33,32 @@ export default function OrderDetailPage() {
     () => orders.find((o) => o.id === params.id),
     [orders, params.id]
   );
+
+  const [trackingInfo, setTrackingInfo] = useState<TrackingInfo | null>(null);
+  const [trackingLoaded, setTrackingLoaded] = useState(false);
+
+  useEffect(() => {
+    if (order?.trackingNumber) {
+      fetch("/api/shipping/aramex", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "trackOrder",
+          data: { trackingNumber: order.trackingNumber },
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setTrackingInfo(data);
+          setTrackingLoaded(true);
+        })
+        .catch(() => {
+          setTrackingLoaded(true);
+        });
+    }
+  }, [order?.trackingNumber]);
+
+  const trackingLoading = !!order?.trackingNumber && !trackingLoaded;
 
   if (!order) {
     return (
@@ -159,6 +188,109 @@ export default function OrderDetailPage() {
             ))}
           </div>
         </div>
+
+        {/* Tracking */}
+        {order.trackingNumber && (
+          <Card className="mt-10">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Truck className="h-4 w-4" />
+                Tracking Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-2 text-sm mb-4">
+                <span className="text-muted-foreground">Tracking Number:</span>
+                <code className="rounded bg-muted px-2 py-0.5 text-xs font-mono">
+                  {order.trackingNumber}
+                </code>
+              </div>
+
+              {trackingLoading && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Loading tracking data...
+                </div>
+              )}
+
+              {trackingInfo && !trackingLoading && (
+                <div className="space-y-4">
+                  {/* Current Status */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">Status:</span>
+                    <Badge
+                      variant={
+                        trackingInfo.status === "delivered"
+                          ? "default"
+                          : trackingInfo.status === "shipped"
+                            ? "secondary"
+                            : "outline"
+                      }
+                    >
+                      {trackingInfo.status}
+                    </Badge>
+                  </div>
+
+                  {/* Estimated Delivery */}
+                  {trackingInfo.estimatedDelivery && (
+                    <p className="text-sm text-muted-foreground">
+                      Estimated Delivery: {new Date(trackingInfo.estimatedDelivery).toLocaleDateString("zh-CN")}
+                    </p>
+                  )}
+
+                  {/* Timeline */}
+                  {trackingInfo.events.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="text-xs font-medium tracking-widest text-muted-foreground uppercase mb-3">
+                        Tracking Timeline
+                      </h4>
+                      <div className="relative space-y-0">
+                        {trackingInfo.events.map((event, index) => (
+                          <div key={index} className="flex gap-3 pb-6 last:pb-0 relative">
+                            {/* Vertical line */}
+                            {index < trackingInfo.events.length - 1 && (
+                              <div className="absolute left-[11px] top-4 bottom-0 w-0.5 bg-border" />
+                            )}
+                            {/* Dot */}
+                            <div className="relative flex h-6 w-6 shrink-0 items-center justify-center">
+                              <div
+                                className={`h-2.5 w-2.5 rounded-full ${
+                                  index === 0
+                                    ? "bg-primary"
+                                    : "bg-muted-foreground/30"
+                                }`}
+                              />
+                            </div>
+                            {/* Content */}
+                            <div className="flex-1 min-w-0 pt-0.5">
+                              <p className="text-sm font-medium">
+                                {event.description}
+                              </p>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-xs text-muted-foreground">
+                                  {new Date(event.date).toLocaleString("zh-CN")}
+                                </span>
+                                {event.location && (
+                                  <>
+                                    <span className="text-muted-foreground/30">·</span>
+                                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                      <MapPin className="h-3 w-3" />
+                                      {event.location}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Summary */}
         <div className="mt-10 pt-8 border-t space-y-3">
