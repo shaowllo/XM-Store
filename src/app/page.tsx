@@ -231,3 +231,150 @@ export default function Home() {
                 {newArrival.description}
               </p>
               <div className="mt-8 flex items-baseline gap-4">
+                <span className="text-3xl font-serif font-semibold text-foreground">
+                  ${newArrival.price.toLocaleString()}
+                </span>
+                {newArrival.originalPrice && (
+                  <span className="text-lg text-muted-foreground line-through font-sans">
+                    ${newArrival.originalPrice.toLocaleString()}
+                  </span>
+                )}
+              </div>
+              <Link
+                href={`/products/${newArrival.id}`}
+                className="mt-8 btn-gold inline-flex items-center gap-2.5 rounded-lg px-8 py-4 text-sm font-semibold text-amber-950 tracking-wide"
+              >
+                Buy Now
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CATEGORIES — Geometric grid */}
+      <section className="bg-secondary/30">
+        <div className="mx-auto max-w-7xl px-6 md:px-10 py-28 md:py-36">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <Diamond className="h-3.5 w-3.5 text-amber-500/60" />
+              <p className="text-xs tracking-[0.2em] uppercase text-amber-500/70 font-medium">Explore</p>
+            </div>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-semibold text-foreground leading-[1.15]">
+              {t("categories")}
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+            {[
+              { id: "phone", name: "Phones", image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop" },
+              { id: "audio", name: "Audio", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" },
+              { id: "wearable", name: "Wearables", image: "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=600&h=600&fit=crop" },
+              { id: "computer", name: "Computers", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop" },
+            ].map((cat, index) => (
+              <motion.div
+                key={cat.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
+                <Link href={`/products?category=${cat.id}`} className="group block">
+                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
+                    <Image
+                      src={cat.image}
+                      alt={cat.name}
+                      fill
+                      className="object-cover transition-all duration-700 group-hover:scale-[1.06]"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 flex items-end p-5">
+                      <span className="font-serif text-white text-xl font-semibold tracking-tight">
+                        {cat.name}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROMO BANNER */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-7xl px-6 md:px-10 py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/10 px-8 md:px-12 py-12 md:py-16"
+          >
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div>
+                <p className="text-sm tracking-[0.15em] uppercase text-amber-500/70 font-medium mb-2">Special Offer</p>
+                <h3 className="text-2xl md:text-3xl font-serif font-semibold text-foreground">
+                  {t("promoBanner")}
+                </h3>
+              </div>
+              <Link
+                href="/products"
+                className="btn-gold inline-flex items-center gap-2.5 rounded-lg px-7 py-3.5 text-sm font-semibold text-amber-950 tracking-wide shrink-0"
+              >
+                {t("shopNow")}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-7xl px-6 md:px-10 py-20 md:py-28">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-xl mx-auto text-center"
+          >
+            <Diamond className="h-5 w-5 text-amber-500/50 mx-auto mb-6" />
+            <h2 className="text-3xl md:text-4xl font-serif font-semibold text-foreground">
+              {t("newsletter")}
+            </h2>
+            <p className="mt-4 text-muted-foreground font-sans leading-relaxed">
+              Subscribe for new arrivals and exclusive deals
+            </p>
+            <form onSubmit={handleSubscribe} className="mt-8 flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("newsletterPlaceholder")}
+                aria-label="Email address"
+                required
+                className="flex-1 rounded-lg border border-border bg-secondary/50 px-5 py-3.5 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/20 transition-all"
+              />
+              <button
+                type="submit"
+                disabled={subscribed}
+                className="btn-gold rounded-lg px-7 py-3.5 text-sm font-semibold text-amber-950 tracking-wide disabled:opacity-40 shrink-0"
+              >
+                {subscribed ? "Subscribed" : t("subscribe")}
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
