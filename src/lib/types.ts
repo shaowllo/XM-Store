@@ -63,6 +63,8 @@ export interface Order {
   totalItems: number;
   status: OrderStatus;
   createdAt: string;
+  shippedAt?: string;
+  deliveredAt?: string;
   paymentMethod?: 'cod';
   shippingAddress?: ShippingAddress;
   trackingNumber?: string;

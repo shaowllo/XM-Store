@@ -3,7 +3,8 @@
 import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import type { Order, OrderStatus, CartItem, ShippingAddress } from "@/lib/types";
+import type { Order, OrderStatus, ShippingAddress } from "@/lib/types";
+import type { CartItem } from "./cart-provider";
 
 interface OrderContextType {
   orders: Order[];
