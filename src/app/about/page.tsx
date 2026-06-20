@@ -1,46 +1,59 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Zap, Target, Heart, Globe, Users, Award, TrendingUp, Phone } from "lucide-react";
+import { Zap, Code2, Palette, Box, Sparkles, Globe, Smartphone, TestTube } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us | XM Store",
-  description: "Discover the XM Store story, our core values, and our journey. We are dedicated to bringing the latest tech products to consumers worldwide.",
+  title: "About | XM Store",
+  description: "XM Store is a full-featured e-commerce demo built with Next.js 14, showcasing modern frontend architecture with a dark-luxury aesthetic.",
   openGraph: {
     title: "About XM Store",
-    description: "Discover the XM Store story, our core values, and our journey",
+    description: "A Next.js 14 e-commerce demo showcasing modern frontend architecture",
   },
 };
 
-const values = [
+const highlights = [
   {
-    icon: Zap,
-    title: "Innovation Driven",
-    description: "We stay at the forefront of technology, integrating the latest innovations into every product",
+    icon: Code2,
+    title: "Next.js 14 App Router",
+    description: "Leveraging the latest App Router patterns — layouts, loading states, error boundaries, SSG, and server/client component composition.",
   },
   {
-    icon: Target,
-    title: "Quality First",
-    description: "Strict quality control to ensure every product meets the highest standards",
+    icon: Palette,
+    title: "Tailwind CSS v4 + shadcn/ui",
+    description: "Utility-first styling with a custom dark-luxury design system, CSS variables for theming, and accessible UI primitives.",
   },
   {
-    icon: Heart,
-    title: "User Centric",
-    description: "Putting user needs at the core to deliver exceptional product experiences",
+    icon: Box,
+    title: "Three.js 3D Viewer",
+    description: "Interactive 3D product viewer with auto-rotation, orbit controls, and fullscreen mode — powered by Three.js.",
+  },
+  {
+    icon: Sparkles,
+    title: "AI Recommendations",
+    description: "Cosine similarity engine that recommends products based on category, tags, and price proximity — no external API needed.",
   },
   {
     icon: Globe,
-    title: "Global Vision",
-    description: "Serving consumers worldwide with a global market perspective",
+    title: "i18n & RTL Ready",
+    description: "Internationalized with next-intl, bilingual (English/Chinese), and architected for Arabic RTL support.",
   },
-];
-
-const milestones = [
-  { year: "2018", title: "Brand Founded", desc: "XM Store was officially established" },
-  { year: "2019", title: "First Product", desc: "XM Pro smartphone launched" },
-  { year: "2021", title: "Global Expansion", desc: "Entered 20+ countries and regions" },
-  { year: "2023", title: "Million Users", desc: "Over 1 million users worldwide" },
-  { year: "2025", title: "Continuous Innovation", desc: "Launched multiple flagship products" },
+  {
+    icon: Smartphone,
+    title: "PWA & Offline",
+    description: "Service Worker caching, offline fallback page, and install-to-homescreen prompt for a native-like experience.",
+  },
+  {
+    icon: TestTube,
+    title: "TypeScript + Vitest",
+    description: "Strict TypeScript throughout with comprehensive test coverage using Vitest, jsdom, and Testing Library.",
+  },
+  {
+    icon: Zap,
+    title: "Client-Side State",
+    description: "All state managed via React Context + localStorage with useSyncExternalStore for hydration-safe, cross-tab persistence.",
+  },
 ];
 
 export default function AboutPage() {
@@ -51,59 +64,62 @@ export default function AboutPage() {
         <div className="absolute inset-0">
           <div className="absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[100px]" />
           <div className="absolute -left-40 -bottom-40 h-[500px] w-[500px] rounded-full bg-accent/20 blur-[100px]" />
-          <div className="absolute inset-0 noise-overlay" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm border border-white/10 mb-6">
             <Zap className="h-4 w-4" />
-            Technology Changes Life
+            Modern Frontend Architecture
           </span>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            About <span className="gradient-text">XM Store</span>
+            About <span className="gold-text">XM Store</span>
           </h1>
           <p className="mt-6 text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-            We are dedicated to bringing the latest tech products to consumers worldwide, so everyone can enjoy the good life that technology brings.
+            A full-featured e-commerce demo built with Next.js 14, showcasing modern frontend architecture with a dark-luxury aesthetic.
+            All data lives in your browser &mdash; no backend required.
           </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 text-sm">Next.js 14</span>
+            <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 text-sm">TypeScript</span>
+            <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 text-sm">Tailwind v4</span>
+            <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 text-sm">shadcn/ui</span>
+            <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 text-sm">Three.js</span>
+            <span className="rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 text-sm">Framer Motion</span>
+          </div>
         </div>
       </section>
 
-      {/* Story */}
+      {/* What is XM Store */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
-              <Heart className="h-4 w-4" />
-              Our Story
+              <Code2 className="h-4 w-4" />
+              What Is This?
             </span>
-            <h2 className="text-3xl font-bold tracking-tight">From Vision to Mission</h2>
+            <h2 className="text-3xl font-bold tracking-tight">A Frontend Engineering Showcase</h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Founded in 2018, XM Store is an e-commerce platform specializing in tech and digital products. We believe technology should serve life, making it easier and more enjoyable for everyone.
+              XM Store is a demonstration project that explores modern React and Next.js patterns.
+              It simulates a complete e-commerce experience entirely on the client side &mdash;
+              products, cart, orders, user accounts, reviews, and theme preferences are all stored
+              in your browser&apos;s localStorage.
             </p>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              From our first smartphone to a wide range of categories including phones, audio, wearables, computers, and smart home devices, XM Store has always upheld the principles of quality first and user centricity, earning the trust of millions of users worldwide.
+              The only server-side call is the Aramex shipping API for order tracking. Everything else
+              runs in the browser, making it a zero-backend demo that&apos;s instantly deployable anywhere.
             </p>
-            <div className="mt-8 grid grid-cols-3 gap-6">
-              <div className="text-center p-4 rounded-2xl bg-secondary/50">
-                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white mb-2">
-                  <Users className="h-5 w-5" />
-                </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">1M+</div>
-                <div className="text-sm text-muted-foreground mt-1">Global Users</div>
-              </div>
-              <div className="text-center p-4 rounded-2xl bg-secondary/50">
-                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white mb-2">
-                  <Award className="h-5 w-5" />
-                </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">50+</div>
-                <div className="text-sm text-muted-foreground mt-1">Product Categories</div>
-              </div>
-              <div className="text-center p-4 rounded-2xl bg-secondary/50">
-                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white mb-2">
-                  <TrendingUp className="h-5 w-5" />
-                </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">20+</div>
-                <div className="text-sm text-muted-foreground mt-1">Countries Covered</div>
-              </div>
+            <div className="mt-8 flex gap-3">
+              <Link href="/products">
+                <Button className="rounded-full gap-2">
+                  <Zap className="h-4 w-4" />
+                  Browse Products
+                </Button>
+              </Link>
+              <Link href="https://github.com/shaowllo/XM-Store" target="_blank">
+                <Button variant="outline" className="rounded-full gap-2">
+                  <Code2 className="h-4 w-4" />
+                  View Source
+                </Button>
+              </Link>
             </div>
           </div>
           <div className="relative">
@@ -111,7 +127,7 @@ export default function AboutPage() {
             <div className="relative aspect-video rounded-3xl overflow-hidden bg-muted">
               <Image
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=450&fit=crop"
-                alt="Office"
+                alt="Developer workspace"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -121,32 +137,32 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values */}
+      {/* Tech Highlights */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-background to-muted/50" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent mb-4">
-              <Target className="h-4 w-4" />
-              Core Values
+              <Zap className="h-4 w-4" />
+              Technical Highlights
             </span>
-            <h2 className="text-3xl font-bold tracking-tight">Our Guiding Principles</h2>
+            <h2 className="text-3xl font-bold tracking-tight">What Makes It Interesting</h2>
             <p className="mt-3 text-muted-foreground">
-              The beliefs and principles that guide us forward
+              Modern patterns and libraries working together
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value) => (
+            {highlights.map((item) => (
               <div
-                key={value.title}
-                className="group rounded-2xl border bg-card p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 hover:-translate-y-1 transition-all"
+                key={item.title}
+                className="group rounded-2xl border bg-card p-6 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/20 hover:-translate-y-1 transition-all"
               >
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 text-primary group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all">
-                  <value.icon className="h-7 w-7" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 text-primary group-hover:from-primary group-hover:to-accent group-hover:text-white transition-all">
+                  <item.icon className="h-6 w-6" />
                 </div>
-                <h3 className="mt-4 font-semibold">{value.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {value.description}
+                <h3 className="mt-4 font-semibold">{item.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                  {item.description}
                 </p>
               </div>
             ))}
@@ -154,43 +170,76 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Feature Timeline */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
-            <TrendingUp className="h-4 w-4" />
-            Our Journey
+            <Sparkles className="h-4 w-4" />
+            Feature Evolution
           </span>
-          <h2 className="text-3xl font-bold tracking-tight">From Founding to Growth</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Built in Phases</h2>
           <p className="mt-3 text-muted-foreground">
-            Every step from founding to growth
+            Each phase added a new dimension to the experience
           </p>
         </div>
         <div className="relative">
           <div className="absolute left-1/2 h-full w-px -translate-x-1/2 bg-gradient-to-b from-primary via-accent to-primary hidden md:block" />
           <div className="space-y-8">
-            {milestones.map((milestone, index) => (
+            {[
+              { phase: "Core", desc: "Product catalog, cart, checkout, orders, auth, wishlist", color: "from-blue-500 to-blue-600" },
+              { phase: "Security", desc: "SHA-256 password hashing, session tokens, env validation", color: "from-red-500 to-red-600" },
+              { phase: "Visual", desc: "Image magnifier, product gallery, 3D viewer, theme studio, compare tool", color: "from-purple-500 to-purple-600" },
+              { phase: "Data", desc: "AI recommendations, price history charts, trending, reviews", color: "from-amber-500 to-amber-600" },
+              { phase: "PWA", desc: "Service Worker, offline support, install prompt, update toast", color: "from-emerald-500 to-emerald-600" },
+            ].map((item, index) => (
               <div
-                key={milestone.year}
+                key={item.phase}
                 className={`flex flex-col md:flex-row items-center gap-4 ${
                   index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
               >
                 <div className="flex-1 text-center md:text-right">
                   <div className="rounded-2xl border bg-card p-6 inline-block hover:shadow-lg hover:shadow-primary/5 transition-all">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      {milestone.year}
+                    <div className={`text-2xl font-bold bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
+                      {item.phase}
                     </div>
-                    <div className="font-semibold mt-1">{milestone.title}</div>
-                    <div className="text-sm text-muted-foreground mt-1">
-                      {milestone.desc}
+                    <div className="text-sm text-muted-foreground mt-2 max-w-xs">
+                      {item.desc}
                     </div>
                   </div>
                 </div>
-                <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white text-sm font-bold shadow-lg shadow-primary/25">
+                <div className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${item.color} text-white text-sm font-bold shadow-lg`}>
                   {index + 1}
                 </div>
                 <div className="flex-1 hidden md:block" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stack */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-muted/50 via-background to-muted/50" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight">Tech Stack</h2>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-w-4xl mx-auto">
+            {[
+              { name: "Next.js", role: "Framework", img: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=100&h=100&fit=crop" },
+              { name: "React", role: "UI Library", img: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=100&h=100&fit=crop" },
+              { name: "TypeScript", role: "Language", img: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=100&h=100&fit=crop" },
+              { name: "Tailwind", role: "Styling", img: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=100&h=100&fit=crop" },
+              { name: "Three.js", role: "3D", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100&fit=crop" },
+              { name: "Framer", role: "Motion", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=100&h=100&fit=crop" },
+            ].map((tech) => (
+              <div key={tech.name} className="rounded-2xl border bg-card p-4 text-center hover:shadow-md transition-all">
+                <div className="relative h-10 w-10 mx-auto rounded-full overflow-hidden bg-muted mb-2">
+                  <Image src={tech.img} alt={tech.name} fill className="object-cover" sizes="40px" />
+                </div>
+                <p className="text-sm font-semibold">{tech.name}</p>
+                <p className="text-[10px] text-muted-foreground">{tech.role}</p>
               </div>
             ))}
           </div>
@@ -203,22 +252,25 @@ export default function AboutPage() {
           <div className="absolute inset-0">
             <div className="absolute -right-32 -top-32 h-[400px] w-[400px] rounded-full bg-primary/20 blur-[100px]" />
             <div className="absolute -left-32 -bottom-32 h-[400px] w-[400px] rounded-full bg-accent/20 blur-[100px]" />
-            <div className="absolute inset-0 noise-overlay" />
           </div>
           <div className="relative">
-            <h2 className="text-3xl md:text-4xl font-bold">Join Us</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Explore the Demo</h2>
             <p className="mt-3 text-white/70 max-w-md mx-auto">
-              Join us in changing the world with technology and creating a better future
+              Browse products, compare features, view in 3D, or customize the theme &mdash; all in your browser. No signup needed.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-              <Button className="bg-white text-slate-900 hover:bg-white/90 rounded-xl gap-2 px-8" size="lg">
-                <Users className="h-4 w-4" />
-                View Positions
-              </Button>
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl gap-2" size="lg">
-                <Phone className="h-4 w-4" />
-                Contact Us
-              </Button>
+              <Link href="/products">
+                <Button className="bg-white text-slate-900 hover:bg-white/90 rounded-xl gap-2 px-8" size="lg">
+                  <Zap className="h-4 w-4" />
+                  Start Browsing
+                </Button>
+              </Link>
+              <Link href="/theme">
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl gap-2" size="lg">
+                  <Palette className="h-4 w-4" />
+                  Try Theme Studio
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
