@@ -97,7 +97,7 @@ export function MiniCartDropdown() {
                       )}
                       <div className="flex items-center justify-between mt-1">
                         <span className="text-sm font-semibold">
-                          ¥{item.product.price.toLocaleString()}
+                          ${item.product.price.toLocaleString()}
                         </span>
                         <span className="text-xs text-muted-foreground">
                           x{item.quantity}
@@ -125,7 +125,7 @@ export function MiniCartDropdown() {
               <div className="border-t px-4 py-3 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{t("subtotal")}</span>
-                  <span className="text-lg font-bold">¥{totalPrice.toLocaleString()}</span>
+                  <span className="text-lg font-bold">${totalPrice.toLocaleString()}</span>
                 </div>
                 <Link href="/checkout" className="block">
                   <Button className="w-full rounded-xl" size="sm">

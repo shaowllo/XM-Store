@@ -77,8 +77,8 @@
     "continueShopping": "Continue Shopping",
     "subtotal": "Subtotal",
     "checkout": "Checkout",
-    "itemAdded": "Added to cart",
-    "itemRemoved": "Removed from cart"
+    "itemAdded": "{name} added to cart",
+    "itemRemoved": "{name} removed from cart"
   },
   "checkout": {
     "title": "Checkout",
@@ -169,8 +169,13 @@
     "email": "Email Address",
     "password": "Password",
     "confirmPassword": "Confirm Password",
+    "loginSuccess": "Welcome back, {name}!",
     "loginError": "Invalid email or password",
-    "registerSuccess": "Account created successfully",
+    "loginFailed": "Login failed, please try again",
+    "registerSuccess": "Welcome, {name}!",
+    "registerFailed": "Registration failed, please try again",
+    "emailTaken": "This email is already registered",
+    "logoutSuccess": "Logged out",
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "registerHere": "Register here",

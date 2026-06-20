@@ -34,8 +34,9 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginForm) => {
-    if (login(data.email, data.password)) {
+  const onSubmit = async (data: LoginForm) => {
+    const success = await login(data.email, data.password);
+    if (success) {
       router.push(redirect);
     }
   };

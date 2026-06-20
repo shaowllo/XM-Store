@@ -87,7 +87,7 @@ export function CartSheet() {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-semibold">
-                            ¥{item.product.price.toLocaleString()}
+                            ${item.product.price.toLocaleString()}
                           </span>
                           <div className="flex items-center gap-1">
                             <button
@@ -128,7 +128,7 @@ export function CartSheet() {
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{t("subtotal")}</span>
-                  <span className="text-2xl font-bold">¥{totalPrice.toLocaleString()}</span>
+                  <span className="text-2xl font-bold">${totalPrice.toLocaleString()}</span>
                 </div>
                 <Link href="/checkout" className="block">
                   <Button

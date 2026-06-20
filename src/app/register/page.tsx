@@ -39,8 +39,9 @@ export default function RegisterPage() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterForm) => {
-    if (registerUser(data.name, data.email, data.password)) {
+  const onSubmit = async (data: RegisterForm) => {
+    const success = await registerUser(data.name, data.email, data.password);
+    if (success) {
       router.push("/");
     }
   };

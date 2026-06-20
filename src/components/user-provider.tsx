@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { hashPassword, generateSessionToken } from "@/lib/crypto";
+import { useTranslations } from "next-intl";
 
 export interface User {
   id: string;
@@ -16,8 +18,8 @@ interface StoredUser extends User {
 
 interface UserContextType {
   user: User | null;
-  login: (email: string, password: string) => boolean;
-  register: (name: string, email: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -25,14 +27,38 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const USER_KEY = "xmstore-user";
 const USERS_KEY = "xmstore-users";
+const SESSION_COOKIE = "xmstore-session";
+const TOKENS_KEY = "xmstore-tokens";
+
+function setSessionCookie(token: string) {
+  document.cookie = `${SESSION_COOKIE}=${token}; path=/; max-age=86400; SameSite=Lax`;
+}
+
+function clearSessionCookie() {
+  document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0`;
+}
+
+function persistSession(token: string, userId: string) {
+  const tokens: Record<string, string> = JSON.parse(localStorage.getItem(TOKENS_KEY) || "{}");
+  tokens[token] = userId;
+  localStorage.setItem(TOKENS_KEY, JSON.stringify(tokens));
+}
+
+function removeSession(token: string) {
+  const tokens: Record<string, string> = JSON.parse(localStorage.getItem(TOKENS_KEY) || "{}");
+  delete tokens[token];
+  localStorage.setItem(TOKENS_KEY, JSON.stringify(tokens));
+}
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useLocalStorage<User | null>(USER_KEY, null);
+  const t = useTranslations("auth");
 
-  const login = useCallback((email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     try {
       const users: StoredUser[] = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
-      const found = users.find((u) => u.email === email && u.password === password);
+      const hashed = await hashPassword(password);
+      const found = users.find((u) => u.email === email && u.password === hashed);
       if (found) {
         const userWithoutPassword: User = {
           id: found.id,
@@ -41,29 +67,32 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         };
         setUser(userWithoutPassword);
         localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
-        document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400; SameSite=Lax`;
-        toast.success(`欢迎回来，${found.name}！`);
+        const token = generateSessionToken();
+        persistSession(token, found.id);
+        setSessionCookie(token);
+        toast.success(t("loginSuccess", { name: found.name }));
         return true;
       }
-      toast.error("邮箱或密码错误");
+      toast.error(t("loginError"));
     } catch {
-      toast.error("登录失败，请稍后重试");
+      toast.error(t("loginFailed"));
     }
     return false;
   }, [setUser]);
 
-  const register = useCallback((name: string, email: string, password: string) => {
+  const register = useCallback(async (name: string, email: string, password: string) => {
     try {
       const users: StoredUser[] = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
       if (users.find((u) => u.email === email)) {
-        toast.error("该邮箱已被注册");
+        toast.error(t("emailTaken"));
         return false;
       }
+      const hashed = await hashPassword(password);
       const newUser: StoredUser = {
         id: `user-${Date.now()}`,
         name,
         email,
-        password,
+        password: hashed,
       };
       users.push(newUser);
       localStorage.setItem(USERS_KEY, JSON.stringify(users));
@@ -74,11 +103,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       };
       setUser(userWithoutPassword);
       localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
-      document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400; SameSite=Lax`;
-      toast.success("注册成功！");
+      const token = generateSessionToken();
+      persistSession(token, newUser.id);
+      setSessionCookie(token);
+      toast.success(t("registerSuccess", { name: newUser.name }));
       return true;
     } catch {
-      toast.error("注册失败，请稍后重试");
+      toast.error(t("registerFailed"));
     }
     return false;
   }, [setUser]);
@@ -86,8 +117,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem(USER_KEY);
-    document.cookie = "xmstore-user=; path=/; max-age=0";
-    toast.info("已退出登录");
+    // Clean up the session token
+    const cookies = document.cookie.split("; ");
+    const sessionCookie = cookies.find((c) => c.startsWith(`${SESSION_COOKIE}=`));
+    if (sessionCookie) {
+      const token = sessionCookie.split("=")[1];
+      removeSession(token);
+    }
+    clearSessionCookie();
+    toast.info(t("logoutSuccess"));
   }, [setUser]);
 
   const contextValue = useMemo(

@@ -182,7 +182,7 @@ export default function OrderDetailPage() {
                   <p className="text-xs text-muted-foreground mt-1">x{item.quantity}</p>
                 </div>
                 <p className="font-semibold text-sm">
-                  ¥{(item.product.price * item.quantity).toLocaleString()}
+                  ${(item.product.price * item.quantity).toLocaleString()}
                 </p>
               </div>
             ))}
@@ -309,7 +309,7 @@ export default function OrderDetailPage() {
           <Separator />
           <div className="flex items-center justify-between text-lg font-bold">
             <span>Total</span>
-            <span>¥{order.totalPrice.toLocaleString()}</span>
+            <span>${order.totalPrice.toLocaleString()}</span>
           </div>
         </div>
 

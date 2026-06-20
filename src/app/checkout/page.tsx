@@ -359,7 +359,7 @@ export default function CheckoutPage() {
                         </p>
                       </div>
                       <p className="text-sm font-semibold shrink-0">
-                        ¥{(item.product.price * item.quantity).toLocaleString()}
+                        ${(item.product.price * item.quantity).toLocaleString()}
                       </p>
                     </motion.div>
                   ))}
@@ -371,7 +371,7 @@ export default function CheckoutPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">¥{totalPrice.toLocaleString()}</span>
+                    <span className="font-medium">${totalPrice.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Shipping</span>
@@ -380,7 +380,7 @@ export default function CheckoutPage() {
                   <Separator />
                   <div className="flex items-center justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>¥{totalPrice.toLocaleString()}</span>
+                    <span>${totalPrice.toLocaleString()}</span>
                   </div>
                 </div>
 

@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import type { Product } from "@/lib/data";
+import { useTranslations } from "next-intl";
 
 export interface CartItem {
   cartItemId: string;
@@ -31,6 +32,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
   const userId = user?.id || "guest";
   const CART_STORAGE_KEY = `xmstore-cart-${userId}`;
+  const t = useTranslations("cart");
 
   const [items, setItems] = useLocalStorage<CartItem[]>(CART_STORAGE_KEY, []);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -49,14 +51,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prev, { cartItemId, product, quantity, selectedColor }];
     });
     setIsCartOpen(true);
-    toast.success(`已添加 ${product.name} 到购物车`);
+    toast.success(t("itemAdded", { name: product.name }));
   }, [setItems]);
 
   const removeFromCart = useCallback((cartItemId: string) => {
     setItems((prev) => {
       const item = prev.find((i) => i.cartItemId === cartItemId);
       if (item) {
-        toast.info(`已移除 ${item.product.name}`);
+        toast.info(t("itemRemoved", { name: item.product.name }));
       }
       return prev.filter((item) => item.cartItemId !== cartItemId);
     });

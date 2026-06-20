@@ -11,9 +11,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const user = request.cookies.get("xmstore-user")?.value;
+  const session = request.cookies.get("xmstore-session")?.value;
 
-  if (!user) {
+  if (!session) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);

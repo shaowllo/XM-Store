@@ -1,9 +1,10 @@
 import type { ShippingAdapter, ShipmentRequest, ShipmentResult, TrackingInfo, RateRequest, RateInfo } from './adapter';
-
-const ARAMEX_API_BASE = process.env.ARAMEX_API_BASE || 'https://api.aramex.com/shipping/v1';
-const ARAMEX_ACCOUNT_NUMBER = process.env.ARAMEX_ACCOUNT_NUMBER || '';
-const ARAMEX_USERNAME = process.env.ARAMEX_USERNAME || '';
-const ARAMEX_PASSWORD = process.env.ARAMEX_PASSWORD || '';
+import {
+  ARAMEX_API_BASE,
+  ARAMEX_ACCOUNT_NUMBER,
+  ARAMEX_USERNAME,
+  ARAMEX_PASSWORD,
+} from '@/lib/env';
 
 export class AramexAdapter implements ShippingAdapter {
   private async request(endpoint: string, body: any) {

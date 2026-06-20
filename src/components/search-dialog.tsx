@@ -272,7 +272,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                               {highlightMatch(product.name, query)}
                             </div>
                             <div className="text-sm text-muted-foreground mt-0.5">
-                              ¥{product.price.toLocaleString()}
+                              ${product.price.toLocaleString()}
                             </div>
                           </div>
                           <div className="text-xs text-muted-foreground shrink-0 flex items-center gap-1 bg-amber-50 dark:bg-amber-950/30 px-2 py-1 rounded-full">

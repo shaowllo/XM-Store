@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * @deprecated Use `useLocalStorage` hook from `@/hooks/use-local-storage` instead.
+ * Direct localStorage helpers are no longer used internally and may be removed.
+ */
+
 export function getStorageItem<T>(key: string, defaultValue: T): T {
   if (typeof window === "undefined") return defaultValue;
   try {

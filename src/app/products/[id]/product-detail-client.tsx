@@ -154,11 +154,11 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             {/* Price */}
             <div className="mt-6 flex items-baseline gap-3">
               <span className="text-3xl font-bold">
-                ¥{product.price.toLocaleString()}
+                ${product.price.toLocaleString()}
               </span>
               {product.originalPrice && (
                 <span className="text-lg text-muted-foreground line-through">
-                  ¥{product.originalPrice.toLocaleString()}
+                  ${product.originalPrice.toLocaleString()}
                 </span>
               )}
             </div>

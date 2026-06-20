@@ -125,7 +125,7 @@ export default function OrdersPage() {
                   {/* Price & Arrow */}
                   <div className="text-right shrink-0">
                     <p className="font-semibold text-sm">
-                      ¥{order.totalPrice.toLocaleString()}
+                      ${order.totalPrice.toLocaleString()}
                     </p>
                     <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto mt-1 group-hover:translate-x-1 transition-transform" />
                   </div>
