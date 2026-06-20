@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { MapPin, Plus, Trash2, Star, X, Check } from "lucide-react";
@@ -22,12 +23,12 @@ interface AddressFormData {
 }
 
 function validateAddress(data: AddressFormData): string | null {
-  if (!data.name || data.name.length < 2) return "收货人姓名至少2位";
-  if (!data.phone) return "请输入手机号码";
-  if (!/^1[3-9]\d{9}$/.test(data.phone)) return "请输入正确的手机号码";
-  if (!data.province) return "请输入省份";
-  if (!data.city) return "请输入城市";
-  if (!data.detail || data.detail.length < 5) return "详细地址至少5位";
+  if (!data.name || data.name.length < 2) return "Name must be at least 2 characters";
+  if (!data.phone) return "Please enter a phone number";
+  if (!/^1[3-9]\d{9}$/.test(data.phone)) return "Please enter a valid phone number";
+  if (!data.province) return "Please enter a province";
+  if (!data.city) return "Please enter a city";
+  if (!data.detail || data.detail.length < 5) return "Address must be at least 5 characters";
   return null;
 }
 
@@ -78,7 +79,7 @@ function AddressForm({
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       <div className="relative">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold">{initialData ? "编辑地址" : "新增地址"}</h3>
+          <h3 className="font-semibold">{initialData ? "Edit Address" : "New Address"}</h3>
           <Button type="button" variant="ghost" size="icon" onClick={onCancel} className="rounded-lg">
             <X className="h-4 w-4" />
           </Button>
@@ -90,37 +91,37 @@ function AddressForm({
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
-            placeholder="收货人姓名"
+            placeholder="Full Name"
             value={form.name}
             onChange={(e) => updateField("name", e.target.value)}
             className="rounded-xl"
           />
           <Input
-            placeholder="手机号码"
+            placeholder="Phone Number"
             value={form.phone}
             onChange={(e) => updateField("phone", e.target.value)}
             className="rounded-xl"
           />
           <Input
-            placeholder="省"
+            placeholder="Province / Region"
             value={form.province}
             onChange={(e) => updateField("province", e.target.value)}
             className="rounded-xl"
           />
           <Input
-            placeholder="市"
+            placeholder="City"
             value={form.city}
             onChange={(e) => updateField("city", e.target.value)}
             className="rounded-xl"
           />
           <Input
-            placeholder="区/县"
+            placeholder="District"
             value={form.district}
             onChange={(e) => updateField("district", e.target.value)}
             className="rounded-xl"
           />
           <Input
-            placeholder="详细地址"
+            placeholder="Street / Building"
             value={form.detail}
             onChange={(e) => updateField("detail", e.target.value)}
             className="rounded-xl"
@@ -133,15 +134,15 @@ function AddressForm({
             onChange={(e) => updateField("isDefault", e.target.checked)}
             className="rounded border-gray-300"
           />
-          设为默认地址
+          Set as default address
         </label>
         <div className="flex gap-3">
           <Button type="submit" className="gap-1 rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity">
             <Check className="h-4 w-4" />
-            保存
+            Save
           </Button>
           <Button type="button" variant="outline" onClick={onCancel} className="rounded-xl">
-            取消
+            Cancel
           </Button>
         </div>
       </div>
@@ -150,28 +151,29 @@ function AddressForm({
 }
 
 export default function AddressesPage() {
+  const t = useTranslations("profile");
   const { addresses, addAddress, removeAddress, setDefaultAddress } = useAddress();
   const [showForm, setShowForm] = useState(false);
 
   const handleAddAddress = (data: AddressFormData) => {
     addAddress(data);
     setShowForm(false);
-    toast.success("地址添加成功");
+    toast.success("Address added successfully");
   };
 
   const handleRemoveAddress = (id: string) => {
     removeAddress(id);
-    toast.info("地址已删除");
+    toast.info("Address deleted");
   };
 
   const handleSetDefault = (id: string) => {
     setDefaultAddress(id);
-    toast.success("已设为默认地址");
+    toast.success("Set as default address");
   };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Breadcrumb items={[{ label: "个人中心", href: "/profile" }, { label: "收货地址" }]} />
+      <Breadcrumb items={[{ label: "Profile", href: "/profile" }, { label: t("addresses") }]} />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -181,17 +183,17 @@ export default function AddressesPage() {
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
             <MapPin className="h-4 w-4" />
-            地址管理
+            Address Management
           </span>
-          <h1 className="text-3xl font-bold tracking-tight">收货地址</h1>
-          <p className="mt-2 text-muted-foreground">管理您的收货地址</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t("addresses")}</h1>
+          <p className="mt-2 text-muted-foreground">Manage your shipping addresses</p>
         </div>
         <Button
           onClick={() => setShowForm(true)}
           className="gap-1 rounded-xl bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
         >
           <Plus className="h-4 w-4" />
-          新增地址
+          {t("addAddress")}
         </Button>
       </motion.div>
 
@@ -209,14 +211,14 @@ export default function AddressesPage() {
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 mx-auto mb-4">
               <MapPin className="h-8 w-8 text-primary" />
             </div>
-            <p className="text-muted-foreground">暂无收货地址</p>
+            <p className="text-muted-foreground">{t("noAddresses")}</p>
             <Button
               variant="outline"
               className="mt-4 gap-1 rounded-xl"
               onClick={() => setShowForm(true)}
             >
               <Plus className="h-4 w-4" />
-              添加地址
+              {t("addAddress")}
             </Button>
           </div>
         )}
@@ -238,7 +240,7 @@ export default function AddressesPage() {
                       {address.isDefault && (
                         <span className="inline-flex items-center gap-0.5 text-xs bg-gradient-to-r from-primary to-accent text-white px-2.5 py-1 rounded-full">
                           <Star className="h-3 w-3 fill-white" />
-                          默认
+                          {t("defaultAddress")}
                         </span>
                       )}
                     </div>
@@ -254,7 +256,7 @@ export default function AddressesPage() {
                         onClick={() => handleSetDefault(address.id)}
                         className="rounded-lg"
                       >
-                        设为默认
+                        {t("setDefault")}
                       </Button>
                     )}
                     <Button
@@ -275,7 +277,7 @@ export default function AddressesPage() {
 
       <div className="mt-8">
         <Link href="/profile">
-          <Button variant="outline" className="rounded-xl">返回个人中心</Button>
+          <Button variant="outline" className="rounded-xl">Back to Profile</Button>
         </Link>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -11,6 +12,8 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const t = useTranslations("error");
+
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -20,16 +23,16 @@ export default function GlobalError({
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 mb-6">
         <AlertCircle className="h-8 w-8 text-destructive" />
       </div>
-      <h2 className="text-2xl font-bold">出了点问题</h2>
+      <h2 className="text-2xl font-bold">{t("title")}</h2>
       <p className="mt-2 text-sm text-muted-foreground text-center max-w-md">
-        应用遇到了一个意外错误，请尝试刷新页面或返回首页
+        {t("description")}
       </p>
       <div className="mt-6 flex gap-3">
         <Button onClick={reset} className="rounded-full">
-          重试
+          {t("retry")}
         </Button>
         <Button variant="outline" onClick={() => (window.location.href = "/")} className="rounded-full">
-          返回首页
+          {t("goHome")}
         </Button>
       </div>
     </div>

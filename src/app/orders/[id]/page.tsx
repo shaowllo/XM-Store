@@ -10,17 +10,17 @@ import { useOrders } from "@/components/order-provider";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 
-const statusConfig = {
-  pending: { label: "待发货", icon: Clock, color: "text-amber-500", step: 1 },
-  shipped: { label: "运输中", icon: Truck, color: "text-blue-500", step: 2 },
-  delivered: { label: "已送达", icon: CheckCircle, color: "text-green-500", step: 3 },
-  cancelled: { label: "已取消", icon: XCircle, color: "text-red-500", step: 0 },
+const statusConfig: Record<string, { label: string; icon: React.ComponentType<{ className?: string }>; color: string; step: number }> = {
+  pending: { label: "Pending", icon: Clock, color: "text-amber-500", step: 1 },
+  shipped: { label: "Shipped", icon: Truck, color: "text-blue-500", step: 2 },
+  delivered: { label: "Delivered", icon: CheckCircle, color: "text-green-500", step: 3 },
+  cancelled: { label: "Cancelled", icon: XCircle, color: "text-red-500", step: 0 },
 };
 
 const timelineSteps = [
-  { key: "pending", label: "待发货", icon: Clock },
-  { key: "shipped", label: "运输中", icon: Truck },
-  { key: "delivered", label: "已送达", icon: CheckCircle },
+  { key: "pending", label: "Pending", icon: Clock },
+  { key: "shipped", label: "Shipped", icon: Truck },
+  { key: "delivered", label: "Delivered", icon: CheckCircle },
 ];
 
 export default function OrderDetailPage() {
@@ -34,12 +34,12 @@ export default function OrderDetailPage() {
   if (!order) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <Breadcrumb items={[{ label: "我的订单", href: "/orders" }, { label: "订单详情" }]} />
+        <Breadcrumb items={[{ label: "My Orders", href: "/orders" }, { label: "Order Details" }]} />
         <div className="mt-10 text-center">
           <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">订单不存在</p>
+          <p className="text-muted-foreground">Order not found</p>
           <Link href="/orders" className="text-sm text-primary hover:underline mt-2 inline-block">
-            返回订单列表
+            Back to Orders
           </Link>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function OrderDetailPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Breadcrumb items={[{ label: "我的订单", href: "/orders" }, { label: "订单详情" }]} />
+      <Breadcrumb items={[{ label: "My Orders", href: "/orders" }, { label: "Order Details" }]} />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -147,7 +147,7 @@ export default function OrderDetailPage() {
                         className="inline-block h-2.5 w-2.5 rounded-full border"
                         style={{ backgroundColor: item.selectedColor }}
                       />
-                      <span className="text-xs text-muted-foreground">已选颜色</span>
+                      <span className="text-xs text-muted-foreground">Selected</span>
                     </div>
                   )}
                   <p className="text-xs text-muted-foreground mt-1">x{item.quantity}</p>
@@ -163,20 +163,20 @@ export default function OrderDetailPage() {
         {/* Summary */}
         <div className="mt-10 pt-8 border-t space-y-3">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">下单时间</span>
+            <span className="text-muted-foreground">Order Date</span>
             <span>{date}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">商品数量</span>
-            <span>{order.totalItems} 件</span>
+            <span className="text-muted-foreground">Items</span>
+            <span>{order.totalItems}</span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">运费</span>
-            <span className="text-green-600">免运费</span>
+            <span className="text-muted-foreground">Shipping</span>
+            <span className="text-green-600">Free</span>
           </div>
           <Separator />
           <div className="flex items-center justify-between text-lg font-bold">
-            <span>合计</span>
+            <span>Total</span>
             <span>¥{order.totalPrice.toLocaleString()}</span>
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function OrderDetailPage() {
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            返回订单列表
+            Back to Orders
           </Link>
         </div>
       </motion.div>

@@ -9,18 +9,18 @@ import { useOrders } from "@/components/order-provider";
 import { EmptyState } from "@/components/empty-state";
 import { Breadcrumb } from "@/components/breadcrumb";
 
-const statusConfig = {
-  pending: { label: "待发货", icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10" },
-  shipped: { label: "运输中", icon: Truck, color: "text-blue-500", bg: "bg-blue-500/10" },
-  delivered: { label: "已送达", icon: CheckCircle, color: "text-green-500", bg: "bg-green-500/10" },
-  cancelled: { label: "已取消", icon: XCircle, color: "text-red-500", bg: "bg-red-500/10" },
+const statusConfig: Record<string, { label: string; icon: React.ComponentType<{ className?: string }>; color: string; bg: string }> = {
+  pending: { label: "Pending", icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10" },
+  shipped: { label: "Shipped", icon: Truck, color: "text-blue-500", bg: "bg-blue-500/10" },
+  delivered: { label: "Delivered", icon: CheckCircle, color: "text-green-500", bg: "bg-green-500/10" },
+  cancelled: { label: "Cancelled", icon: XCircle, color: "text-red-500", bg: "bg-red-500/10" },
 };
 
 const statusFilters = [
-  { value: "all", label: "全部" },
-  { value: "pending", label: "待发货" },
-  { value: "shipped", label: "运输中" },
-  { value: "delivered", label: "已送达" },
+  { value: "all", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
 ];
 
 export default function OrdersPage() {
@@ -32,7 +32,7 @@ export default function OrdersPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Breadcrumb items={[{ label: "我的订单" }]} />
+      <Breadcrumb items={[{ label: "My Orders" }]} />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -43,8 +43,8 @@ export default function OrdersPage() {
           Orders
         </span>
         <div className="flex items-end justify-between mt-2">
-          <h1 className="text-2xl font-bold">我的订单</h1>
-          <span className="text-sm text-muted-foreground">{filteredOrders.length} 笔</span>
+          <h1 className="text-2xl font-bold">My Orders</h1>
+          <span className="text-sm text-muted-foreground">{filteredOrders.length}</span>
         </div>
       </motion.div>
 
@@ -70,8 +70,8 @@ export default function OrdersPage() {
         {filteredOrders.length === 0 ? (
           <EmptyState
             icon={Package}
-            title="暂无订单"
-            description="您还没有下过任何订单"
+            title="No orders yet"
+            description="You haven't placed any orders yet."
           />
         ) : (
           filteredOrders.map((order, index) => {
@@ -111,7 +111,7 @@ export default function OrdersPage() {
                     <p className="font-medium text-sm mt-1 truncate">
                       {firstItem.product.name}
                       {order.items.length > 1 && (
-                        <span className="text-muted-foreground"> 等 {order.items.length} 件</span>
+                        <span className="text-muted-foreground"> & {order.items.length - 1} more</span>
                       )}
                     </p>
                     <div className="flex items-center gap-2 mt-2">

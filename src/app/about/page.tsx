@@ -4,43 +4,43 @@ import { Zap, Target, Heart, Globe, Users, Award, TrendingUp, Phone } from "luci
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "关于我们 | XM Store",
-  description: "了解 XM Store 的品牌故事、核心价值观和发展历程。我们致力于为全球消费者提供最前沿的科技产品。",
+  title: "About Us | XM Store",
+  description: "Discover the XM Store story, our core values, and our journey. We are dedicated to bringing the latest tech products to consumers worldwide.",
   openGraph: {
-    title: "关于 XM Store",
-    description: "了解 XM Store 的品牌故事、核心价值观和发展历程",
+    title: "About XM Store",
+    description: "Discover the XM Store story, our core values, and our journey",
   },
 };
 
 const values = [
   {
     icon: Zap,
-    title: "创新驱动",
-    description: "我们始终走在科技前沿，将最新技术融入每一款产品",
+    title: "Innovation Driven",
+    description: "We stay at the forefront of technology, integrating the latest innovations into every product",
   },
   {
     icon: Target,
-    title: "品质至上",
-    description: "严格的质量控制体系，确保每件产品都达到最高标准",
+    title: "Quality First",
+    description: "Strict quality control to ensure every product meets the highest standards",
   },
   {
     icon: Heart,
-    title: "用户为本",
-    description: "以用户需求为核心，打造极致的产品体验",
+    title: "User Centric",
+    description: "Putting user needs at the core to deliver exceptional product experiences",
   },
   {
     icon: Globe,
-    title: "全球视野",
-    description: "面向全球市场，服务世界各地的消费者",
+    title: "Global Vision",
+    description: "Serving consumers worldwide with a global market perspective",
   },
 ];
 
 const milestones = [
-  { year: "2018", title: "品牌创立", desc: "XM Store正式成立" },
-  { year: "2019", title: "首款产品", desc: "XM Pro手机发布" },
-  { year: "2021", title: "全球扩张", desc: "进入20+国家和地区" },
-  { year: "2023", title: "百万用户", desc: "全球用户突破100万" },
-  { year: "2025", title: "持续创新", desc: "发布多款旗舰新品" },
+  { year: "2018", title: "Brand Founded", desc: "XM Store was officially established" },
+  { year: "2019", title: "First Product", desc: "XM Pro smartphone launched" },
+  { year: "2021", title: "Global Expansion", desc: "Entered 20+ countries and regions" },
+  { year: "2023", title: "Million Users", desc: "Over 1 million users worldwide" },
+  { year: "2025", title: "Continuous Innovation", desc: "Launched multiple flagship products" },
 ];
 
 export default function AboutPage() {
@@ -56,14 +56,13 @@ export default function AboutPage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-sm border border-white/10 mb-6">
             <Zap className="h-4 w-4" />
-            科技改变生活
+            Technology Changes Life
           </span>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            关于 <span className="gradient-text">XM Store</span>
+            About <span className="gradient-text">XM Store</span>
           </h1>
           <p className="mt-6 text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-            我们致力于为全球消费者提供最前沿的科技产品，
-            让每个人都能享受科技带来的美好生活
+            We are dedicated to bringing the latest tech products to consumers worldwide, so everyone can enjoy the good life that technology brings.
           </p>
         </div>
       </section>
@@ -74,38 +73,36 @@ export default function AboutPage() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
               <Heart className="h-4 w-4" />
-              品牌故事
+              Our Story
             </span>
-            <h2 className="text-3xl font-bold tracking-tight">从初心到使命</h2>
+            <h2 className="text-3xl font-bold tracking-tight">From Vision to Mission</h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              XM Store成立于2018年，是一家专注于科技数码产品的电商平台。
-              我们相信科技应该服务于生活，让每个人都能轻松享受科技带来的便利与乐趣。
+              Founded in 2018, XM Store is an e-commerce platform specializing in tech and digital products. We believe technology should serve life, making it easier and more enjoyable for everyone.
             </p>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              从最初的一款智能手机，到如今涵盖手机、音频、穿戴、电脑、智能家居等多个品类，
-              XM Store始终坚持品质至上、用户为本的理念，赢得了全球数百万用户的信赖。
+              From our first smartphone to a wide range of categories including phones, audio, wearables, computers, and smart home devices, XM Store has always upheld the principles of quality first and user centricity, earning the trust of millions of users worldwide.
             </p>
             <div className="mt-8 grid grid-cols-3 gap-6">
               <div className="text-center p-4 rounded-2xl bg-secondary/50">
                 <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white mb-2">
                   <Users className="h-5 w-5" />
                 </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">100万+</div>
-                <div className="text-sm text-muted-foreground mt-1">全球用户</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">1M+</div>
+                <div className="text-sm text-muted-foreground mt-1">Global Users</div>
               </div>
               <div className="text-center p-4 rounded-2xl bg-secondary/50">
                 <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white mb-2">
                   <Award className="h-5 w-5" />
                 </div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">50+</div>
-                <div className="text-sm text-muted-foreground mt-1">产品品类</div>
+                <div className="text-sm text-muted-foreground mt-1">Product Categories</div>
               </div>
               <div className="text-center p-4 rounded-2xl bg-secondary/50">
                 <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent text-white mb-2">
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">20+</div>
-                <div className="text-sm text-muted-foreground mt-1">覆盖国家</div>
+                <div className="text-sm text-muted-foreground mt-1">Countries Covered</div>
               </div>
             </div>
           </div>
@@ -131,11 +128,11 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent mb-4">
               <Target className="h-4 w-4" />
-              核心价值观
+              Core Values
             </span>
-            <h2 className="text-3xl font-bold tracking-tight">指引我们前行的信念</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Our Guiding Principles</h2>
             <p className="mt-3 text-muted-foreground">
-              指引我们前行的信念与原则
+              The beliefs and principles that guide us forward
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -162,11 +159,11 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
             <TrendingUp className="h-4 w-4" />
-            发展历程
+            Our Journey
           </span>
-          <h2 className="text-3xl font-bold tracking-tight">从创立到成长</h2>
+          <h2 className="text-3xl font-bold tracking-tight">From Founding to Growth</h2>
           <p className="mt-3 text-muted-foreground">
-            从创立到成长的每一步
+            Every step from founding to growth
           </p>
         </div>
         <div className="relative">
@@ -209,18 +206,18 @@ export default function AboutPage() {
             <div className="absolute inset-0 noise-overlay" />
           </div>
           <div className="relative">
-            <h2 className="text-3xl md:text-4xl font-bold">加入我们</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Join Us</h2>
             <p className="mt-3 text-white/70 max-w-md mx-auto">
-              与我们一起，用科技改变世界，创造更美好的未来
+              Join us in changing the world with technology and creating a better future
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
               <Button className="bg-white text-slate-900 hover:bg-white/90 rounded-xl gap-2 px-8" size="lg">
                 <Users className="h-4 w-4" />
-                了解职位
+                View Positions
               </Button>
               <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl gap-2" size="lg">
                 <Phone className="h-4 w-4" />
-                联系我们
+                Contact Us
               </Button>
             </div>
           </div>

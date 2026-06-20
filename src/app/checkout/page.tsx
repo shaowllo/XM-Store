@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { CreditCard, Truck, Shield, Clock, CheckCircle, ShoppingBag, Tag, ChevronDown, ChevronUp, X } from "lucide-react";
@@ -16,6 +17,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function CheckoutPage() {
+  const t = useTranslations("checkout");
+  const tc = useTranslations("cart");
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const { addOrder } = useOrders();
   const { addresses, defaultAddress } = useAddress();
@@ -37,12 +40,12 @@ export default function CheckoutPage() {
   if (items.length === 0 && step !== "success") {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <Breadcrumb items={[{ label: "购物车", href: "/cart" }, { label: "结算" }]} />
+        <Breadcrumb items={[{ label: tc("title"), href: "/cart" }, { label: t("title") }]} />
         <EmptyState
           icon={ShoppingBag}
-          title="购物车是空的"
-          description="请先添加商品到购物车后再来结算"
-          action={{ label: "去购物", href: "/products", icon: <ShoppingBag className="h-4 w-4" /> }}
+          title={tc("empty")}
+          description="Add items to your cart before checkout"
+          action={{ label: tc("continueShopping"), href: "/products", icon: <ShoppingBag className="h-4 w-4" /> }}
         />
       </div>
     );
@@ -59,10 +62,10 @@ export default function CheckoutPage() {
     if (coupon) {
       setAppliedCoupon({ code: coupon.code, discount: coupon.discount });
       setCouponCode("");
-      toast.success(`优惠券 ${coupon.code} 已应用，节省 ¥${coupon.discount}`);
+      toast.success(`Coupon ${coupon.code} applied! You saved ¥${coupon.discount}`);
     } else {
-      setCouponError("优惠券无效、已使用、已过期或未达到最低消费金额");
-      toast.error("优惠券应用失败");
+      setCouponError("Invalid, expired, or minimum not met");
+      toast.error("Failed to apply coupon");
     }
   };
 
@@ -73,7 +76,7 @@ export default function CheckoutPage() {
 
   const handlePay = () => {
     if (!selectedAddress) {
-      toast.error("请选择收货地址");
+      toast.error("Please select a shipping address");
       return;
     }
     setProcessing(true);
@@ -86,7 +89,7 @@ export default function CheckoutPage() {
       clearCart();
       setProcessing(false);
       setStep("success");
-      toast.success("订单支付成功！");
+      toast.success("Order placed successfully!");
     }, 2000);
   };
 
@@ -106,16 +109,16 @@ export default function CheckoutPage() {
           >
             <CheckCircle className="h-10 w-10 text-background" />
           </motion.div>
-          <h1 className="text-2xl font-bold">支付成功</h1>
-          <p className="mt-2 text-muted-foreground">您的订单已确认，我们将尽快为您发货</p>
+          <h1 className="text-2xl font-bold">{t("orderConfirmed")}</h1>
+          <p className="mt-2 text-muted-foreground">Your order has been confirmed and will be shipped soon.</p>
           <div className="mt-8 flex gap-3 justify-center">
             <Link href="/orders">
               <Button className="rounded-full">
-                查看订单
+                View Orders
               </Button>
             </Link>
             <Link href="/products">
-              <Button variant="outline" className="rounded-full">继续购物</Button>
+              <Button variant="outline" className="rounded-full">{tc("continueShopping")}</Button>
             </Link>
           </div>
         </motion.div>
@@ -125,7 +128,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
-      <Breadcrumb items={[{ label: "购物车", href: "/cart" }, { label: "结算" }]} />
+      <Breadcrumb items={[{ label: tc("title"), href: "/cart" }, { label: t("title") }]} />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -135,7 +138,7 @@ export default function CheckoutPage() {
           Checkout
         </span>
         <h1 className="mt-2 text-2xl font-bold tracking-tight">
-          {step === "processing" ? "处理中..." : "结算"}
+          {step === "processing" ? "Processing..." : t("title")}
         </h1>
 
         {step === "processing" ? (
@@ -145,7 +148,7 @@ export default function CheckoutPage() {
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
               className="h-12 w-12 rounded-full border-4 border-foreground border-t-transparent"
             />
-            <p className="mt-4 text-muted-foreground">正在处理您的支付...</p>
+            <p className="mt-4 text-muted-foreground">Processing your payment...</p>
           </div>
         ) : (
           <>
@@ -176,7 +179,7 @@ export default function CheckoutPage() {
                           className="inline-block h-2.5 w-2.5 rounded-full border"
                           style={{ backgroundColor: item.selectedColor }}
                         />
-                        <span className="text-xs text-muted-foreground">已选颜色</span>
+                        <span className="text-xs text-muted-foreground">Selected</span>
                       </div>
                     )}
                     <p className="text-xs text-muted-foreground mt-1">
@@ -200,7 +203,7 @@ export default function CheckoutPage() {
                   <button
                     onClick={() => setShowAddressList(!showAddressList)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label={showAddressList ? "收起地址列表" : "展开地址列表"}
+                    aria-label={showAddressList ? "Collapse address list" : "Expand address list"}
                     aria-expanded={showAddressList}
                   >
                     {showAddressList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -214,9 +217,9 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <div className="text-sm text-muted-foreground">
-                  <p>暂无收货地址</p>
+                  <p>No shipping address</p>
                   <Link href="/profile/addresses">
-                    <Button variant="link" size="sm" className="px-0">去添加地址</Button>
+                    <Button variant="link" size="sm" className="px-0">Add address</Button>
                   </Link>
                 </div>
               )}
@@ -247,7 +250,7 @@ export default function CheckoutPage() {
                 <button
                   onClick={() => setShowCouponList(!showCouponList)}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label={showCouponList ? "收起优惠券列表" : "展开优惠券列表"}
+                  aria-label={showCouponList ? "Collapse coupon list" : "Expand coupon list"}
                   aria-expanded={showCouponList}
                 >
                   {showCouponList ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -262,7 +265,7 @@ export default function CheckoutPage() {
                   <button
                     className="text-muted-foreground hover:text-foreground transition-colors"
                     onClick={handleRemoveCoupon}
-                    aria-label="移除优惠券"
+                    aria-label="Remove coupon"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -273,18 +276,18 @@ export default function CheckoutPage() {
                     type="text"
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
-                    placeholder="输入优惠码"
-                    aria-label="优惠码"
+                    placeholder="Enter coupon code"
+                    aria-label="Coupon code"
                     className="flex-1 rounded-full border bg-background px-5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-foreground/20 transition-all"
                     onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
                   />
-                  <Button size="sm" className="rounded-full px-6" onClick={handleApplyCoupon}>应用</Button>
+                  <Button size="sm" className="rounded-full px-6" onClick={handleApplyCoupon}>Apply</Button>
                 </div>
               )}
               {couponError && <p className="mt-2 text-xs text-red-500">{couponError}</p>}
               {showCouponList && (
                 <div className="mt-3 space-y-2">
-                  <p className="text-xs text-muted-foreground">可用优惠券：</p>
+                  <p className="text-xs text-muted-foreground">Available coupons:</p>
                   {availableCoupons.map((c) => (
                     <button
                       key={c.id}
@@ -295,11 +298,11 @@ export default function CheckoutPage() {
                         <span className="font-medium">{c.code}</span>
                         <span className="font-semibold">-¥{c.discount}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">满¥{c.minOrderAmount}可用，有效期至 {c.expiryDate}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Min order: ¥{c.minOrderAmount}, expires: {c.expiryDate}</p>
                     </button>
                   ))}
                   {availableCoupons.length === 0 && (
-                    <p className="text-xs text-muted-foreground">暂无可用的优惠券</p>
+                    <p className="text-xs text-muted-foreground">No coupons available</p>
                   )}
                 </div>
               )}
@@ -310,22 +313,22 @@ export default function CheckoutPage() {
               <div className="flex items-center gap-4">
                 <Truck className="h-4 w-4 text-muted-foreground" />
                 <div>
-                  <p className="text-sm">极速配送</p>
-                  <p className="text-xs text-muted-foreground">预计 1-3 个工作日送达</p>
+                  <p className="text-sm">Fast Delivery</p>
+                  <p className="text-xs text-muted-foreground">1-3 business days</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <Shield className="h-4 w-4 text-muted-foreground" />
                 <div>
-                  <p className="text-sm">正品保障</p>
-                  <p className="text-xs text-muted-foreground">7 天无理由退换</p>
+                  <p className="text-sm">Genuine Products</p>
+                  <p className="text-xs text-muted-foreground">7-day returns</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <div>
-                  <p className="text-sm">售后无忧</p>
-                  <p className="text-xs text-muted-foreground">专业客服支持</p>
+                  <p className="text-sm">After-sales Support</p>
+                  <p className="text-xs text-muted-foreground">Dedicated support</p>
                 </div>
               </div>
             </div>
@@ -333,22 +336,22 @@ export default function CheckoutPage() {
             {/* Summary */}
             <div className="mt-10 pt-10 border-t space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">商品总额</span>
+                <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-medium">¥{totalPrice.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">运费</span>
-                <span className="text-green-600 font-medium">免运费</span>
+                <span className="text-muted-foreground">Shipping</span>
+                <span className="text-green-600 font-medium">Free</span>
               </div>
               {appliedCoupon && (
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">优惠券 ({appliedCoupon.code})</span>
+                  <span className="text-muted-foreground">Coupon ({appliedCoupon.code})</span>
                   <span className="text-green-600 font-medium">-¥{appliedCoupon.discount}</span>
                 </div>
               )}
               <Separator />
               <div className="flex items-center justify-between text-lg font-bold">
-                <span>合计</span>
+                <span>Total</span>
                 <span>¥{finalPrice.toLocaleString()}</span>
               </div>
             </div>
@@ -360,7 +363,7 @@ export default function CheckoutPage() {
               disabled={processing || items.length === 0}
             >
               <CreditCard className="h-5 w-5 mr-2" />
-              确认支付
+              {t("placeOrder")}
             </Button>
           </>
         )}

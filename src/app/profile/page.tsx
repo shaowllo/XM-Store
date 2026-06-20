@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { User, ShoppingBag, MapPin, Heart, LogOut, ChevronRight, Settings } from "lucide-react";
 import { useUser } from "@/components/user-provider";
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function ProfilePage() {
+  const t = useTranslations("profile");
   const { user, logout } = useUser();
   const { orders } = useOrders();
   const { addresses } = useAddress();
@@ -20,12 +22,12 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
-        <Breadcrumb items={[{ label: "个人中心" }]} />
+        <Breadcrumb items={[{ label: t("title") }]} />
         <EmptyState
           icon={User}
-          title="请先登录"
-          description="登录后查看您的个人信息、订单和收藏"
-          action={{ label: "去登录", href: "/login", icon: <LogOut className="h-4 w-4" /> }}
+          title="Please log in"
+          description="Log in to view your profile, orders, and wishlist"
+          action={{ label: "Log In", href: "/login", icon: <LogOut className="h-4 w-4" /> }}
         />
       </div>
     );
@@ -34,33 +36,33 @@ export default function ProfilePage() {
   const menuItems = [
     {
       icon: ShoppingBag,
-      label: "我的订单",
-      description: `${orders.length} 笔订单`,
+      label: "My Orders",
+      description: `${orders.length} orders`,
       href: "/orders",
     },
     {
       icon: MapPin,
-      label: "收货地址",
-      description: `${addresses.length} 个地址`,
+      label: t("addresses"),
+      description: `${addresses.length} addresses`,
       href: "/profile/addresses",
     },
     {
       icon: Heart,
-      label: "我的收藏",
-      description: `${wishlist.length} 件商品`,
+      label: "My Wishlist",
+      description: `${wishlist.length} items`,
       href: "/wishlist",
     },
     {
       icon: Settings,
-      label: "账号设置",
-      description: "修改个人信息",
+      label: "Account Settings",
+      description: "Manage your info",
       href: "/profile",
     },
   ];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Breadcrumb items={[{ label: "个人中心" }]} />
+      <Breadcrumb items={[{ label: t("title") }]} />
 
       {/* User Info */}
       <motion.div
@@ -85,9 +87,9 @@ export default function ProfilePage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-8 py-8 border-b">
         {[
-          { value: orders.length, label: "订单" },
-          { value: addresses.length, label: "地址" },
-          { value: wishlist.length, label: "收藏" },
+          { value: orders.length, label: "Orders" },
+          { value: addresses.length, label: "Addresses" },
+          { value: wishlist.length, label: "Favorites" },
         ].map((stat) => (
           <motion.div
             key={stat.label}
@@ -130,7 +132,7 @@ export default function ProfilePage() {
           onClick={logout}
         >
           <LogOut className="h-4 w-4 mr-2" />
-          退出登录
+          Log Out
         </Button>
       </div>
     </div>
