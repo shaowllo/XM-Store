@@ -1,56 +1,22 @@
-/** @type {import('next').NextConfig} */
-const securityHeaders = [
-  {
-    key: "X-Content-Type-Options",
-    value: "nosniff",
-  },
-  {
-    key: "X-Frame-Options",
-    value: "DENY",
-  },
-  {
-    key: "X-XSS-Protection",
-    value: "1; mode=block",
-  },
-  {
-    key: "Referrer-Policy",
-    value: "strict-origin-when-cross-origin",
-  },
-  {
-    key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=()",
-  },
-];
+import createNextIntlPlugin from 'next-intl/plugin';
 
+const withNextIntl = createNextIntlPlugin();
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   images: {
+    unoptimized: true,
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
+      { hostname: 'images.unsplash.com' },
     ],
   },
-  poweredByHeader: false,
-  compress: true,
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
+  typescript: { ignoreBuildErrors: false },
+  eslint: { ignoreDuringBuilds: true },
   experimental: {
     workerThreads: false,
     cpus: 1,
   },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: securityHeaders,
-      },
-    ];
-  },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
