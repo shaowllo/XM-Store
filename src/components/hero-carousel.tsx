@@ -4,12 +4,14 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { heroSlides } from "@/lib/data";
 import Link from "next/link";
 
 export function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const t = useTranslations("home");
 
   const paginate = useCallback((newDirection: number) => {
     setDirection(newDirection);
@@ -78,14 +80,14 @@ export function HeroCarousel() {
                     href={`/products/${slide.productId}`}
                     className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition-all hover:bg-white/90 hover:gap-4"
                   >
-                    立即购买
+                    {t("shopNow")}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href={`/products/${slide.productId}`}
                     className="text-sm font-medium text-white/80 hover:text-white transition-colors underline underline-offset-4"
                   >
-                    了解更多
+                    Learn More
                   </Link>
                 </div>
               </motion.div>
@@ -97,7 +99,7 @@ export function HeroCarousel() {
       <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-6">
         <button
           onClick={() => paginate(-1)}
-          aria-label="上一张"
+          aria-label="Previous slide"
           className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/60 backdrop-blur-sm transition-all hover:border-white/40 hover:text-white hover:bg-white/10"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -110,7 +112,7 @@ export function HeroCarousel() {
                 setDirection(idx > current ? 1 : -1);
                 setCurrent(idx);
               }}
-              aria-label={`跳转到第 ${idx + 1} 张`}
+              aria-label={`Go to slide ${idx + 1}`}
               className="group relative h-1 overflow-hidden rounded-full bg-white/20 transition-all"
               style={{ width: idx === current ? 48 : 24 }}
             >
@@ -128,7 +130,7 @@ export function HeroCarousel() {
         </div>
         <button
           onClick={() => paginate(1)}
-          aria-label="下一张"
+          aria-label="Next slide"
           className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white/60 backdrop-blur-sm transition-all hover:border-white/40 hover:text-white hover:bg-white/10"
         >
           <ChevronRight className="h-5 w-5" />

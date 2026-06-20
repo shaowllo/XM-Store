@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, Heart, Package, User, LogOut, Store } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useUser } from "@/components/user-provider";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
@@ -15,11 +16,12 @@ export function Navbar() {
   const { user, logout } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const t = useTranslations("nav");
 
   const navLinks = [
-    { href: "/", label: "首页" },
-    { href: "/products", label: "产品" },
-    { href: "/about", label: "关于" },
+    { href: "/", label: t("home") },
+    { href: "/products", label: t("products") },
+    { href: "/about", label: t("about") },
   ];
 
   return (
@@ -55,20 +57,20 @@ export function Navbar() {
         <div className="flex items-center gap-1">
           <ThemeToggle />
 
-          <Button variant="ghost" size="icon" className="hidden sm:flex h-8 w-8 rounded-full" onClick={() => setSearchOpen(true)} aria-label="搜索">
+          <Button variant="ghost" size="icon" className="hidden sm:flex h-8 w-8 rounded-full" onClick={() => setSearchOpen(true)} aria-label="Search">
             <Search className="h-4 w-4" />
           </Button>
 
           <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
 
           <Link href="/wishlist" className="hidden sm:flex">
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" aria-label="收藏">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" aria-label={t("wishlist")}>
               <Heart className="h-4 w-4" />
             </Button>
           </Link>
 
           <Link href="/orders" className="hidden sm:flex">
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" aria-label="订单">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" aria-label={t("orders")}>
               <Package className="h-4 w-4" />
             </Button>
           </Link>
@@ -81,13 +83,13 @@ export function Navbar() {
                   <span className="max-w-[60px] truncate">{user.name}</span>
                 </Button>
               </Link>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={logout} aria-label="退出登录">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" onClick={logout} aria-label={t("logout")}>
                 <LogOut className="h-3.5 w-3.5" />
               </Button>
             </div>
           ) : (
             <Link href="/login" className="hidden sm:flex">
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" aria-label="登录">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full" aria-label={t("login")}>
                 <User className="h-4 w-4" />
               </Button>
             </Link>
@@ -107,7 +109,7 @@ export function Navbar() {
             size="icon"
             className="md:hidden h-8 w-8 rounded-full"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "关闭菜单" : "打开菜单"}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -141,16 +143,16 @@ export function Navbar() {
                   <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>
                     <button className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors w-full text-left">
                       <User className="h-4 w-4" />
-                      个人中心
+                      {t("profile")}
                     </button>
                   </Link>
                   <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors">
                     <Heart className="h-4 w-4" />
-                    收藏
+                    {t("wishlist")}
                   </Link>
                   <Link href="/orders" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors">
                     <Package className="h-4 w-4" />
-                    订单
+                    {t("orders")}
                   </Link>
                   <div className="h-px bg-border my-2" />
                   <button
@@ -158,7 +160,7 @@ export function Navbar() {
                     className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors text-left"
                   >
                     <LogOut className="h-4 w-4" />
-                    退出登录
+                    {t("logout")}
                   </button>
                 </>
               ) : (
@@ -168,7 +170,7 @@ export function Navbar() {
                   className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg hover:bg-muted transition-colors"
                 >
                   <User className="h-4 w-4" />
-                  登录 / 注册
+                  {t("login")} / {t("register")}
                 </Link>
               )}
             </nav>

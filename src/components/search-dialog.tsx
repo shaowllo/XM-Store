@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, SlidersHorizontal, Filter, Star, SearchX, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { products, categories } from "@/lib/data";
 import { EmptyState } from "@/components/empty-state";
 import Link from "next/link";
@@ -30,6 +31,7 @@ function highlightMatch(text: string, query: string) {
 }
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
+  const t = useTranslations("search");
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("relevance");
@@ -118,7 +120,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   ref={inputRef}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="搜索产品..."
+                  placeholder={t("placeholder")}
                   className="flex-1 bg-transparent outline-none text-base placeholder:text-muted-foreground/60"
                   onKeyDown={(e) => {
                     if (e.key === "Escape") onOpenChange(false);
@@ -126,7 +128,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 />
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  aria-label="筛选"
+                  aria-label="Filter"
                   aria-pressed={showFilters}
                   className={`flex h-9 w-9 items-center justify-center rounded-xl transition-all ${
                     showFilters
@@ -139,7 +141,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 {query && (
                   <button
                     onClick={() => setQuery("")}
-                    aria-label="清除搜索"
+                    aria-label="Clear search"
                     className="flex h-9 w-9 items-center justify-center rounded-xl bg-muted text-muted-foreground hover:bg-muted/80 transition-colors"
                   >
                     <X className="h-4 w-4" />
@@ -161,7 +163,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                       <div>
                         <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1.5 font-medium">
                           <Filter className="h-3.5 w-3.5 text-primary" />
-                          分类筛选
+                          Filter by Category
                         </p>
                         <div className="flex flex-wrap gap-2">
                           <button
@@ -172,7 +174,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                 : "bg-muted hover:bg-muted/80 text-muted-foreground"
                             }`}
                           >
-                            全部
+                            All
                           </button>
                           {categories.map((cat) => (
                             <button
@@ -192,14 +194,14 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                       <div>
                         <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1.5 font-medium">
                           <SlidersHorizontal className="h-3.5 w-3.5 text-primary" />
-                          排序
+                          Sort By
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {[
-                            { value: "relevance", label: "相关度" },
-                            { value: "price-asc", label: "价格从低到高" },
-                            { value: "price-desc", label: "价格从高到低" },
-                            { value: "rating", label: "评分最高" },
+                            { value: "relevance", label: "Relevance" },
+                            { value: "price-asc", label: "Price: Low to High" },
+                            { value: "price-desc", label: "Price: High to Low" },
+                            { value: "rating", label: "Top Rated" },
                           ].map((opt) => (
                             <button
                               key={opt.value}
@@ -226,23 +228,23 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   query.trim() ? (
                     <EmptyState
                       icon={SearchX}
-                      title="未找到相关产品"
-                      description={`没有找到与 "${query}" 相关的产品，请尝试其他关键词`}
+                      title={t("noResults")}
+                      description={`No products found matching "${query}". Try different keywords.`}
                     />
                   ) : (
                     <div className="px-5 py-12 text-center">
                       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 mx-auto mb-4">
                         <Sparkles className="h-7 w-7 text-primary" />
                       </div>
-                      <p className="text-sm text-muted-foreground">输入关键词开始搜索</p>
-                      <p className="text-xs text-muted-foreground/60 mt-1">试试搜索 &quot;手机&quot;、&quot;耳机&quot; 或 &quot;手表&quot;</p>
+                      <p className="text-sm text-muted-foreground">Enter keywords to start searching</p>
+                      <p className="text-xs text-muted-foreground/60 mt-1">Try searching &quot;Phones&quot;, &quot;Earphones&quot;, or &quot;Watches&quot;</p>
                     </div>
                   )
                 ) : (
                   <div className="py-3">
                     <div className="px-5 py-2 text-xs font-medium text-muted-foreground flex items-center gap-1.5">
                       <Sparkles className="h-3 w-3 text-primary" />
-                      找到 {results.length} 个结果
+                      Found {results.length} results
                     </div>
                     {results.map((product, index) => (
                       <motion.div

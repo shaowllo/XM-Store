@@ -2,46 +2,48 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Truck, Shield, RotateCcw, Headphones, Store, ArrowUpRight } from "lucide-react";
 
-const features = [
-  { icon: Truck, title: "极速配送", desc: "全国包邮，次日送达" },
-  { icon: Shield, title: "品质保障", desc: "官方正品，假一赔十" },
-  { icon: RotateCcw, title: "无忧退换", desc: "7天无理由退换货" },
-  { icon: Headphones, title: "专属客服", desc: "24小时在线支持" },
-];
-
-const footerLinks = {
-  products: {
-    title: "产品分类",
-    links: [
-      { label: "手机", href: "/products?category=phone" },
-      { label: "音频", href: "/products?category=audio" },
-      { label: "穿戴", href: "/products?category=wearable" },
-      { label: "电脑", href: "/products?category=computer" },
-    ],
-  },
-  support: {
-    title: "服务支持",
-    links: [
-      { label: "售后服务", href: "/about" },
-      { label: "配送说明", href: "/about" },
-      { label: "退换政策", href: "/about" },
-      { label: "常见问题", href: "/about" },
-    ],
-  },
-  about: {
-    title: "关于我们",
-    links: [
-      { label: "品牌故事", href: "/about" },
-      { label: "联系我们", href: "/about" },
-      { label: "加入我们", href: "/about" },
-      { label: "隐私政策", href: "/about" },
-    ],
-  },
-};
-
 export function Footer() {
+  const t = useTranslations("footer");
+
+  const features = [
+    { icon: Truck, title: "Express Delivery", desc: "Free nationwide shipping, next-day delivery" },
+    { icon: Shield, title: "Quality Guarantee", desc: "Authentic products, 10x refund guarantee" },
+    { icon: RotateCcw, title: "Hassle-free Returns", desc: "7-day no-questions-asked returns" },
+    { icon: Headphones, title: "Dedicated Support", desc: "24/7 online support" },
+  ];
+
+  const footerLinks = {
+    products: {
+      title: "Product Categories",
+      links: [
+        { label: "Phones", href: "/products?category=phone" },
+        { label: "Audio", href: "/products?category=audio" },
+        { label: "Wearables", href: "/products?category=wearable" },
+        { label: "Computers", href: "/products?category=computer" },
+      ],
+    },
+    support: {
+      title: "Support",
+      links: [
+        { label: "After-Sales Service", href: "/about" },
+        { label: "Delivery Info", href: "/about" },
+        { label: t("refundPolicy"), href: "/about" },
+        { label: "FAQ", href: "/about" },
+      ],
+    },
+    about: {
+      title: t("aboutUs"),
+      links: [
+        { label: "Our Story", href: "/about" },
+        { label: t("contactUs"), href: "/about" },
+        { label: "Join Us", href: "/about" },
+        { label: t("privacyPolicy"), href: "/about" },
+      ],
+    },
+  };
   return (
     <footer className="border-t border-border/50 bg-muted/30">
       {/* Features */}
@@ -81,10 +83,10 @@ export function Footer() {
                 <span className="text-xl font-bold gradient-text">XMStore</span>
               </Link>
               <p className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-xs">
-                探索最新科技数码产品，品质生活从这里开始。我们致力于为用户提供最优质的科技产品和购物体验。
+                Explore the latest tech products. Premium quality, delivered to your doorstep.
               </p>
               <div className="mt-6 flex gap-3">
-                {["微信", "微博", "抖音"].map((social) => (
+                {["WeChat", "Weibo", "Douyin"].map((social) => (
                   <button
                     key={social}
                     className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-primary hover:text-white transition-all text-xs font-medium"
@@ -127,13 +129,13 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-6">
               <Link href="/about" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                服务条款
+                {t("termsOfService")}
               </Link>
               <Link href="/about" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                隐私政策
+                {t("privacyPolicy")}
               </Link>
               <Link href="/about" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                Cookie 设置
+                Cookie Settings
               </Link>
             </div>
           </div>

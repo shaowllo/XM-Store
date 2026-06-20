@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { products } from "@/lib/data";
 
@@ -21,6 +22,7 @@ const stagger = {
 export default function Home() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const t = useTranslations("home");
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,24 +62,24 @@ export default function Home() {
             XM Store
           </motion.p>
           <motion.h1 variants={fadeUp} transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white leading-[1.05]">
-            科技，<br />触手可及。
+            {t("heroTitle")}
           </motion.h1>
           <motion.p variants={fadeUp} transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} className="mt-6 text-lg md:text-xl text-white/60 max-w-lg leading-relaxed">
-            探索前沿数码产品，让创新融入日常。
+            {t("heroSubtitle")}
           </motion.p>
           <motion.div variants={fadeUp} transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} className="mt-10 flex items-center gap-6">
             <Link
               href="/products"
               className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-medium text-black transition-all hover:bg-white/90"
             >
-              探索全部产品
+              {t("shopNow")}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href={`/products/${heroProduct.id}`}
               className="inline-flex items-center gap-2 text-sm font-medium text-white/70 hover:text-white transition-colors"
             >
-              了解更多
+              Learn More
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </motion.div>
@@ -95,7 +97,7 @@ export default function Home() {
             className="px-6 md:px-12 pt-24 pb-8"
           >
             <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Featured</p>
-            <h2 className="text-3xl md:text-5xl font-semibold tracking-tight">精选推荐</h2>
+            <h2 className="text-3xl md:text-5xl font-semibold tracking-tight">{t("featuredProducts")}</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
@@ -159,7 +161,7 @@ export default function Home() {
                   href={`/products/${newArrival.id}`}
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition-all hover:bg-foreground/90"
                 >
-                  立即购买
+                  Buy Now
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -194,15 +196,15 @@ export default function Home() {
             className="mb-16"
           >
             <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Categories</p>
-            <h2 className="text-3xl md:text-5xl font-semibold tracking-tight">按类别浏览</h2>
+            <h2 className="text-3xl md:text-5xl font-semibold tracking-tight">{t("categories")}</h2>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { id: "phone", name: "手机", image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop" },
-              { id: "audio", name: "音频", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" },
-              { id: "wearable", name: "穿戴", image: "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=600&h=600&fit=crop" },
-              { id: "computer", name: "电脑", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop" },
+              { id: "phone", name: "Phones", image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop" },
+              { id: "audio", name: "Audio", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop" },
+              { id: "wearable", name: "Wearables", image: "https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=600&h=600&fit=crop" },
+              { id: "computer", name: "Computers", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop" },
             ].map((cat, index) => (
               <motion.div
                 key={cat.id}
@@ -242,17 +244,17 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="max-w-xl mx-auto text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">保持联系</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">{t("newsletter")}</h2>
             <p className="mt-4 text-muted-foreground">
-              订阅获取新品发布与独家优惠
+              Subscribe for new arrivals and exclusive deals
             </p>
             <form onSubmit={handleSubscribe} className="mt-8 flex gap-3">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="您的邮箱"
-                aria-label="邮箱地址"
+                placeholder={t("newsletterPlaceholder")}
+                aria-label="Email address"
                 required
                 className="flex-1 rounded-full border bg-background px-6 py-3.5 text-sm outline-none focus:ring-2 focus:ring-foreground/20 transition-all"
               />
@@ -261,7 +263,7 @@ export default function Home() {
                 disabled={subscribed}
                 className="rounded-full bg-foreground px-8 py-3.5 text-sm font-medium text-background transition-all hover:bg-foreground/90 disabled:opacity-50"
               >
-                {subscribed ? "已订阅" : "订阅"}
+                {subscribed ? "Subscribed" : t("subscribe")}
               </button>
             </form>
           </motion.div>
