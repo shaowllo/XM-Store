@@ -34,3 +34,36 @@ export interface Feature {
   title: string;
   description: string;
 }
+
+export type OrderStatus =
+  | 'pending'
+  | 'cod_confirmed'
+  | 'shipped'
+  | 'out_for_delivery'
+  | 'delivered'
+  | 'cod_paid'
+  | 'cancelled';
+
+export interface ShippingAddress {
+  fullName: string;
+  phone: string;
+  province: string;
+  city: string;
+  district: string;
+  street: string;
+  landmark?: string;
+}
+
+import type { CartItem } from "@/components/cart-provider";
+
+export interface Order {
+  id: string;
+  items: CartItem[];
+  totalPrice: number;
+  totalItems: number;
+  status: OrderStatus;
+  createdAt: string;
+  paymentMethod?: 'cod';
+  shippingAddress?: ShippingAddress;
+  trackingNumber?: string;
+}
