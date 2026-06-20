@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, X, Minus, Plus, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,11 +12,12 @@ import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/components/cart-provider";
 
 export function CartSheet() {
+  const t = useTranslations("cart");
   const { totalItems, totalPrice, items, removeFromCart, updateQuantity, isCartOpen, setIsCartOpen } = useCart();
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-      <SheetTrigger aria-label="购物车" className="sm:hidden">
+      <SheetTrigger aria-label={t("title")} className="sm:hidden">
         <div data-cart-trigger className="relative inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 cursor-pointer">
           <ShoppingCart className="h-5 w-5" />
           {totalItems > 0 && (
@@ -33,7 +35,7 @@ export function CartSheet() {
         <SheetHeader className="pb-4">
           <SheetTitle className="flex items-center gap-2 text-lg">
             <ShoppingCart className="h-5 w-5" />
-            购物车
+            {t("title")}
             <span className="text-sm text-muted-foreground font-normal">({totalItems})</span>
           </SheetTitle>
         </SheetHeader>
@@ -45,8 +47,8 @@ export function CartSheet() {
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted mb-4">
                   <ShoppingCart className="h-7 w-7 opacity-40" />
                 </div>
-                <p className="text-sm font-medium">购物车是空的</p>
-                <p className="text-xs mt-1 text-muted-foreground">快去挑选心仪的商品吧</p>
+                <p className="text-sm font-medium">{t("empty")}</p>
+                <p className="text-xs mt-1 text-muted-foreground">{t("continueShopping")}</p>
               </div>
             ) : (
               <div className="space-y-1 py-2">
@@ -79,7 +81,7 @@ export function CartSheet() {
                                 className="inline-block h-2.5 w-2.5 rounded-full border"
                                 style={{ backgroundColor: item.selectedColor }}
                               />
-                              <span className="text-xs text-muted-foreground">已选颜色</span>
+                              <span className="text-xs text-muted-foreground">Selected</span>
                             </div>
                           )}
                         </div>
@@ -91,7 +93,7 @@ export function CartSheet() {
                             <button
                               className="flex h-7 w-7 items-center justify-center rounded-full border transition-colors hover:bg-muted"
                               onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                              aria-label="减少数量"
+                              aria-label="Decrease quantity"
                             >
                               <Minus className="h-3 w-3" />
                             </button>
@@ -99,7 +101,7 @@ export function CartSheet() {
                             <button
                               className="flex h-7 w-7 items-center justify-center rounded-full border transition-colors hover:bg-muted"
                               onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                              aria-label="增加数量"
+                              aria-label="Increase quantity"
                             >
                               <Plus className="h-3 w-3" />
                             </button>
@@ -109,7 +111,7 @@ export function CartSheet() {
                       <button
                         className="shrink-0 text-muted-foreground hover:text-foreground transition-colors opacity-0 group-hover:opacity-100 p-1"
                         onClick={() => removeFromCart(item.cartItemId)}
-                        aria-label="移除商品"
+                        aria-label="Remove item"
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -125,7 +127,7 @@ export function CartSheet() {
               <Separator className="my-4" />
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">合计</span>
+                  <span className="text-sm text-muted-foreground">{t("subtotal")}</span>
                   <span className="text-2xl font-bold">¥{totalPrice.toLocaleString()}</span>
                 </div>
                 <Link href="/checkout" className="block">
@@ -134,7 +136,7 @@ export function CartSheet() {
                     size="lg"
                     onClick={() => setIsCartOpen(false)}
                   >
-                    去结算
+                    {t("checkout")}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
