@@ -1,17 +1,35 @@
 {
-  "name": "XM Store - 科技数码商城",
+  "name": "XM Store — Premium Tech, Delivered",
   "short_name": "XM Store",
-  "description": "发现最新科技产品，享受极致购物体验",
+  "description": "Discover the latest in premium tech — smartphones, audio, wearables, and more. Fast shipping across the Middle East.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0a0a0a",
+  "background_color": "#05080f",
+  "theme_color": "#c28f3c",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
   "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/icons/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["shopping", "tech", "lifestyle"],
+  "screenshots": [],
+  "prefer_related_applications": false
 }

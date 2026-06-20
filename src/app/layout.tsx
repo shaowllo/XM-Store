@@ -9,6 +9,9 @@ import { AppProviders } from "@/components/app-providers";
 import { WebVitals } from "@/components/web-vitals";
 import { BackToTop } from "@/components/back-to-top";
 import { CartFlyProvider } from "@/components/cart-fly-context";
+import { PwaProvider } from "@/components/pwa-provider";
+import { InstallPrompt } from "@/components/install-prompt";
+import { UpdateToast } from "@/components/update-toast";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { themeScript } from "@/lib/theme-store";
@@ -38,6 +41,11 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   keywords: ["tech", "electronics", "smartphones", "audio", "wearables", "premium", "ecommerce", "middle east"],
   authors: [{ name: "XM Store" }],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "XM Store",
+  },
   openGraph: {
     title: "XM Store — Premium Tech, Delivered",
     description: "Discover the latest in premium tech — smartphones, audio, wearables, and more.",
@@ -63,21 +71,25 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             <AppProviders>
-              <CartFlyProvider>
-                <WebVitals />
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <Footer />
-                <Toaster
-                  position="top-center"
-                  richColors
-                  closeButton
-                  toastOptions={{
-                    className: "font-sans text-sm",
-                  }}
-                />
-                <BackToTop />
-              </CartFlyProvider>
+              <PwaProvider>
+                <CartFlyProvider>
+                  <WebVitals />
+                  <Navbar />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                  <Toaster
+                    position="top-center"
+                    richColors
+                    closeButton
+                    toastOptions={{
+                      className: "font-sans text-sm",
+                    }}
+                  />
+                  <InstallPrompt />
+                  <UpdateToast />
+                  <BackToTop />
+                </CartFlyProvider>
+              </PwaProvider>
             </AppProviders>
           </ThemeProvider>
         </NextIntlClientProvider>
