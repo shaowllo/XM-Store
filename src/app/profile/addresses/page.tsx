@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { MapPin, Plus, Trash2, Star, X, Check, Sparkles } from "lucide-react";
+import { MapPin, Plus, Trash2, Star, X, Check } from "lucide-react";
 import { useAddress, type Address } from "@/components/address-provider";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { Button } from "@/components/ui/button";

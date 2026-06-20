@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -42,8 +42,13 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     setWishlist((prev) => prev.filter((id) => id !== productId));
   }, [setWishlist]);
 
+  const contextValue = useMemo(
+    () => ({ wishlist, toggleWishlist, isInWishlist, clearWishlist, removeFromWishlist }),
+    [wishlist, toggleWishlist, isInWishlist, clearWishlist, removeFromWishlist]
+  );
+
   return (
-    <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist, clearWishlist, removeFromWishlist }}>
+    <WishlistContext.Provider value={contextValue}>
       {children}
     </WishlistContext.Provider>
   );

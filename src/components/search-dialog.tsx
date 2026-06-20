@@ -15,7 +15,8 @@ interface SearchDialogProps {
 
 function highlightMatch(text: string, query: string) {
   if (!query.trim()) return text;
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
   const parts = text.split(regex);
   return parts.map((part, i) =>
     regex.test(part) ? (
@@ -48,6 +49,17 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     }
     prevOpen.current = open;
   }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onOpenChange(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onOpenChange]);
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
@@ -223,7 +235,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         <Sparkles className="h-7 w-7 text-primary" />
                       </div>
                       <p className="text-sm text-muted-foreground">输入关键词开始搜索</p>
-                      <p className="text-xs text-muted-foreground/60 mt-1">试试搜索 "手机"、"耳机" 或 "手表"</p>
+                      <p className="text-xs text-muted-foreground/60 mt-1">试试搜索 &quot;手机&quot;、&quot;耳机&quot; 或 &quot;手表&quot;</p>
                     </div>
                   )
                 ) : (

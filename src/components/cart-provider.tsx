@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
@@ -50,7 +50,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
     setIsCartOpen(true);
     toast.success(`已添加 ${product.name} 到购物车`);
-  }, []);
+  }, [setItems]);
 
   const removeFromCart = useCallback((cartItemId: string) => {
     setItems((prev) => {
@@ -60,7 +60,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return prev.filter((item) => item.cartItemId !== cartItemId);
     });
-  }, []);
+  }, [setItems]);
 
   const updateQuantity = useCallback((cartItemId: string, quantity: number) => {
     if (quantity <= 0) {
@@ -72,32 +72,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         item.cartItemId === cartItemId ? { ...item, quantity } : item
       )
     );
-  }, []);
+  }, [setItems]);
 
   const clearCart = useCallback(() => {
     setItems([]);
-  }, []);
+  }, [setItems]);
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
+  const totalItems = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
+  const totalPrice = useMemo(
+    () => items.reduce((sum, item) => sum + item.product.price * item.quantity, 0),
+    [items]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      items,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      totalItems,
+      totalPrice,
+      isCartOpen,
+      setIsCartOpen,
+    }),
+    [items, addToCart, removeFromCart, updateQuantity, clearCart, totalItems, totalPrice, isCartOpen, setIsCartOpen]
   );
 
   return (
-    <CartContext.Provider
-      value={{
-        items,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        totalPrice,
-        isCartOpen,
-        setIsCartOpen,
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );

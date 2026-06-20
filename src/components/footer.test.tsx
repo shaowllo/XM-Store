@@ -5,8 +5,7 @@ import { Footer } from "./footer";
 describe("Footer", () => {
   it("should render footer with brand name", () => {
     render(<Footer />);
-    expect(screen.getByText("XM")).toBeInTheDocument();
-    expect(screen.getByText("Store")).toBeInTheDocument();
+    expect(screen.getByText("XMStore")).toBeInTheDocument();
   });
 
   it("should render feature items", () => {
@@ -49,7 +48,8 @@ describe("Footer", () => {
     expect(screen.getByText("品牌故事")).toBeInTheDocument();
     expect(screen.getByText("联系我们")).toBeInTheDocument();
     expect(screen.getByText("加入我们")).toBeInTheDocument();
-    expect(screen.getByText("隐私政策")).toBeInTheDocument();
+    // 隐私政策在 about 链接和底部链接中各出现一次，使用 getAllByText
+    expect(screen.getAllByText("隐私政策").length).toBeGreaterThanOrEqual(1);
   });
 
   it("should render copyright text", () => {

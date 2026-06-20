@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -40,7 +40,7 @@ export function AddressProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, newAddress];
     });
-  }, []);
+  }, [setAddresses]);
 
   const updateAddress = useCallback((id: string, address: Partial<Address>) => {
     setAddresses((prev) =>
@@ -50,24 +50,27 @@ export function AddressProvider({ children }: { children: React.ReactNode }) {
         return updated;
       })
     );
-  }, []);
+  }, [setAddresses]);
 
   const removeAddress = useCallback((id: string) => {
     setAddresses((prev) => prev.filter((a) => a.id !== id));
-  }, []);
+  }, [setAddresses]);
 
   const setDefaultAddress = useCallback((id: string) => {
     setAddresses((prev) =>
       prev.map((a) => ({ ...a, isDefault: a.id === id }))
     );
-  }, []);
+  }, [setAddresses]);
 
   const defaultAddress = addresses.find((a) => a.isDefault);
 
+  const contextValue = useMemo(
+    () => ({ addresses, addAddress, updateAddress, removeAddress, setDefaultAddress, defaultAddress }),
+    [addresses, addAddress, updateAddress, removeAddress, setDefaultAddress, defaultAddress]
+  );
+
   return (
-    <AddressContext.Provider
-      value={{ addresses, addAddress, updateAddress, removeAddress, setDefaultAddress, defaultAddress }}
-    >
+    <AddressContext.Provider value={contextValue}>
       {children}
     </AddressContext.Provider>
   );

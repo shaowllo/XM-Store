@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import type { CartItem } from "./cart-provider";
@@ -44,11 +44,11 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
       createdAt: new Date().toISOString(),
     };
     setOrders((prev) => [order, ...prev]);
-  }, []);
+  }, [setOrders]);
 
   const clearOrders = useCallback(() => {
     setOrders([]);
-  }, []);
+  }, [setOrders]);
 
   const updateOrderStatus = useCallback((orderId: string, status: OrderStatus) => {
     setOrders((prev) =>
@@ -60,10 +60,15 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
         return { ...order, ...updates };
       })
     );
-  }, []);
+  }, [setOrders]);
+
+  const contextValue = useMemo(
+    () => ({ orders, addOrder, clearOrders, updateOrderStatus }),
+    [orders, addOrder, clearOrders, updateOrderStatus]
+  );
 
   return (
-    <OrderContext.Provider value={{ orders, addOrder, clearOrders, updateOrderStatus }}>
+    <OrderContext.Provider value={contextValue}>
       {children}
     </OrderContext.Provider>
   );

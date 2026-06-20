@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AppProviders } from "@/components/app-providers";
 import { WebVitals } from "@/components/web-vitals";
 import { BackToTop } from "@/components/back-to-top";
+import { CartFlyProvider } from "@/components/cart-fly-context";
+import { PetalFall } from "@/components/petal-fall";
 
 export const metadata: Metadata = {
   title: "XM Store - 科技数码精选",
@@ -31,12 +33,15 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background font-sans">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AppProviders>
-            <WebVitals />
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <Toaster position="top-center" richColors closeButton />
-            <BackToTop />
+            <CartFlyProvider>
+              <WebVitals />
+              <PetalFall />
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <Toaster position="top-center" richColors closeButton />
+              <BackToTop />
+            </CartFlyProvider>
           </AppProviders>
         </ThemeProvider>
       </body>

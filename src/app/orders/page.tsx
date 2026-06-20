@@ -4,132 +4,137 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Package, ChevronRight, ShoppingBag, Calendar, Clock, CheckCircle, Truck, PackageCheck } from "lucide-react";
+import { Package, Clock, Truck, CheckCircle, XCircle, ChevronRight } from "lucide-react";
 import { useOrders } from "@/components/order-provider";
 import { EmptyState } from "@/components/empty-state";
 import { Breadcrumb } from "@/components/breadcrumb";
 
-const statusConfig: Record<string, { label: string; icon: React.ElementType; color: string; bg: string }> = {
-  pending: { label: "待发货", icon: Clock, color: "text-amber-600", bg: "bg-amber-50" },
-  shipped: { label: "已发货", icon: Truck, color: "text-blue-600", bg: "bg-blue-50" },
-  delivered: { label: "已送达", icon: PackageCheck, color: "text-green-600", bg: "bg-green-50" },
-  completed: { label: "已完成", icon: CheckCircle, color: "text-green-600", bg: "bg-green-50" },
+const statusConfig = {
+  pending: { label: "待发货", icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10" },
+  shipped: { label: "运输中", icon: Truck, color: "text-blue-500", bg: "bg-blue-500/10" },
+  delivered: { label: "已送达", icon: CheckCircle, color: "text-green-500", bg: "bg-green-500/10" },
+  cancelled: { label: "已取消", icon: XCircle, color: "text-red-500", bg: "bg-red-500/10" },
 };
+
+const statusFilters = [
+  { value: "all", label: "全部" },
+  { value: "pending", label: "待发货" },
+  { value: "shipped", label: "运输中" },
+  { value: "delivered", label: "已送达" },
+];
 
 export default function OrdersPage() {
   const { orders } = useOrders();
-  const [filter, setFilter] = useState<string>("all");
+  const [filter, setFilter] = useState("all");
 
-  const filteredOrders = filter === "all" ? orders : orders.filter((o) => o.status === filter);
-
-  if (orders.length === 0) {
-    return (
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb items={[{ label: "我的订单" }]} />
-        <EmptyState
-          icon={Package}
-          title="暂无订单"
-          description="您还没有下过订单，快去选购心仪的商品吧"
-          action={{ label: "去购物", href: "/products", icon: <ShoppingBag className="h-4 w-4" /> }}
-        />
-      </div>
-    );
-  }
+  const filteredOrders =
+    filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mx-auto max-w-3xl px-4 py-8">
       <Breadcrumb items={[{ label: "我的订单" }]} />
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">我的订单</h1>
-            <p className="mt-2 text-muted-foreground">查看和管理您的所有订单</p>
-          </div>
-          <div className="flex gap-2">
-            {["all", "pending", "shipped", "delivered", "completed"].map((s) => (
-              <button
-                key={s}
-                onClick={() => setFilter(s)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  filter === s
-                    ? "bg-primary text-white shadow-lg shadow-primary/25"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {s === "all" ? "全部" : statusConfig[s]?.label || s}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-8 space-y-4">
-          {filteredOrders.map((order, index) => {
-            const status = statusConfig[order.status] || statusConfig.pending;
-            const StatusIcon = status.icon;
-
-            return (
-              <motion.div
-                key={order.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Link href={`/orders/${order.id}`}>
-                  <div className="group rounded-2xl border bg-card p-5 transition-all hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 hover:-translate-y-0.5">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium text-muted-foreground">{order.id}</span>
-                        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg ${status.bg}`}>
-                          <StatusIcon className={`h-3.5 w-3.5 ${status.color}`} />
-                          <span className={`text-xs font-medium ${status.color}`}>{status.label}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Calendar className="h-3.5 w-3.5" />
-                        {new Date(order.createdAt).toLocaleDateString("zh-CN")}
-                        <ChevronRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <div className="flex -space-x-3">
-                        {order.items.slice(0, 4).map((item, idx) => (
-                          <div
-                            key={idx}
-                            className="relative h-14 w-14 overflow-hidden rounded-xl border-2 border-background bg-muted"
-                          >
-                            <Image
-                              src={item.product.image}
-                              alt={item.product.name}
-                              fill
-                              className="object-cover"
-                              sizes="56px"
-                            />
-                          </div>
-                        ))}
-                        {order.items.length > 4 && (
-                          <div className="flex h-14 w-14 items-center justify-center rounded-xl border-2 border-background bg-muted text-xs font-medium">
-                            +{order.items.length - 4}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-muted-foreground">
-                          共 {order.totalItems} 件商品
-                        </p>
-                        <p className="text-lg font-bold mt-1">
-                          ¥{order.totalPrice.toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-6"
+      >
+        <span className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
+          Orders
+        </span>
+        <div className="flex items-end justify-between mt-2">
+          <h1 className="text-2xl font-bold">我的订单</h1>
+          <span className="text-sm text-muted-foreground">{filteredOrders.length} 笔</span>
         </div>
       </motion.div>
+
+      {/* Filters */}
+      <div className="flex gap-2 mt-8 overflow-x-auto pb-2">
+        {statusFilters.map((s) => (
+          <button
+            key={s.value}
+            onClick={() => setFilter(s.value)}
+            className={`shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-all ${
+              filter === s.value
+                ? "bg-foreground text-background"
+                : "bg-muted text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Orders */}
+      <div className="mt-6 space-y-3">
+        {filteredOrders.length === 0 ? (
+          <EmptyState
+            icon={Package}
+            title="暂无订单"
+            description="您还没有下过任何订单"
+          />
+        ) : (
+          filteredOrders.map((order, index) => {
+            const status = statusConfig[order.status];
+            const StatusIcon = status.icon;
+            const date = new Date(order.createdAt).toLocaleDateString("zh-CN");
+            const firstItem = order.items[0];
+
+            if (!firstItem) return null;
+
+            return (
+              <Link key={order.id} href={`/orders/${order.id}`}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group flex items-center gap-4 py-5 px-4 rounded-xl border hover:bg-muted transition-colors"
+                >
+                  {/* Product Image */}
+                  <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-muted shrink-0">
+                    <Image
+                      src={firstItem.product.image}
+                      alt={firstItem.product.name}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">{date}</span>
+                      <span className="text-xs text-muted-foreground">·</span>
+                      <span className="text-xs text-muted-foreground">{order.id}</span>
+                    </div>
+                    <p className="font-medium text-sm mt-1 truncate">
+                      {firstItem.product.name}
+                      {order.items.length > 1 && (
+                        <span className="text-muted-foreground"> 等 {order.items.length} 件</span>
+                      )}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`inline-flex items-center gap-1 text-xs font-medium ${status.color}`}>
+                        <StatusIcon className="h-3 w-3" />
+                        {status.label}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Price & Arrow */}
+                  <div className="text-right shrink-0">
+                    <p className="font-semibold text-sm">
+                      ¥{order.totalPrice.toLocaleString()}
+                    </p>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground ml-auto mt-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </motion.div>
+              </Link>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }

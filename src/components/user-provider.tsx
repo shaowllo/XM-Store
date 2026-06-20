@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -41,7 +41,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         };
         setUser(userWithoutPassword);
         localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
-        document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400`;
+        document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400; SameSite=Lax`;
         toast.success(`欢迎回来，${found.name}！`);
         return true;
       }
@@ -50,7 +50,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       toast.error("登录失败，请稍后重试");
     }
     return false;
-  }, []);
+  }, [setUser]);
 
   const register = useCallback((name: string, email: string, password: string) => {
     try {
@@ -74,24 +74,29 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       };
       setUser(userWithoutPassword);
       localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
-      document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400`;
+      document.cookie = `xmstore-user=${encodeURIComponent(JSON.stringify(userWithoutPassword))}; path=/; max-age=86400; SameSite=Lax`;
       toast.success("注册成功！");
       return true;
     } catch {
       toast.error("注册失败，请稍后重试");
     }
     return false;
-  }, []);
+  }, [setUser]);
 
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem(USER_KEY);
     document.cookie = "xmstore-user=; path=/; max-age=0";
     toast.info("已退出登录");
-  }, []);
+  }, [setUser]);
+
+  const contextValue = useMemo(
+    () => ({ user, login, register, logout }),
+    [user, login, register, logout]
+  );
 
   return (
-    <UserContext.Provider value={{ user, login, register, logout }}>
+    <UserContext.Provider value={contextValue}>
       {children}
     </UserContext.Provider>
   );

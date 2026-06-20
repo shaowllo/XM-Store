@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useCallback } from "react";
+import React, { createContext, useContext, useCallback, useMemo } from "react";
 import { useUser } from "./user-provider";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -43,10 +43,16 @@ export function CouponProvider({ children }: { children: React.ReactNode }) {
     setCoupons((prev) =>
       prev.map((c) => (c.code === code ? { ...c, used: true } : c))
     );
-  }, []);
+  }, [setCoupons]);
+
+  const contextValue = useMemo(() => ({
+    coupons,
+    validateCoupon,
+    useCoupon,
+  }), [coupons, validateCoupon, useCoupon]);
 
   return (
-    <CouponContext.Provider value={{ coupons, validateCoupon, useCoupon }}>
+    <CouponContext.Provider value={contextValue}>
       {children}
     </CouponContext.Provider>
   );

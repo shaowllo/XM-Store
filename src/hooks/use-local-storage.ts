@@ -1,25 +1,26 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getStorageItem, setStorageItem } from "@/lib/storage";
 
 export function useLocalStorage<T>(key: string, defaultValue: T) {
   const [isHydrated, setIsHydrated] = useState(false);
   const [value, setValue] = useState<T>(defaultValue);
+  const defaultValueRef = useRef(defaultValue);
 
   useEffect(() => {
     const init = () => {
       try {
-        const saved = getStorageItem<T>(key, defaultValue);
+        const saved = getStorageItem<T>(key, defaultValueRef.current);
         setValue(saved);
       } catch {
-        setValue(defaultValue);
+        setValue(defaultValueRef.current);
       }
       setIsHydrated(true);
     };
     const timer = setTimeout(init, 0);
     return () => clearTimeout(timer);
-  }, [key, defaultValue]);
+  }, [key]);
 
   useEffect(() => {
     if (isHydrated) {
@@ -28,8 +29,8 @@ export function useLocalStorage<T>(key: string, defaultValue: T) {
   }, [key, value, isHydrated]);
 
   const reset = useCallback(() => {
-    setValue(defaultValue);
-  }, [defaultValue]);
+    setValue(defaultValueRef.current);
+  }, []);
 
   const setValueWrapper = useCallback(
     (updater: T | ((prev: T) => T)) => {
