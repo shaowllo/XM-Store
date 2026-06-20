@@ -87,7 +87,7 @@ describe("categories data", () => {
   it("should have categories including 'all'", () => {
     const allCategory = categories.find((c) => c.id === "all");
     expect(allCategory).toBeDefined();
-    expect(allCategory?.name).toBe("全部");
+    expect(allCategory?.name).toBe("All");
   });
 
   it("each category should have id and name", () => {

@@ -1,3 +1,8 @@
+// Mock next-intl
+vi.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Footer } from "./footer";
@@ -10,46 +15,46 @@ describe("Footer", () => {
 
   it("should render feature items", () => {
     render(<Footer />);
-    expect(screen.getByText("极速配送")).toBeInTheDocument();
-    expect(screen.getByText("品质保障")).toBeInTheDocument();
-    expect(screen.getByText("无忧退换")).toBeInTheDocument();
-    expect(screen.getByText("专属客服")).toBeInTheDocument();
+    expect(screen.getByText("Express Delivery")).toBeInTheDocument();
+    expect(screen.getByText("Quality Guarantee")).toBeInTheDocument();
+    expect(screen.getByText("Hassle-free Returns")).toBeInTheDocument();
+    expect(screen.getByText("Dedicated Support")).toBeInTheDocument();
   });
 
   it("should render feature descriptions", () => {
     render(<Footer />);
-    expect(screen.getByText("全国包邮，次日送达")).toBeInTheDocument();
-    expect(screen.getByText("官方正品，假一赔十")).toBeInTheDocument();
-    expect(screen.getByText("7天无理由退换货")).toBeInTheDocument();
-    expect(screen.getByText("24小时在线支持")).toBeInTheDocument();
+    expect(screen.getByText("Free nationwide shipping, next-day delivery")).toBeInTheDocument();
+    expect(screen.getByText("Authentic products, 10x refund guarantee")).toBeInTheDocument();
+    expect(screen.getByText("7-day no-questions-asked returns")).toBeInTheDocument();
+    expect(screen.getByText("24/7 online support")).toBeInTheDocument();
   });
 
   it("should render product category links", () => {
     render(<Footer />);
-    expect(screen.getByText("产品分类")).toBeInTheDocument();
-    expect(screen.getByText("手机")).toBeInTheDocument();
-    expect(screen.getByText("音频")).toBeInTheDocument();
-    expect(screen.getByText("穿戴")).toBeInTheDocument();
-    expect(screen.getByText("电脑")).toBeInTheDocument();
+    expect(screen.getByText("Product Categories")).toBeInTheDocument();
+    expect(screen.getByText("Phones")).toBeInTheDocument();
+    expect(screen.getByText("Audio")).toBeInTheDocument();
+    expect(screen.getByText("Wearables")).toBeInTheDocument();
+    expect(screen.getByText("Computers")).toBeInTheDocument();
   });
 
   it("should render service links", () => {
     render(<Footer />);
-    expect(screen.getByText("服务支持")).toBeInTheDocument();
-    expect(screen.getByText("售后服务")).toBeInTheDocument();
-    expect(screen.getByText("配送说明")).toBeInTheDocument();
-    expect(screen.getByText("退换政策")).toBeInTheDocument();
-    expect(screen.getByText("常见问题")).toBeInTheDocument();
+    expect(screen.getByText("Support")).toBeInTheDocument();
+    expect(screen.getByText("After-Sales Service")).toBeInTheDocument();
+    expect(screen.getByText("Delivery Info")).toBeInTheDocument();
+    expect(screen.getByText("refundPolicy")).toBeInTheDocument();
+    expect(screen.getByText("FAQ")).toBeInTheDocument();
   });
 
   it("should render about links", () => {
     render(<Footer />);
-    expect(screen.getByText("关于我们")).toBeInTheDocument();
-    expect(screen.getByText("品牌故事")).toBeInTheDocument();
-    expect(screen.getByText("联系我们")).toBeInTheDocument();
-    expect(screen.getByText("加入我们")).toBeInTheDocument();
-    // 隐私政策在 about 链接和底部链接中各出现一次，使用 getAllByText
-    expect(screen.getAllByText("隐私政策").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("aboutUs")).toBeInTheDocument();
+    expect(screen.getByText("Our Story")).toBeInTheDocument();
+    expect(screen.getByText("contactUs")).toBeInTheDocument();
+    expect(screen.getByText("Join Us")).toBeInTheDocument();
+    // privacyPolicy appears twice (about links + bottom links)
+    expect(screen.getAllByText("privacyPolicy").length).toBeGreaterThanOrEqual(1);
   });
 
   it("should render copyright text", () => {
@@ -59,6 +64,6 @@ describe("Footer", () => {
 
   it("should have correct link hrefs", () => {
     render(<Footer />);
-    expect(screen.getByRole("link", { name: "品牌故事" })).toHaveAttribute("href", "/about");
+    expect(screen.getByRole("link", { name: "Our Story" })).toHaveAttribute("href", "/about");
   });
 });
