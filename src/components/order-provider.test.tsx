@@ -48,8 +48,7 @@ describe("OrderProvider", () => {
       result.current.addOrder(
         [makeItem("phone-1", "Test Phone", 999, 2)],
         1998, 2, "cod",
-        { fullName: "Test User", phone: "1234567890", street: "123 Test St",
-          city: "Test City", state: "TS", zip: "12345" }
+        { fullName: "Test User", phone: "1234567890", province: "Test State", city: "Test City", district: "Test District", street: "123 Test St" }
       );
     });
 
@@ -73,7 +72,7 @@ describe("OrderProvider", () => {
 
     act(() => {
       result.current.addOrder([makeItem("p1", "P1", 100)], 100, 1, "cod",
-        { fullName: "U1", phone: "123", street: "S1", city: "C1", state: "S", zip: "Z" }
+        { fullName: "U1", phone: "123", province: "S", city: "C1", district: "Z", street: "S1" }
       );
     });
     const firstOrderId = result.current.orders[0].id;
@@ -83,7 +82,7 @@ describe("OrderProvider", () => {
 
     act(() => {
       result.current.addOrder([makeItem("p2", "P2", 200)], 200, 1, "cod",
-        { fullName: "U2", phone: "456", street: "S2", city: "C2", state: "S", zip: "Z" }
+        { fullName: "U2", phone: "456", province: "S", city: "C2", district: "Z", street: "S2" }
       );
     });
 
@@ -102,7 +101,7 @@ describe("OrderProvider", () => {
           { cartItemId: "p2--default", product: { id: "p2", name: "P2", price: 50 } as any, quantity: 2 },
         ],
         400, 5, "cod",
-        { fullName: "U1", phone: "123", street: "S1", city: "C1", state: "S", zip: "Z" }
+        { fullName: "U1", phone: "123", province: "S", city: "C1", district: "Z", street: "S1" }
       );
     });
 

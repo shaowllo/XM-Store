@@ -19,10 +19,16 @@ export function ProductsContent() {
   const commonT = useTranslations("common");
   const initialCategory = searchParams.get("category") || "all";
   const initialSort = searchParams.get("sort") || "default";
+  const initialMinPrice = Number(searchParams.get("minPrice")) || 0;
+  const initialMaxPrice = Number(searchParams.get("maxPrice")) || 99999;
 
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [sortBy, setSortBy] = useState(initialSort);
+  const [minPrice, setMinPrice] = useState(initialMinPrice);
+  const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
+  const [showPriceFilter, setShowPriceFilter] = useState(false);
+  const priceFilterRef = useRef<HTMLDivElement>(null);
   const [showSortMenu, setShowSortMenu] = useState(false);
   const sortMenuRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +49,17 @@ export function ProductsContent() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showSortMenu]);
+
+  useEffect(() => {
+    if (!showPriceFilter) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (priceFilterRef.current && !priceFilterRef.current.contains(e.target as Node)) {
+        setShowPriceFilter(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showPriceFilter]);
 
   const updateQueryParam = useCallback(
     (key: string, value: string) => {
@@ -80,6 +97,14 @@ export function ProductsContent() {
       activeCategory === "all"
         ? products
         : products.filter((p) => p.category === activeCategory);
+
+    // Price range filter
+    if (minPrice > 0) {
+      result = result.filter((p) => p.price >= minPrice);
+    }
+    if (maxPrice < 99999) {
+      result = result.filter((p) => p.price <= maxPrice);
+    }
 
     switch (sortBy) {
       case "price-asc":
@@ -148,6 +173,69 @@ export function ProductsContent() {
 
         {/* Controls */}
         <div className="flex items-center gap-2">
+          {/* Price Filter */}
+          <div className="relative" ref={priceFilterRef}>
+            <button
+              onClick={() => setShowPriceFilter(!showPriceFilter)}
+              className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-colors ${
+                minPrice > 0 || maxPrice < 99999
+                  ? "bg-foreground text-background border-foreground"
+                  : "hover:bg-muted"
+              }`}
+            >
+              <ArrowUpDown className="h-3.5 w-3.5" />
+              Price
+            </button>
+            <AnimatePresence>
+              {showPriceFilter && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-0 top-full mt-2 z-20 min-w-[240px] rounded-2xl border bg-background shadow-xl p-4"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <p className="text-xs font-medium">Price Range</p>
+                    {(minPrice > 0 || maxPrice < 99999) && (
+                      <button
+                        onClick={() => { setMinPrice(0); setMaxPrice(99999); updateQueryParam("minPrice", ""); updateQueryParam("maxPrice", ""); }}
+                        className="text-[10px] text-muted-foreground hover:text-foreground ml-auto"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      value={minPrice || ""}
+                      onChange={(e) => {
+                        const v = Number(e.target.value);
+                        setMinPrice(v);
+                        updateQueryParam("minPrice", String(v));
+                      }}
+                      placeholder="Min"
+                      className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
+                    />
+                    <span className="text-muted-foreground">—</span>
+                    <input
+                      type="number"
+                      value={maxPrice >= 99999 ? "" : maxPrice}
+                      onChange={(e) => {
+                        const v = e.target.value ? Number(e.target.value) : 99999;
+                        setMaxPrice(v);
+                        updateQueryParam("maxPrice", v >= 99999 ? "" : String(v));
+                      }}
+                      placeholder="Max"
+                      className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           {/* Sort Dropdown */}
           <div className="relative" ref={sortMenuRef}>
             <button

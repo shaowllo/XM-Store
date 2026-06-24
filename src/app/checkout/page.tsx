@@ -28,6 +28,9 @@ export default function CheckoutPage() {
   const [processing, setProcessing] = useState(false);
   const [step, setStep] = useState<"review" | "processing" | "success">("review");
   const [errors, setErrors] = useState<Partial<Record<keyof ShippingAddress, string>>>({});
+  const [guestEmail, setGuestEmail] = useState("");
+
+  const isGuest = !user;
 
   const [formData, setFormData] = useState<ShippingAddress>({
     fullName: "",
@@ -38,16 +41,6 @@ export default function CheckoutPage() {
     street: "",
     landmark: "",
   });
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/login?redirect=/checkout");
-    }
-  }, [user, router]);
-
-  if (!user) {
-    return null;
-  }
 
   const requiredFields: (keyof ShippingAddress)[] = [
     "fullName",
@@ -66,7 +59,13 @@ export default function CheckoutPage() {
       }
     }
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const hasErrors = Object.keys(newErrors).length === 0;
+    // Guest must provide email
+    if (isGuest && !guestEmail.trim()) {
+      toast.error("Please enter your email address for order confirmation");
+      return false;
+    }
+    return hasErrors;
   };
 
   const handleChange = (field: keyof ShippingAddress, value: string) => {
@@ -93,6 +92,9 @@ export default function CheckoutPage() {
       setProcessing(false);
       setStep("success");
       toast.success("Order placed successfully!");
+      if (isGuest && guestEmail) {
+        toast.success(`Order confirmation sent to ${guestEmail}`);
+      }
     }, 1500);
   };
 
@@ -197,6 +199,33 @@ export default function CheckoutPage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-5">
             {/* Left: Address Form + Payment */}
             <div className="lg:col-span-3 space-y-8">
+              {/* Guest email field */}
+              {isGuest && (
+                <section>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    <h2 className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
+                      Contact Email
+                    </h2>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      value={guestEmail}
+                      onChange={(e) => setGuestEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full rounded-xl border bg-background px-4 py-2.5 text-sm outline-none transition-all focus:ring-2 focus:ring-foreground/20"
+                    />
+                    <p className="mt-1 text-[10px] text-muted-foreground">
+                      We'll send your order confirmation and tracking updates.
+                    </p>
+                  </div>
+                </section>
+              )}
+
               {/* Shipping Address Form */}
               <section>
                 <div className="flex items-center gap-2 mb-5">
