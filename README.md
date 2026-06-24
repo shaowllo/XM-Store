@@ -89,6 +89,28 @@
   </tr>
 </table>
 
+### ⚡ Core Enhancement Pack
+
+<table>
+  <tr>
+    <td align="center" width="25%"><b>🛒 Guest Checkout</b><br/><sub>Place orders without logging in</sub></td>
+    <td align="center" width="25%"><b>🔍 Price Filter</b><br/><sub>Min/max price range on product listing</sub></td>
+    <td align="center" width="25%"><b>📧 Email Notifications</b><br/><sub>Simulated order confirmation emails</sub></td>
+    <td align="center" width="25%"><b>📊 Admin Dashboard</b><br/><sub>Order management, stats, revenue chart</sub></td>
+  </tr>
+</table>
+
+### 📱 PWA
+
+<table>
+  <tr>
+    <td align="center" width="25%"><b>📲 Service Worker</b><br/><sub>CacheFirst assets, offline fallback</sub></td>
+    <td align="center" width="25%"><b>📥 Install Prompt</b><br/><sub>Add to home screen banner</sub></td>
+    <td align="center" width="25%"><b>🔄 Update Notifications</b><br/><sub>New version available toast</sub></td>
+    <td align="center" width="25%"><b>📴 Offline Page</b><br/><sub>Cached recently-viewed products</sub></td>
+  </tr>
+</table>
+
 ---
 
 ## 🛠️ Tech Stack
@@ -230,7 +252,7 @@ npm test         # Run all tests
 npm run test:watch  # Watch mode
 ```
 
-Tests cover: utility functions, data integrity, component rendering, and state logic.
+Tests cover: utility functions, data integrity, component rendering, provider state logic (cart, user, orders), and recommendation engine. **64 tests across 9 test files.**
 
 ---
 
@@ -264,19 +286,21 @@ Or connect your GitHub repository for automatic deployments. No Docker required.
 | Route | Description | Auth |
 |---|---|---|
 | `/` | Homepage | Public |
-| `/products` | Product catalog | Public |
+| `/products` | Product catalog with price filter | Public |
 | `/products/[id]` | Product detail (SSG) | Public |
 | `/compare?ids=1,2,3` | Product comparison | Public |
 | `/trending` | Trending products | Public |
 | `/theme` | Theme Studio | Public |
 | `/about` | About page | Public |
 | `/login` / `/register` | Authentication | Public |
-| `/checkout` | Checkout flow | Required |
+| `/checkout` | Checkout (guest or logged in) | Public |
 | `/orders` | Order history | Required |
 | `/orders/[id]` | Order detail + tracking | Required |
 | `/profile` | Profile dashboard | Required |
 | `/profile/addresses` | Address management | Required |
 | `/wishlist` | Favorites | Required |
+| `/admin` | Admin dashboard + order management | Required |
+| `/offline` | Offline fallback page | Public |
 
 ---
 

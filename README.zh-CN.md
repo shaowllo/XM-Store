@@ -89,6 +89,28 @@
   </tr>
 </table>
 
+### ⚡ 核心功能增强
+
+<table>
+  <tr>
+    <td align="center" width="25%"><b>🛒 游客结账</b><br/><sub>无需登录即可下单</sub></td>
+    <td align="center" width="25%"><b>🔍 价格筛选</b><br/><sub>最低/最高价范围筛选</sub></td>
+    <td align="center" width="25%"><b>📧 邮件通知</b><br/><sub>下单后模拟确认邮件</sub></td>
+    <td align="center" width="25%"><b>📊 管理后台</b><br/><sub>订单管理、统计看板</sub></td>
+  </tr>
+</table>
+
+### 📱 PWA 离线支持
+
+<table>
+  <tr>
+    <td align="center" width="25%"><b>📲 Service Worker</b><br/><sub>资源缓存优先，离线回退</sub></td>
+    <td align="center" width="25%"><b>📥 安装提示</b><br/><sub>添加到主屏幕弹窗</sub></td>
+    <td align="center" width="25%"><b>🔄 更新通知</b><br/><sub>新版本可用时提示刷新</sub></td>
+    <td align="center" width="25%"><b>📴 离线页面</b><br/><sub>展示已缓存的最近浏览</sub></td>
+  </tr>
+</table>
+
 ---
 
 ## 🛠️ 技术栈
@@ -230,7 +252,7 @@ npm test            # 运行所有测试
 npm run test:watch  # 监听模式
 ```
 
-测试覆盖：工具函数、数据完整性、组件渲染、状态逻辑。
+测试覆盖：工具函数、数据完整性、组件渲染、Provider 状态逻辑（购物车、用户、订单）、推荐引擎。**64 个测试，9 个测试文件全部通过。**
 
 ---
 
@@ -264,19 +286,21 @@ npx vercel
 | 路径 | 说明 | 权限 |
 |---|---|---|
 | `/` | 首页 | 公开 |
-| `/products` | 商品列表 | 公开 |
+| `/products` | 商品列表（含价格筛选） | 公开 |
 | `/products/[id]` | 商品详情（SSG） | 公开 |
 | `/compare?ids=1,2,3` | 产品对比 | 公开 |
 | `/trending` | 热门排行 | 公开 |
 | `/theme` | 主题工作室 | 公开 |
 | `/about` | 关于我们 | 公开 |
 | `/login` / `/register` | 登录注册 | 公开 |
-| `/checkout` | 结账 | 需登录 |
+| `/checkout` | 结账（支持游客） | 公开 |
+| `/admin` | 管理后台 + 订单管理 | 需登录 |
 | `/orders` | 订单列表 | 需登录 |
-| `/orders/[id]` | 订单详情 | 需登录 |
+| `/orders/[id]` | 订单详情 + 追踪 | 需登录 |
 | `/profile` | 个人中心 | 需登录 |
 | `/profile/addresses` | 地址管理 | 需登录 |
 | `/wishlist` | 收藏夹 | 需登录 |
+| `/offline` | 离线页面 | 公开 |
 
 ---
 
