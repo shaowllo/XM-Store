@@ -1,0 +1,218 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/components/navbar.tsx",
+      "type": "component",
+      "name": "Navbar",
+      "filePath": "src/components/navbar.tsx",
+      "summary": "Sticky navigation header with responsive layout. Renders logo, desktop nav links (home/products/about), action buttons (search, wishlist, theme studio, trending, orders), user menu (profile/logout or login), and cart triggers (MiniCartDropdown on desktop, CartSheet on mobile). Includes an animated hamburger mobile menu with auth-aware links. Uses framer-motion for entrance animation and AnimatePresence for the mobile menu toggle.",
+      "tags": ["react", "nextjs", "component", "navigation", "responsive", "client-component", "sticky-header", "framer-motion"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/footer.tsx",
+      "type": "component",
+      "name": "Footer",
+      "filePath": "src/components/footer.tsx",
+      "summary": "Site footer with three sections: a feature strip (Express Delivery, Quality Guarantee, Easy Returns, 24/7 Support) with scroll-triggered framer-motion animations, main link columns (Shop, Support, About Us) with hover-reveal ArrowUpRight icons, and a bottom bar with copyright and legal links. Uses next-intl for translations.",
+      "tags": ["react", "nextjs", "component", "footer", "layout", "client-component", "framer-motion", "i18n"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/cart-provider.tsx",
+      "type": "context-provider",
+      "name": "CartProvider",
+      "filePath": "src/components/cart-provider.tsx",
+      "summary": "React context provider that manages the shopping cart state. Stores CartItem[] in localStorage keyed by user ID (or 'guest'). Exposes addToCart (with color variant support and quantity accumulation), removeFromCart, updateQuantity (auto-removes at 0), clearCart, plus derived totals (totalItems, totalPrice via useMemo) and cart sheet open/close toggle. All mutators are useCallback-wrapped and the context value is useMemo-optimized. Uses sonner toast for user feedback on mutations.",
+      "tags": ["react", "nextjs", "context-provider", "cart", "state-management", "local-storage", "client-component", "use-local-storage"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/cart-sheet.tsx",
+      "type": "component",
+      "name": "CartSheet",
+      "filePath": "src/components/cart-sheet.tsx",
+      "summary": "Mobile cart slide-in panel using shadcn/ui Sheet. Displays cart items with product image, name, color indicator, price, quantity controls (minus/plus) and remove button with hover-reveal. Empty state shows a cart icon and prompt. Shows subtotal and a checkout link at the bottom. Integration point for CartRecommendations component. Uses AnimatePresence for item add/remove animations.",
+      "tags": ["react", "nextjs", "component", "cart", "sheet", "mobile", "responsive", "client-component", "framer-motion", "shadcn-ui"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/mini-cart-dropdown.tsx",
+      "type": "component",
+      "name": "MiniCartDropdown",
+      "filePath": "src/components/mini-cart-dropdown.tsx",
+      "summary": "Desktop cart dropdown triggered by hover on the cart icon. Shows up to 4 items with thumbnail, name, color, price, quantity, and remove button. Displays subtotal and checkout button. Includes a 'View All' link that opens the full cart sheet. Appends CartRecommendations below the footer. Uses framer-motion AnimatePresence for open/close animation.",
+      "tags": ["react", "nextjs", "component", "cart", "dropdown", "desktop", "responsive", "client-component", "framer-motion", "hover-trigger"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/cart-fly-context.tsx",
+      "type": "context-provider",
+      "name": "CartFlyProvider",
+      "filePath": "src/components/cart-fly-context.tsx",
+      "summary": "Context provider for a 'fly-to-cart' animation effect. Accepts start and end DOM rects plus an image URL, then renders a fixed-position motion.div that animates from the start coordinate to the end coordinate over 700ms with a cubic-bezier ease, then removes itself after 800ms. Multiple concurrent flying items are supported via a flyingItems array with unique IDs. Exposes triggerFly via useCartFly hook.",
+      "tags": ["react", "nextjs", "context-provider", "animation", "cart", "fly-effect", "client-component", "framer-motion"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/cart-recommendations.tsx",
+      "type": "component",
+      "name": "CartRecommendations",
+      "filePath": "src/components/cart-recommendations.tsx",
+      "summary": "Small recommendation strip displayed inside the cart sheet and mini-cart dropdown. Takes an array of cart product IDs and a maxItems count, calls getCartRecommendations() from the recommendation engine, and renders compact product cards with name, price, and a match-score percentage badge. Returns null when there are no recommendations. Uses next/image for optimized product thumbnails.",
+      "tags": ["react", "nextjs", "component", "cart", "recommendations", "ai", "product", "client-component"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/user-provider.tsx",
+      "type": "context-provider",
+      "name": "UserProvider",
+      "filePath": "src/components/user-provider.tsx",
+      "summary": "Authentication context provider using localStorage for user/password storage and session tokens. Supports login (email + password hashed via SHA-256), register (with duplicate email check), and logout. Manages session cookies with 24h expiry, token-to-userId mappings in localStorage, and auto-cleanup on logout. All async operations use try/catch with sonner toast feedback. Exposes user object, login, register, and logout via useUser hook.",
+      "tags": ["react", "nextjs", "context-provider", "auth", "user", "local-storage", "client-component", "crypto", "session"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/wishlist-provider.tsx",
+      "type": "context-provider",
+      "name": "WishlistProvider",
+      "filePath": "src/components/wishlist-provider.tsx",
+      "summary": "React context provider for wishlist state. Stores a string[] of product IDs in localStorage keyed by user ID (or 'guest'). Provides toggleWishlist (add/remove), isInWishlist lookup, clearWishlist, and removeFromWishlist. Context value is useMemo-optimized.",
+      "tags": ["react", "nextjs", "context-provider", "wishlist", "local-storage", "client-component", "use-local-storage"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/order-provider.tsx",
+      "type": "context-provider",
+      "name": "OrderProvider",
+      "filePath": "src/components/order-provider.tsx",
+      "summary": "React context provider for order history. Stores Order[] in localStorage keyed by user ID. Supports addOrder (creates Order from CartItem[] with payment method and shipping address), clearOrders, updateOrderStatus (auto-sets shippedAt/deliveredAt timestamps), and updateTrackingNumber (also sets status to 'out_for_delivery'). Imports CartItem type from cart-provider and Order/OrderStatus/ShippingAddress from @/lib/types.",
+      "tags": ["react", "nextjs", "context-provider", "orders", "local-storage", "client-component", "use-local-storage"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/address-provider.tsx",
+      "type": "context-provider",
+      "name": "AddressProvider",
+      "filePath": "src/components/address-provider.tsx",
+      "summary": "React context provider for shipping address CRUD. Stores Address[] in localStorage keyed by user ID. Provides addAddress (auto-assigns id, unmarks other defaults if isDefault), updateAddress (partial merge), removeAddress, setDefaultAddress, and a derived defaultAddress getter. Context value is useMemo-optimized.",
+      "tags": ["react", "nextjs", "context-provider", "address", "crud", "local-storage", "client-component", "use-local-storage"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/coupon-provider.tsx",
+      "type": "context-provider",
+      "name": "CouponProvider",
+      "filePath": "src/components/coupon-provider.tsx",
+      "summary": "React context provider for coupon/discount management. Initializes with two default coupons (WELCOME $50 off $200+, SAVE100 $100 off $500+). Stores Coupon[] in localStorage keyed by user ID. Provides validateCoupon (checks code, expiry, minOrderAmount, and usage flag) and useCoupon (marks a coupon as used).",
+      "tags": ["react", "nextjs", "context-provider", "coupon", "discount", "local-storage", "client-component", "use-local-storage"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/app-providers.tsx",
+      "type": "component",
+      "name": "AppProviders",
+      "filePath": "src/components/app-providers.tsx",
+      "summary": "Provider composition wrapper that nests all domain context providers in the correct dependency order: UserProvider → AddressProvider → CouponProvider → CartProvider → WishlistProvider → OrderProvider. Ordering reflects that CartProvider, WishlistProvider, OrderProvider, AddressProvider, and CouponProvider all depend on UserProvider for user-based localStorage keying.",
+      "tags": ["react", "nextjs", "component", "provider-composition", "client-component", "composition-root"],
+      "complexity": "low"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/navbar.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports useUser"
+    },
+    {
+      "source": "file:src/components/navbar.tsx",
+      "target": "file:src/components/mini-cart-dropdown.tsx",
+      "label": "imports MiniCartDropdown"
+    },
+    {
+      "source": "file:src/components/navbar.tsx",
+      "target": "file:src/components/cart-sheet.tsx",
+      "label": "imports CartSheet"
+    },
+    {
+      "source": "file:src/components/cart-provider.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports useUser"
+    },
+    {
+      "source": "file:src/components/cart-sheet.tsx",
+      "target": "file:src/components/cart-provider.tsx",
+      "label": "imports useCart"
+    },
+    {
+      "source": "file:src/components/cart-sheet.tsx",
+      "target": "file:src/components/cart-recommendations.tsx",
+      "label": "imports CartRecommendations"
+    },
+    {
+      "source": "file:src/components/mini-cart-dropdown.tsx",
+      "target": "file:src/components/cart-provider.tsx",
+      "label": "imports useCart"
+    },
+    {
+      "source": "file:src/components/mini-cart-dropdown.tsx",
+      "target": "file:src/components/cart-recommendations.tsx",
+      "label": "imports CartRecommendations"
+    },
+    {
+      "source": "file:src/components/wishlist-provider.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports useUser"
+    },
+    {
+      "source": "file:src/components/order-provider.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports useUser"
+    },
+    {
+      "source": "file:src/components/order-provider.tsx",
+      "target": "file:src/components/cart-provider.tsx",
+      "label": "imports CartItem type"
+    },
+    {
+      "source": "file:src/components/address-provider.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports useUser"
+    },
+    {
+      "source": "file:src/components/coupon-provider.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports useUser"
+    },
+    {
+      "source": "file:src/components/app-providers.tsx",
+      "target": "file:src/components/cart-provider.tsx",
+      "label": "imports CartProvider"
+    },
+    {
+      "source": "file:src/components/app-providers.tsx",
+      "target": "file:src/components/wishlist-provider.tsx",
+      "label": "imports WishlistProvider"
+    },
+    {
+      "source": "file:src/components/app-providers.tsx",
+      "target": "file:src/components/order-provider.tsx",
+      "label": "imports OrderProvider"
+    },
+    {
+      "source": "file:src/components/app-providers.tsx",
+      "target": "file:src/components/user-provider.tsx",
+      "label": "imports UserProvider"
+    },
+    {
+      "source": "file:src/components/app-providers.tsx",
+      "target": "file:src/components/address-provider.tsx",
+      "label": "imports AddressProvider"
+    },
+    {
+      "source": "file:src/components/app-providers.tsx",
+      "target": "file:src/components/coupon-provider.tsx",
+      "label": "imports CouponProvider"
+    }
+  ]
+}

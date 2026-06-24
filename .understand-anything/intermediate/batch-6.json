@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "batchIndex": 6,
+  "description": "Configuration files, documentation, and i18n assets for XM Store e-commerce frontend",
+  "generatedAt": "2026-06-20T18:06:00Z",
+  "graphNodes": [
+    {
+      "id": "file:next.config.mjs",
+      "type": "config",
+      "name": "Next.js Config",
+      "filePath": "next.config.mjs",
+      "summary": "Next.js 14 configuration with next-intl plugin for i18n, images remotePatterns allowing Unsplash, TypeScript strict build errors enabled, ESLint skipped during builds, and a Cache-Control header override for the service worker (/sw.js) with Service-Worker-Allowed header set to '/'.",
+      "tags": ["nextjs", "config", "i18n", "images", "service-worker", "build"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tsconfig.json",
+      "type": "config",
+      "name": "TypeScript Config",
+      "filePath": "tsconfig.json",
+      "summary": "TypeScript configuration targeting ES2017 with DOM and ESNext libs, strict mode, bundler module resolution, JSX preserve, incremental builds, and a @/* path alias mapping to ./src/*. Includes Next.js type declarations and excludes node_modules.",
+      "tags": ["typescript", "config", "strict", "paths", "alias"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:package.json",
+      "type": "config",
+      "name": "Package Manifest",
+      "filePath": "package.json",
+      "summary": "Project metadata and dependency manifest for XM Store. Scripts include dev, build (with prebuild cleanup of dist/), start, lint, test (vitest), and test:watch. Production dependencies: Next.js 14, React 18, next-intl, framer-motion, Three.js, recharts, react-hook-form + zod, sonner, tailwind-merge, and shadcn/ui utilities. Dev dependencies: Tailwind CSS v4, Vitest, Testing Library, ESLint 9 flat config, TypeScript 5.",
+      "tags": ["package", "dependencies", "scripts", "nextjs", "react", "testing"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:postcss.config.mjs",
+      "type": "config",
+      "name": "PostCSS Config",
+      "filePath": "postcss.config.mjs",
+      "summary": "Minimal PostCSS configuration that registers the @tailwindcss/postcss plugin for Tailwind CSS v4 processing.",
+      "tags": ["postcss", "tailwindcss", "config", "css-processing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:eslint.config.mjs",
+      "type": "config",
+      "name": "ESLint Flat Config",
+      "filePath": "eslint.config.mjs",
+      "summary": "ESLint 9 flat configuration using eslint-config-next with core-web-vitals and TypeScript rules. Extends the shared configs and overrides default ignores to exclude .next/, out/, build/, and next-env.d.ts.",
+      "tags": ["eslint", "linting", "config", "flat-config", "typescript"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:components.json",
+      "type": "config",
+      "name": "shadcn/ui Config",
+      "filePath": "components.json",
+      "summary": "shadcn/ui project configuration using the base-nova style with RSC and TSX enabled. Points to Tailwind v4 CSS at src/app/globals.css with neutral base color and CSS variables. Icon library set to lucide. Aliases map components/, utils, ui, lib, and hooks under @/ prefix.",
+      "tags": ["shadcn", "ui", "config", "tailwind", "components"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:public/manifest.json",
+      "type": "config",
+      "name": "PWA Web Manifest",
+      "filePath": "public/manifest.json",
+      "summary": "Progressive Web App manifest for XM Store with display: standalone, dark background (#05080f), gold theme color (#c28f3c), portrait-primary orientation. Includes 192x192, 512x512 PNG icons and an SVG icon (any size), all marked as maskable. Categories: shopping, tech, lifestyle. No screenshots or related applications.",
+      "tags": ["pwa", "manifest", "web-app", "icons", "theme-color"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:messages/en.json",
+      "type": "i18n",
+      "name": "English Translations",
+      "filePath": "messages/en.json",
+      "summary": "English locale JSON for next-intl i18n covering all UI sections: common labels, navigation, homepage hero/categories/promo/newsletter, product catalog with categories/sort/filters, shopping cart, checkout flow (COD shipping form), order history with statuses, user profile and address management, wishlist, footer links, error pages, search, and authentication (login/register with validation messages).",
+      "tags": ["i18n", "translations", "english", "locale", "next-intl"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:README.md",
+      "type": "document",
+      "name": "English README",
+      "filePath": "README.md",
+      "summary": "Project readme in English describing XM Store as a full-featured e-commerce demo built with Next.js 14 and a dark-luxury aesthetic. Covers features (4 core + 4 visual + 4 smart data + 4 social packs), full tech stack table, architecture diagram with src/ directory layout and state provider hierarchy, getting started instructions, environment variables for Aramex shipping, test commands, deployment (Vercel-ready), and a complete route map with auth requirements.",
+      "tags": ["readme", "documentation", "english", "ecommerce", "nextjs"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:README.zh-CN.md",
+      "type": "document",
+      "name": "Chinese README",
+      "filePath": "README.zh-CN.md",
+      "summary": "Chinese (Simplified) translation of the project readme with identical structure and content to the English version. Describes XM Store as a full-featured e-commerce demo built with Next.js 14, dark-luxury aesthetic, covering features, tech stack, architecture, setup, testing, deployment, and route map.",
+      "tags": ["readme", "documentation", "chinese", "i18n", "translation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/globals.css",
+      "type": "style",
+      "name": "Global Styles & Tailwind Theme",
+      "filePath": "src/app/globals.css",
+      "summary": "Tailwind CSS v4 global stylesheet with @theme block defining the design token system: dark-luxury palette (deep navy backgrounds, gold primary/accent, warm champagne text), three font families (DM Sans, Cormorant Garamond, JetBrains Mono), and border radius. Includes a .light class override for warm parchment light mode. Base layer applies border-border, background/foreground, font-sans, and serif headings. Custom utility classes provide gold gradient text (.gold-text), glassmorphism (.glass), gold glow shadow (.gold-glow), decorative gold border (.gold-border), radial gradient mesh background (.bg-mesh), and shimmer-animated gold button (.btn-gold). Custom scrollbar styling with gold-tinted thumb.",
+      "tags": ["css", "tailwind", "theme", "dark-mode", "light-mode", "design-tokens", "animations"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:CODE_WIKI.md",
+      "type": "document",
+      "name": "Code Wiki",
+      "filePath": "CODE_WIKI.md",
+      "summary": "Comprehensive internal code wiki (575 lines, Chinese) documenting the XM Store project architecture. Covers project overview and core features, full tech stack table, detailed src/ directory structure, all page routes with component types (Server/Client), state management architecture (Context + localStorage provider tree with User, Address, Coupon, Cart, Wishlist, Order providers), middleware route protection, static product data schema (8 products), UI component catalog, custom hooks (useLocalStorage), utility functions (cn, storage), Tailwind v4 styling system with design tokens, test configuration and test files, dependency graphs, setup instructions, and development conventions (naming, component patterns, file organization). Includes iteration history tracking 13 iterations from initial setup through performance optimization.",
+      "tags": ["wiki", "architecture", "documentation", "chinese", "state-management", "components", "conventions"],
+      "complexity": "very complex"
+    },
+    {
+      "id": "file:AGENTS.md",
+      "type": "document",
+      "name": "AI Agent Instructions",
+      "filePath": "AGENTS.md",
+      "summary": "Brief instruction for AI coding agents warning that this Next.js version has breaking changes differing from training data, and directing agents to read the relevant guide in node_modules/next/dist/docs/ before writing any code. Wrapped in nextjs-agent-rules comment markers.",
+      "tags": ["ai", "agents", "instructions", "nextjs", "caveats"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:CLAUDE.md",
+      "type": "document",
+      "name": "Claude AI Instructions",
+      "filePath": "CLAUDE.md",
+      "summary": "Single-line file that simply references AGENTS.md via @include directive, acting as a pointer for Claude to load the detailed AI agent instructions.",
+      "tags": ["ai", "claude", "instructions", "include"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "config",
+      "name": "Analysis Ignore Patterns",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Ignore file for the code analysis tool (.understand-anything) using .gitignore-style glob patterns. All patterns are commented out by default. Documents built-in exclusions (node_modules, .git, dist, build, obj, *.lock, *.min.js) and suggests uncommenting patterns from .gitignore (coverage, .next, out, build, dist, .env, .vercel, *.tsbuildinfo), detected directories (docs/), and test file patterns for JS/TS, C#, Java/Kotlin, and Go.",
+      "tags": ["config", "ignore", "analysis", "tooling", "glob-patterns"],
+      "complexity": "simple"
+    }
+  ]
+}

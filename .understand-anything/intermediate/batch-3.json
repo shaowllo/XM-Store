@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "batchIndex": 3,
+  "description": "React component analysis — product display, media, search, PWA, and theme components for XM Store e-commerce frontend",
+  "nodes": [
+    {
+      "id": "file:src/components/product-card.tsx",
+      "type": "component",
+      "name": "ProductCard",
+      "filePath": "src/components/product-card.tsx",
+      "summary": "Product card for listing pages. Displays product image with hover scale effect, discount badge, wishlist and compare toggle buttons with toast feedback, color variant selector dots, price with original-price strikethrough, and a quick-add-to-cart overlay on hover that triggers the fly-to-cart animation. Uses framer-motion for staggered entrance animations (opacity + y translate with per-index delay). Integrates with cart, wishlist, cart-fly, and compare-stores. Accepts optional index prop for animation stagger.",
+      "tags": ["product", "card", "listing", "ecommerce", "wishlist", "compare", "cart", "framer-motion", "quick-add"],
+      "complexity": 6
+    },
+    {
+      "id": "file:src/components/product-gallery.tsx",
+      "type": "component",
+      "name": "ProductGallery",
+      "filePath": "src/components/product-gallery.tsx",
+      "summary": "Unified product image gallery with a main image area that delegates to MagnifierZoom on desktop for cursor-based hover zoom, prev/next navigation arrows with circular index wrapping, image counter badge (e.g. '2 / 5'), discount badge, horizontally scrollable thumbnail strip with auto-scroll-into-view on index change and scroll-left/right buttons, and a fullscreen ImageLightbox triggered on click. Handles single-image mode gracefully by hiding navigation and thumbnails. The main image shows a fade transition between slides via AnimatePresence. Includes a 'View larger' overlay on hover.",
+      "tags": ["gallery", "images", "thumbnails", "lightbox", "zoom", "product", "carousel", "AnimatePresence"],
+      "complexity": 7
+    },
+    {
+      "id": "file:src/components/magnifier-zoom.tsx",
+      "type": "component",
+      "name": "MagnifierZoom",
+      "filePath": "src/components/magnifier-zoom.tsx",
+      "summary": "Desktop-only hover magnifier lens effect implemented with pixel-based CSS background-position calculation. The algorithm: (1) lens is centered on the cursor, clamped within container bounds to stay visible; (2) the zoomed image is rendered as a CSS background-image at `zoom × container` size; (3) the background-offset formula `-centerX × (zoom − 1)` aligns the zoomed pixel with the lens center. Exposes configurable zoom factor (default 2.5) and lens size (default 160px). Pure React with no external dependencies — no refs to external libraries. Cursor switches to 'none' when lens is active.",
+      "tags": ["magnifier", "zoom", "image", "lens", "desktop", "hover", "css-background", "pixel-based"],
+      "complexity": 5
+    },
+    {
+      "id": "file:src/components/image-lightbox.tsx",
+      "type": "component",
+      "name": "ImageLightbox",
+      "filePath": "src/components/image-lightbox.tsx",
+      "summary": "Fullscreen overlay lightbox for product images with comprehensive interaction model. Keyboard navigation: Escape closes, ArrowLeft/Right cycles images. Touch: horizontal swipe with 60px threshold for mobile, disabled when zoomed. Mouse: click background to close, drag-detection prevents accidental close on drag. Zoom toggle between 1× and 2.5× via button. Spring-animated image transitions (scale + opacity) using framer-motion. Top bar shows image counter, product name (hidden on mobile), zoom toggle, and close button. Bottom thumbnail strip with active indicator. Locks body scroll while open. Uses Button component from ui/button.",
+      "tags": ["lightbox", "fullscreen", "gallery", "swipe", "zoom", "keyboard", "touch", "AnimatePresence", "body-scroll-lock"],
+      "complexity": 8
+    },
+    {
+      "id": "file:src/components/product-viewer-3d.tsx",
+      "type": "component",
+      "name": "ProductViewer3D",
+      "filePath": "src/components/product-viewer-3d.tsx",
+      "summary": "3D product viewer toggle wrapper that lazy-loads ThreeScene via React.lazy + dynamic import when 3D mode is activated, keeping Three.js out of the initial bundle. Shows a standard 2D image by default. A toggle button in the bottom-right switches between 2D and 3D views with animated crossfade (AnimatePresence). In 3D mode: a fullscreen toggle using the Fullscreen API, a hint text overlay ('Drag to rotate · Scroll to zoom'), and a loading spinner fallback with 'Loading 3D viewer...' text while ThreeScene loads.",
+      "tags": ["3d", "viewer", "threejs", "fullscreen", "lazy-load", "product", "Suspense", "toggle"],
+      "complexity": 5
+    },
+    {
+      "id": "file:src/components/three-scene.tsx",
+      "type": "component",
+      "name": "ThreeScene",
+      "filePath": "src/components/three-scene.tsx",
+      "summary": "Imperative Three.js renderer with no JSX output beyond a container div. Sets up: Scene (dark background 0x111111), PerspectiveCamera (40° FOV, positioned at z=4.5), WebGLRenderer with ACESFilmic tone mapping and alpha channel, OrbitControls (no pan, zoom range 2.5–8, rotate speed 0.8), three-point lighting (ambient + 2 directional + point), a procedurally-generated environment map from a radial gradient CanvasTexture with EquirectangularReflectionMapping, a textured BoxGeometry product mesh (2.2×3.6×0.3) with MeshPhysicalMaterial (metalness 0.1, roughness 0.3), and a transparent frame border (BackSide, 0.15 opacity). Runs a requestAnimationFrame loop with auto-rotation (y += 0.005), handles container resize, and performs full GPU resource cleanup on unmount (dispose renderer, geometry, materials, texture, remove canvas).",
+      "tags": ["threejs", "3d", "webgl", "renderer", "orbit-controls", "animation", "BoxGeometry", "PBR", "environment-map"],
+      "complexity": 8
+    },
+    {
+      "id": "file:src/components/price-chart.tsx",
+      "type": "component",
+      "name": "PriceChart",
+      "filePath": "src/components/price-chart.tsx",
+      "summary": "Price history area chart built with Recharts. Shows a responsive AreaChart with gradient fill (hsl gold), monotone interpolation, configurable X/Y axes, and a custom-styled dark Tooltip. Computes and displays three stats: Low, Average, and High prices from the generated data. Shows current price with a delta indicator (green positive, red negative) over the selected range. Three time-range buttons (7D, 30D, 90D) control data generation. Data is created via a memoized helper (generatePriceHistory from @/lib/price-history). Animated entrance with framer-motion.",
+      "tags": ["chart", "price", "history", "recharts", "ecommerce", "analytics", "AreaChart", "time-range"],
+      "complexity": 5
+    },
+    {
+      "id": "file:src/components/review-section.tsx",
+      "type": "component",
+      "name": "ReviewSection",
+      "filePath": "src/components/review-section.tsx",
+      "summary": "Product reviews and ratings section with a two-column layout. Left column: average rating as a large number with star visualization, total review count, and a 5-star rating distribution bar chart (horizontal bars showing percentage and count per star level). Right column: a collapsible review form (name input, hover-highlight star picker with 1-5, textarea, submit/cancel buttons) toggled via a 'Write a Review' button, and the scrollable review list. Each review shows a user avatar icon, username, star rating, relative date, and review text. Reads initial reviews from review-store (getProductReviews) and appends new ones via addReview. Uses Button component and framer-motion for form/reveal animations.",
+      "tags": ["reviews", "ratings", "form", "feedback", "ecommerce", "stars", "distribution", "review-store"],
+      "complexity": 7
+    },
+    {
+      "id": "file:src/components/compare-bar.tsx",
+      "type": "component",
+      "name": "CompareBar",
+      "filePath": "src/components/compare-bar.tsx",
+      "summary": "Floating bottom-center bar that appears when one or more products are selected for comparison. Shows: count text ('N product(s) selected'), up to 4 circular thumbnail previews of selected products (with name tooltip), a 'Compare' link button navigating to /compare?ids=..., and a clear-all close button (X). Subscribes to custom 'compare-update' DOM events (dispatched by compare-store) to reactively re-render. Animates in/out with spring transitions (y 80px). Uses products data for thumbnail lookup.",
+      "tags": ["compare", "floating-bar", "ecommerce", "selection", "overlay", "event-listener", "spring"],
+      "complexity": 3
+    },
+    {
+      "id": "file:src/components/search-dialog.tsx",
+      "type": "component",
+      "name": "SearchDialog",
+      "filePath": "src/components/search-dialog.tsx",
+      "summary": "Full-featured global search dialog overlay with autocomplete. Search across product name, description, and tags with real-time filtering as the user types. Category filter chips (from categories list) and sort options (relevance, price-asc, price-desc, top rated). Recent searches persisted to localStorage via recent-searches lib, shown as clickable chips when query is empty. Trending search suggestions (phones, wireless, sport, pro, camera) with primary-color styling. Result items show product image, highlighted matched text (using <mark> tags via regex), price, and rating badge. Keyboard shortcut: Escape to close, Enter to save search term. Uses EmptyState for empty results with SearchX icon. Animated with framer-motion spring for dialog and staggered results. Resets state on dialog open.",
+      "tags": ["search", "dialog", "autocomplete", "filter", "faceted-search", "overlay", "recent-searches", "text-highlight", "EmptyState"],
+      "complexity": 9
+    },
+    {
+      "id": "file:src/components/stock-notify.tsx",
+      "type": "component",
+      "name": "StockNotify",
+      "filePath": "src/components/stock-notify.tsx",
+      "summary": "Stock notification request modal. A 'Notify me when available' button opens a centered modal with a Bell icon, product name, email input field, and a 'Notify' submit button. On submit: shows a success confirmation state with checkmark animation and 'You're on the list!' message for 2 seconds, then auto-closes and resets. Uses sonner toast for additional feedback. Backdrop click dismisses (prevented during success state). Animated with framer-motion scale/fade. Uses Button component.",
+      "tags": ["stock", "notification", "modal", "email", "ecommerce", "form", "sonner"],
+      "complexity": 4
+    },
+    {
+      "id": "file:src/components/theme-studio.tsx",
+      "type": "component",
+      "name": "ThemeStudio",
+      "filePath": "src/components/theme-studio.tsx",
+      "summary": "Interactive theme customization studio for real-time visual editing. Three sections: (1) Primary Color — 6 preset swatches (Gold, Blue, Purple, Teal, Rose, Lime) plus a full-range hue slider (0-360°) with gradient background; (2) Accent Color — 4 preset swatches (Warm, Cool, Pink, Green) plus hue slider; (3) Border Radius — 5 preset options (None, Subtle, Default, Rounded, Pill) plus a fine-grained slider (0-2rem, step 0.125) with preview shapes. A live preview card at the bottom shows primary/accent buttons and a highlight sample with the current radius. Changes apply immediately via applyThemeConfig (CSS custom properties). Save persists to localStorage via theme-store; reset restores defaults. Shows a 'Saved!' confirmation on save. Staggered section animations with framer-motion. Uses Button component.",
+      "tags": ["theme", "customization", "studio", "color-picker", "preview", "settings", "hue-slider", "CSS-custom-properties"],
+      "complexity": 8
+    },
+    {
+      "id": "file:src/components/pwa-provider.tsx",
+      "type": "provider",
+      "name": "PwaProvider",
+      "filePath": "src/components/pwa-provider.tsx",
+      "summary": "PWA lifecycle context provider. Manages: (1) Online/offline detection via window online/offline events, exposed as isOnline boolean. (2) Service Worker registration at /sw.js with update detection — listens for 'updatefound' and 'statechange' events to detect when a new SW is installed and waiting, exposes updateAvailable flag. (3) applyUpdate function sends { type: 'SKIP_WAITING' } to the waiting SW, then reloads on controllerchange. (4) beforeinstallprompt event handling — stores the deferred prompt event, exposes canInstall boolean and promptInstall function to trigger the browser install dialog. Provides all state and callbacks through PwaContext. Applies full cleanup on unmount.",
+      "tags": ["pwa", "service-worker", "offline", "install", "context", "provider", "beforeinstallprompt", "online-detection"],
+      "complexity": 6
+    },
+    {
+      "id": "file:src/components/install-prompt.tsx",
+      "type": "component",
+      "name": "InstallPrompt",
+      "filePath": "src/components/install-prompt.tsx",
+      "summary": "Floating install prompt card displayed when the browser fires beforeinstallprompt (canInstall is true). Shows a download icon, 'Install XM Store' title, 'Add to your home screen for the best experience' description, a dismiss (X) button with local state to prevent re-showing, and an 'Add to Home Screen' primary action calling promptInstall from PwaProvider. Positioned fixed at bottom-center above other overlays. Animated with spring transitions. Supports local dismissal via dismissed state independent of canInstall.",
+      "tags": ["pwa", "install", "prompt", "home-screen", "floating", "dismissable"],
+      "complexity": 2
+    },
+    {
+      "id": "file:src/components/update-toast.tsx",
+      "type": "component",
+      "name": "UpdateToast",
+      "filePath": "src/components/update-toast.tsx",
+      "summary": "Update notification toast shown when a new service worker version is waiting to activate (updateAvailable from PwaProvider). Displays a refresh icon, 'Update Available' title, 'A new version is ready' subtitle, and a 'Reload' button that calls applyUpdate (sends SKIP_WAITING to SW, triggers page reload on controllerchange). Positioned fixed at bottom-right with spring entrance animation.",
+      "tags": ["pwa", "update", "service-worker", "toast", "notification", "reload"],
+      "complexity": 2
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/components/product-card.tsx",
+      "target": "file:src/components/cart-provider.tsx",
+      "type": "imports",
+      "label": "import { useCart } from '@/components/cart-provider'"
+    },
+    {
+      "source": "file:src/components/product-card.tsx",
+      "target": "file:src/components/wishlist-provider.tsx",
+      "type": "imports",
+      "label": "import { useWishlist } from '@/components/wishlist-provider'"
+    },
+    {
+      "source": "file:src/components/product-card.tsx",
+      "target": "file:src/components/cart-fly-context.tsx",
+      "type": "imports",
+      "label": "import { useCartFly } from '@/components/cart-fly-context'"
+    },
+    {
+      "source": "file:src/components/product-card.tsx",
+      "target": "file:src/lib/compare-store.ts",
+      "type": "imports",
+      "label": "import { toggleCompare, isInCompare } from '@/lib/compare-store'"
+    },
+    {
+      "source": "file:src/components/product-card.tsx",
+      "target": "file:src/lib/data.ts",
+      "type": "imports",
+      "label": "import type { Product } from '@/lib/data'"
+    },
+    {
+      "source": "file:src/components/product-gallery.tsx",
+      "target": "file:src/components/magnifier-zoom.tsx",
+      "type": "imports",
+      "label": "import { MagnifierZoom } from './magnifier-zoom'"
+    },
+    {
+      "source": "file:src/components/product-gallery.tsx",
+      "target": "file:src/components/image-lightbox.tsx",
+      "type": "imports",
+      "label": "import { ImageLightbox } from './image-lightbox'"
+    },
+    {
+      "source": "file:src/components/image-lightbox.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "label": "import { Button } from '@/components/ui/button'"
+    },
+    {
+      "source": "file:src/components/product-viewer-3d.tsx",
+      "target": "file:src/components/three-scene.tsx",
+      "type": "imports",
+      "label": "const ThreeScene = lazy(() => import('./three-scene'))"
+    },
+    {
+      "source": "file:src/components/price-chart.tsx",
+      "target": "file:src/lib/price-history.ts",
+      "type": "imports",
+      "label": "import { generatePriceHistory } from '@/lib/price-history'"
+    },
+    {
+      "source": "file:src/components/review-section.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "label": "import { Button } from '@/components/ui/button'"
+    },
+    {
+      "source": "file:src/components/review-section.tsx",
+      "target": "file:src/lib/review-store.ts",
+      "type": "imports",
+      "label": "import { getProductReviews, addReview, getProductAverageRating } from '@/lib/review-store'"
+    },
+    {
+      "source": "file:src/components/compare-bar.tsx",
+      "target": "file:src/lib/compare-store.ts",
+      "type": "imports",
+      "label": "import { getCompareList, clearCompare } from '@/lib/compare-store'"
+    },
+    {
+      "source": "file:src/components/compare-bar.tsx",
+      "target": "file:src/lib/data.ts",
+      "type": "imports",
+      "label": "import { products } from '@/lib/data'"
+    },
+    {
+      "source": "file:src/components/search-dialog.tsx",
+      "target": "file:src/lib/data.ts",
+      "type": "imports",
+      "label": "import { products, categories } from '@/lib/data'"
+    },
+    {
+      "source": "file:src/components/search-dialog.tsx",
+      "target": "file:src/components/empty-state.tsx",
+      "type": "imports",
+      "label": "import { EmptyState } from '@/components/empty-state'"
+    },
+    {
+      "source": "file:src/components/search-dialog.tsx",
+      "target": "file:src/lib/recent-searches.ts",
+      "type": "imports",
+      "label": "import { getRecentSearches, addRecentSearch, clearRecentSearches } from '@/lib/recent-searches'"
+    },
+    {
+      "source": "file:src/components/stock-notify.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "label": "import { Button } from '@/components/ui/button'"
+    },
+    {
+      "source": "file:src/components/theme-studio.tsx",
+      "target": "file:src/lib/theme-store.ts",
+      "type": "imports",
+      "label": "import { getThemeConfig, saveThemeConfig, resetThemeConfig, applyThemeConfig } from '@/lib/theme-store'"
+    },
+    {
+      "source": "file:src/components/theme-studio.tsx",
+      "target": "file:src/components/ui/button.tsx",
+      "type": "imports",
+      "label": "import { Button } from '@/components/ui/button'"
+    },
+    {
+      "source": "file:src/components/install-prompt.tsx",
+      "target": "file:src/components/pwa-provider.tsx",
+      "type": "imports",
+      "label": "import { usePwa } from './pwa-provider'"
+    },
+    {
+      "source": "file:src/components/update-toast.tsx",
+      "target": "file:src/components/pwa-provider.tsx",
+      "type": "imports",
+      "label": "import { usePwa } from './pwa-provider'"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "batchIndex": 0,
+  "generatedAt": "2026-06-20T18:00:00Z",
+  "graphNodes": [
+    {
+      "id": "file:src/app/page.tsx",
+      "type": "page",
+      "name": "HomePage",
+      "filePath": "src/app/page.tsx",
+      "summary": "Landing page with a full-bleed hero section, animated typography, featured products grid (3), new-arrival editorial split, category grid (4), promo banner, recently-viewed products from localStorage, and a newsletter subscription form with validation. Uses framer-motion scroll-triggered animations throughout.",
+      "tags": ["homepage", "hero", "featured-products", "newsletter", "animations"],
+      "complexity": "very complex"
+    },
+    {
+      "id": "file:src/app/layout.tsx",
+      "type": "layout",
+      "name": "RootLayout",
+      "filePath": "src/app/layout.tsx",
+      "summary": "Root layout wrapping every page with NextIntlClientProvider, ThemeProvider, AppProviders, PwaProvider, CartFlyProvider, three custom Google fonts (DM Sans, Cormorant Garamond, JetBrains Mono), Navbar, Footer, Toaster notifications, InstallPrompt, UpdateToast, and BackToTop button. Exports SEO metadata with OpenGraph and Apple Web App config.",
+      "tags": ["layout", "providers", "fonts", "pwa", "metadata"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/loading.tsx",
+      "type": "loading",
+      "name": "RootLoading",
+      "filePath": "src/app/loading.tsx",
+      "summary": "Global loading fallback showing a gradient store icon with pulsing glow, a shimmer progress bar, and animated Chinese text.",
+      "tags": ["loading", "suspense", "shimmer", "ui", "fallback"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/error.tsx",
+      "type": "error",
+      "name": "GlobalError",
+      "filePath": "src/app/error.tsx",
+      "summary": "Global error boundary displaying an alert icon, translated error title/description, a retry button that calls reset(), and a 'Go Home' button that navigates to '/'.",
+      "tags": ["error-boundary", "error-handling", "reset", "translations", "fallback"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/not-found.tsx",
+      "type": "not-found",
+      "name": "NotFound",
+      "filePath": "src/app/not-found.tsx",
+      "summary": "404 page showing a file-question icon, translated 'not found' message, and a 'Go Home' button linking to the root route.",
+      "tags": ["404", "not-found", "error-page", "translations", "fallback"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/about/page.tsx",
+      "type": "page",
+      "name": "AboutPage",
+      "filePath": "src/app/about/page.tsx",
+      "summary": "About page explaining the XM Store demo project: hero with tech tags, 'What Is This?' section describing the client-side architecture, 8-card technical highlights grid, 5-phase feature timeline, tech stack grid (Next.js, React, TypeScript, Tailwind, Three.js, Framer), and a CTA to browse products or try the theme studio.",
+      "tags": ["about", "showcase", "tech-stack", "documentation", "features"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/app/checkout/page.tsx",
+      "type": "page",
+      "name": "CheckoutPage",
+      "filePath": "src/app/checkout/page.tsx",
+      "summary": "Multi-step checkout flow with shipping address form (7 fields including landmark), cash-on-delivery payment, order summary sidebar with item list and totals, field validation, processing spinner, success confirmation page, and redirect to login for unauthenticated users.",
+      "tags": ["checkout", "form", "payment", "validation", "order"],
+      "complexity": "very complex"
+    },
+    {
+      "id": "file:src/app/compare/page.tsx",
+      "type": "page",
+      "name": "ComparePage",
+      "filePath": "src/app/compare/page.tsx",
+      "summary": "Product comparison tool driven by URL search params (?ids=...) showing a horizontally scrollable table with product images, names, ratings, color swatches, add-to-cart and wishlist actions, and dynamically built specification rows (price, category, rating, reviews, tags, badge). Handles empty state and shows a 4-product limit notice.",
+      "tags": ["compare", "products", "table", "specifications", "search-params"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/app/offline/page.tsx",
+      "type": "page",
+      "name": "OfflinePage",
+      "filePath": "src/app/offline/page.tsx",
+      "summary": "Offline fallback page showing a Wi-Fi-off icon, explanatory text, retry button that reloads on connectivity, a grid of recently viewed (cached) products from localStorage, and a hint that the page auto-reloads when connection restores.",
+      "tags": ["offline", "pwa", "cached-products", "retry", "connectivity"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/login/page.tsx",
+      "type": "page",
+      "name": "LoginPage",
+      "filePath": "src/app/login/page.tsx",
+      "summary": "Login form with email/password fields validated via Zod schema, react-hook-form integration, redirect to the original URL after successful login, gradient-branded submit button, and a link to the registration page.",
+      "tags": ["login", "authentication", "form", "zod", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/register/page.tsx",
+      "type": "page",
+      "name": "RegisterPage",
+      "filePath": "src/app/register/page.tsx",
+      "summary": "Registration form with name, email, password, and confirm-password fields, Zod schema with password-match cross-field refinement, react-hook-form integration, gradient submit button, and a link to the login page.",
+      "tags": ["register", "authentication", "form", "zod", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/wishlist/page.tsx",
+      "type": "page",
+      "name": "WishlistPage",
+      "filePath": "src/app/wishlist/page.tsx",
+      "summary": "Wishlist page filtering the global product catalog by user's wishlist IDs, rendered in a responsive 4-column grid using ProductCard. Shows an EmptyState with a 'Browse Products' CTA when empty, and a 'Clear Wishlist' button with confirmation-style red styling.",
+      "tags": ["wishlist", "favorites", "products", "grid", "empty-state"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/trending/page.tsx",
+      "type": "page",
+      "name": "TrendingPage",
+      "filePath": "src/app/trending/page.tsx",
+      "summary": "Server component page exporting SEO metadata and delegating rendering to the client-side TrendingContent component, with a breadcrumb navigation.",
+      "tags": ["trending", "server-component", "metadata", "breadcrumb", "delegation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/app/trending/trending-content.tsx",
+      "type": "component",
+      "name": "TrendingContent",
+      "filePath": "src/app/trending/trending-content.tsx",
+      "summary": "Client component rendering all products sorted by rating (then review count) in a ranked list with rank numbers, product info, price with original-price strikethrough, and a 'View' action. Top 3 ranks are visually highlighted as gold, silver, and bronze.",
+      "tags": ["trending", "ranking", "products", "sorting", "leaderboard"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/app/theme/page.tsx",
+      "type": "page",
+      "name": "ThemePage",
+      "filePath": "src/app/theme/page.tsx",
+      "summary": "Server component page with SEO metadata for the theme studio, a breadcrumb, and delegation to the ThemeStudio client component for live theme customization.",
+      "tags": ["theme", "customization", "studio", "metadata", "server-component"],
+      "complexity": "simple"
+    }
+  ],
+  "graphEdges": [
+    {
+      "id": "edge:trending-page-to-trending-content",
+      "source": "file:src/app/trending/page.tsx",
+      "target": "file:src/app/trending/trending-content.tsx",
+      "type": "import",
+      "label": "imports TrendingContent from ./trending-content"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "batchIndex": 2,
+  "description": "React component analysis — UI components and context providers for XM Store e-commerce frontend",
+  "files": [
+    {
+      "id": "file:src/components/navbar.tsx",
+      "type": "component",
+      "name": "Navbar",
+      "filePath": "src/components/navbar.tsx",
+      "summary": "Sticky responsive navigation header with desktop nav links, mobile hamburger menu, search dialog trigger, wishlist/theme/trending/orders quick-links, user-aware profile button or login link, logout action, and cart access (MiniCartDropdown on desktop, CartSheet on mobile). Uses Framer Motion for spring-based entrance animation and mobile menu show/hide.",
+      "tags": ["navigation", "layout", "header", "responsive", "sticky", "mobile-menu", "cart-trigger"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/footer.tsx",
+      "type": "component",
+      "name": "Footer",
+      "filePath": "src/components/footer.tsx",
+      "summary": "Multi-section site footer with four feature highlights (Express Delivery, Quality Guarantee, Easy Returns, 24/7 Support), brand blurb, three link columns (Shop, Support, About Us), and a bottom bar with copyright and legal links. All links use next-intl translation keys for i18n. Features animate into view via Framer Motion whileInView.",
+      "tags": ["layout", "footer", "navigation", "links", "i18n"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/cart-provider.tsx",
+      "type": "provider",
+      "name": "CartProvider",
+      "filePath": "src/components/cart-provider.tsx",
+      "summary": "Cart state management context using localStorage. Provides CartItem CRUD (addToCart, removeFromCart, updateQuantity, clearCart), computed totalItems/totalPrice, and cart sheet open/close state. Keys storage per userId (or 'guest'). Shows toast notifications on add/remove. Exposes useCart hook.",
+      "tags": ["cart", "state", "context", "provider", "ecommerce", "localStorage", "CRUD"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/cart-sheet.tsx",
+      "type": "component",
+      "name": "CartSheet",
+      "filePath": "src/components/cart-sheet.tsx",
+      "summary": "Mobile cart slide-in panel using Radix Sheet primitive. Shows list of cart items with image, name, color swatch, quantity controls (+/-), and remove button. Displays subtotal with a checkout link. Renders CartRecommendations below the summary. Animated presence via Framer Motion. Empty state with icon and message.",
+      "tags": ["cart", "sheet", "mobile", "ecommerce", "checkout", "slide-in", "radix-ui"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/mini-cart-dropdown.tsx",
+      "type": "component",
+      "name": "MiniCartDropdown",
+      "filePath": "src/components/mini-cart-dropdown.tsx",
+      "summary": "Desktop cart dropdown triggered by hover on the cart icon. Shows up to 4 recent items with image, name, color, price, quantity, and remove button. Displays subtotal with checkout CTA. Renders CartRecommendations at the bottom. If more than 4 items, shows a 'N more items...' note. Animated with Framer Motion scale/fade.",
+      "tags": ["cart", "dropdown", "desktop", "ecommerce", "hover", "checkout"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/cart-fly-context.tsx",
+      "type": "provider",
+      "name": "CartFlyProvider",
+      "filePath": "src/components/cart-fly-context.tsx",
+      "summary": "Lightweight context for the 'fly-to-cart' animation effect. triggerFly() accepts start/end DOMRects and an image URL, spawning a fixed-position animated div that moves from the add-to-cart click location to the cart icon. Items self-remove after 800ms. Uses Framer Motion for the bezier-curved animation.",
+      "tags": ["animation", "cart", "fly", "context", "provider", "UX-delight"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/cart-recommendations.tsx",
+      "type": "component",
+      "name": "CartRecommendations",
+      "filePath": "src/components/cart-recommendations.tsx",
+      "summary": "Compact recommendation strip shown inside cart sheet and mini-cart dropdown. Calls getCartRecommendations() with current cart item IDs, displays up to maxItems product suggestions with match score percentage. Each recommendation links to the product page. Hidden when no recommendations are returned.",
+      "tags": ["cart", "recommendations", "related-products", "ecommerce", "upsell"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/user-provider.tsx",
+      "type": "provider",
+      "name": "UserProvider",
+      "filePath": "src/components/user-provider.tsx",
+      "summary": "Authentication context with localStorage-backed user registration, login, and logout. Stores users in 'xmstore-users', current session via cookies ('xmstore-session'), and session tokens in 'xmstore-tokens'. Uses Web Crypto API (SHA-256) for client-side password hashing and cryptographically random session tokens. Provides login(), register(), logout() async functions with toast feedback and i18n support.",
+      "tags": ["auth", "user", "context", "provider", "login", "register", "session", "crypto", "localStorage"],
+      "complexity": "high"
+    },
+    {
+      "id": "file:src/components/wishlist-provider.tsx",
+      "type": "provider",
+      "name": "WishlistProvider",
+      "filePath": "src/components/wishlist-provider.tsx",
+      "summary": "Wishlist state context storing product IDs in localStorage per userId. Provides toggleWishlist (add/remove), isInWishlist check, clearWishlist, and removeFromWishlist. Exposes useWishlist hook. Depends on UserProvider for userId scoping.",
+      "tags": ["wishlist", "context", "provider", "ecommerce", "localStorage"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/order-provider.tsx",
+      "type": "provider",
+      "name": "OrderProvider",
+      "filePath": "src/components/order-provider.tsx",
+      "summary": "Order management context persisting orders to localStorage per userId. Supports addOrder (with COD payment option and shipping address), clearOrders, updateOrderStatus (with automatic shippedAt/deliveredAt timestamps), and updateTrackingNumber (auto-sets status to 'out_for_delivery'). Uses Order and ShippingAddress types from lib/types and CartItem from cart-provider.",
+      "tags": ["orders", "context", "provider", "ecommerce", "tracking", "localStorage", "CRUD"],
+      "complexity": "medium"
+    },
+    {
+      "id": "file:src/components/address-provider.tsx",
+      "type": "provider",
+      "name": "AddressProvider",
+      "filePath": "src/components/address-provider.tsx",
+      "summary": "Address CRUD context (add, update, remove, setDefault) with localStorage persistence per userId. Supports isDefault flag — setting a new default address unflags all others. Exposes defaultAddress computed property and useAddress hook.",
+      "tags": ["address", "context", "provider", "CRUD", "ecommerce", "localStorage"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/coupon-provider.tsx",
+      "type": "provider",
+      "name": "CouponProvider",
+      "filePath": "src/components/coupon-provider.tsx",
+      "summary": "Coupon/discount code context seeded with two default coupons (WELCOME $50 off $200, SAVE100 $100 off $500). Validates codes against expiry date, minimum order amount, and usage flag. Marks coupons as used via useCoupon(). Persists state to localStorage per userId.",
+      "tags": ["coupon", "discount", "context", "provider", "ecommerce", "localStorage"],
+      "complexity": "low"
+    },
+    {
+      "id": "file:src/components/app-providers.tsx",
+      "type": "provider",
+      "name": "AppProviders",
+      "filePath": "src/components/app-providers.tsx",
+      "summary": "Root-level provider composition wrapping children in the correct nesting order: UserProvider → AddressProvider → CouponProvider → CartProvider → WishlistProvider → OrderProvider. This ensures all downstream componen

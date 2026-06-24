@@ -1,0 +1,234 @@
+{
+  "nodes": [
+    {
+      "id": "file:src/app/products/page.tsx",
+      "type": "file",
+      "name": "page.tsx (Products Listing)",
+      "filePath": "src/app/products/page.tsx",
+      "summary": "Next.js server-rendered page (App Router) for the products listing. Sets page metadata (title/description), renders a Breadcrumb, wraps the client-side ProductsContent in a Suspense boundary with a loading fallback, and includes a CompareBar component.",
+      "tags": [
+        "next.js",
+        "server-component",
+        "app-router",
+        "page",
+        "products",
+        "metadata",
+        "suspense"
+      ],
+      "complexity": 1
+    },
+    {
+      "id": "file:src/app/products/products-content.tsx",
+      "type": "file",
+      "name": "products-content.tsx (Products Content Client)",
+      "filePath": "src/app/products/products-content.tsx",
+      "summary": "\"use client\" component handling the full products listing experience. Reads URL search params for initial category/sort state; provides category filter buttons, a dropdown sort menu (default, price-asc, price-desc, rating) with animated Framer-Motion transitions, grid/list view toggle, and renders filtered/sorted products via ProductCard or an EmptyState. Uses useMemo for filtering/sorting, useCallback for URL param updates via router.replace, and a click-outside listener to close the sort menu.",
+      "tags": [
+        "next.js",
+        "client-component",
+        "app-router",
+        "products",
+        "filter",
+        "sort",
+        "categories",
+        "framer-motion",
+        "search-params",
+        "grid-view",
+        "list-view"
+      ],
+      "complexity": 3
+    },
+    {
+      "id": "file:src/app/products/loading.tsx",
+      "type": "file",
+      "name": "loading.tsx (Products Loading)",
+      "filePath": "src/app/products/loading.tsx",
+      "summary": "Minimal Next.js loading fallback for the products page — renders a centered spinning border spinner inside a 50vh flex container.",
+      "tags": [
+        "next.js",
+        "loading",
+        "spinner",
+        "suspense-fallback"
+      ],
+      "complexity": 1
+    },
+    {
+      "id": "file:src/app/products/[id]/page.tsx",
+      "type": "file",
+      "name": "page.tsx (Product Detail Server)",
+      "filePath": "src/app/products/[id]/page.tsx",
+      "summary": "Next.js server-rendered dynamic product detail page. Uses generateStaticParams to pre-build all product slugs from data. Generates dynamic metadata (title, description, Open Graph) per product. Finds the product by params.id, calls notFound() if missing, computes related products (same category, max 4), and delegates rendering to the ProductDetailClient component.",
+      "tags": [
+        "next.js",
+        "server-component",
+        "app-router",
+        "dynamic-route",
+        "page",
+        "product-detail",
+        "generateStaticParams",
+        "metadata",
+        "not-found",
+        "related-products"
+      ],
+      "complexity": 2
+    },
+    {
+      "id": "file:src/app/products/[id]/product-detail-client.tsx",
+      "type": "file",
+      "name": "product-detail-client.tsx (Product Detail Client)",
+      "filePath": "src/app/products/[id]/product-detail-client.tsx",
+      "summary": "\"use client\" component for the full product detail experience. Features: gallery/3D toggle (ProductGallery ↔ ProductViewer3D), star rating display, price with discount badge, color selector with check mark, quantity stepper, add-to-cart with fly-animation (useCartFly), wishlist toggle, Web Share API / clipboard share, feature badges (delivery, guarantee, returns), price history chart (PriceChart), stock notification (StockNotify), customer reviews (ReviewSection), AI-powered recommendations (getRecommendations) displayed as ProductCards with match-score badges, and recently-viewed tracking (addRecentlyViewed). State: selectedColor, quantity, view3D.",
+      "tags": [
+        "next.js",
+        "client-component",
+        "app-router",
+        "product-detail",
+        "gallery",
+        "3d-viewer",
+        "reviews",
+        "price-chart",
+        "recommendations",
+        "wishlist",
+        "cart",
+        "share",
+        "framer-motion",
+        "stock-notify",
+        "recently-viewed"
+      ],
+      "complexity": 4
+    },
+    {
+      "id": "file:src/app/products/[id]/loading.tsx",
+      "type": "file",
+      "name": "loading.tsx (Product Detail Loading)",
+      "filePath": "src/app/products/[id]/loading.tsx",
+      "summary": "Minimal Next.js loading fallback for the product detail page — identical pattern to the products loading file: a centered spinning border spinner inside a 50vh flex container.",
+      "tags": [
+        "next.js",
+        "loading",
+        "spinner",
+        "suspense-fallback"
+      ],
+      "complexity": 1
+    },
+    {
+      "id": "file:src/app/profile/page.tsx",
+      "type": "file",
+      "name": "page.tsx (Profile)",
+      "filePath": "src/app/profile/page.tsx",
+      "summary": "\"use client\" profile page. Checks user authentication via useUser; if not logged in shows a login prompt with EmptyState. Otherwise displays user avatar, name, email, stats (orders/addresses/favorites counts), a navigation menu (My Orders → /orders, Addresses → /profile/addresses, Wishlist → /wishlist, Account Settings), and a logout button. Uses Framer Motion for staggered entry animations and Lucide icons.",
+      "tags": [
+        "next.js",
+        "client-component",
+        "app-router",
+        "page",
+        "profile",
+        "user",
+        "authentication",
+        "framer-motion",
+        "navigation"
+      ],
+      "complexity": 2
+    },
+    {
+      "id": "file:src/app/profile/addresses/page.tsx",
+      "type": "file",
+      "name": "page.tsx (Addresses)",
+      "filePath": "src/app/profile/addresses/page.tsx",
+      "summary": "\"use client\" address management page (full CRUD). Displays a list of shipping addresses from useAddress context. Features: inline address form (AddressForm) with validation (name, phone regex, province, city, detail), add new address, remove address with toast confirmation, set default address, empty state with add prompt, and animated list transitions. The form includes fields for name, phone, province, city, district, detail, and a default checkbox. Submits via addAddress context method.",
+      "tags": [
+        "next.js",
+        "client-component",
+        "app-router",
+        "page",
+        "addresses",
+        "crud",
+        "form-validation",
+        "framer-motion",
+        "toast",
+        "context"
+      ],
+      "complexity": 3
+    },
+    {
+      "id": "file:src/app/orders/page.tsx",
+      "type": "file",
+      "name": "page.tsx (Orders Listing)",
+      "filePath": "src/app/orders/page.tsx",
+      "summary": "\"use client\" orders listing page. Retrieves orders from useOrders context. Provides status filter buttons (All, Pending, Shipped, Delivered). Renders each order as a clickable card linking to /orders/[id], showing product image, order date, order ID, first item name (+ count of remaining items), status badge with icon and color, total price, and a chevron arrow. Shows EmptyState when no orders match the filter.",
+      "tags": [
+        "next.js",
+        "client-component",
+        "app-router",
+        "page",
+        "orders",
+        "filter",
+        "status",
+        "framer-motion",
+        "image"
+      ],
+      "complexity": 2
+    },
+    {
+      "id": "file:src/app/orders/[id]/page.tsx",
+      "type": "file",
+      "name": "page.tsx (Order Detail)",
+      "filePath": "src/app/orders/[id]/page.tsx",
+      "summary": "\"use client\" order detail page. Fetches order by id from useOrders context (via useParams). Renders: order ID header with status badge, a 3-step timeline (Pending → Shipped → Delivered) with active/current indicators, item list with images/colors/quantities/prices, a tracking card that loads live tracking data from the internal /api/shipping/aramex endpoint (via useEffect fetch) including status badge, estimated delivery, and a tracking timeline with location pins, and an order summary (date, items count, free shipping, total price). Handles loading, error, and not-found states.",
+      "tags": [
+        "next.js",
+        "client-component",
+        "app-router",
+        "dynamic-route",
+        "page",
+        "order-detail",
+        "tracking",
+        "timeline",
+        "api-integration",
+        "framer-motion",
+        "shipping"
+      ],
+      "complexity": 4
+    },
+    {
+      "id": "file:src/app/api/shipping/aramex/route.ts",
+      "type": "file",
+      "name": "route.ts (Aramex Shipping API)",
+      "filePath": "src/app/api/shipping/aramex/route.ts",
+      "summary": "Next.js API route (App Router) for Aramex shipping integration. Accepts POST requests with { action, data }. Dispatches to aramexAdapter methods: createShipment, trackOrder, getRate. Returns JSON responses; catches errors and returns 400 for unknown actions or 500 for internal errors.",
+      "tags": [
+        "next.js",
+        "api-route",
+        "app-router",
+        "shipping",
+        "aramex",
+        "tracking",
+        "backend"
+      ],
+      "complexity": 2
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:src/app/products/page.tsx→src/app/products/products-content.tsx",
+      "source": "file:src/app/products/page.tsx",
+      "target": "file:src/app/products/products-content.tsx",
+      "type": "imports",
+      "label": "imports ProductsContent from ./products-content"
+    },
+    {
+      "id": "edge:src/app/products/[id]/page.tsx→src/app/products/[id]/product-detail-client.tsx",
+      "source": "file:src/app/products/[id]/page.tsx",
+      "target": "file:src/app/products/[id]/product-detail-client.tsx",
+      "type": "imports",
+      "label": "imports ProductDetailClient from ./product-detail-client"
+    },
+    {
+      "id": "edge:src/app/orders/[id]/page.tsx→src/app/api/shipping/aramex/route.ts",
+      "source": "file:src/app/orders/[id]/page.tsx",
+      "target": "file:src/app/api/shipping/aramex/route.ts",
+      "type": "api-call",
+      "label": "fetches /api/shipping/aramex at runtime for tracking data"
+    }
+  ]
+}
